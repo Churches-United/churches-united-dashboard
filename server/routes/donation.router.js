@@ -1,13 +1,12 @@
 const express = require("express");
-const encryptLib = require("../modules/encryption");
 const pool = require("../modules/pool");
-const userStrategy = require("../strategies/user.strategy");
+const { rejectUnauthenticated } = require("../modules/authentication-middleware");
 
 const router = express.Router();
 
 ///////// DONORS
 //  GET /api/donors
-router.get("/", (req, res) => {
+router.get("/", rejectUnauthenticated, (req, res) => {
   const sqlText = `SELECT * FROM donors ORDER BY name;`;
 
   pool
@@ -20,7 +19,7 @@ router.get("/", (req, res) => {
 });
 
 //  POST /api/donors
-router.post("/", (req, res) => {
+router.post("/", rejectUnauthenticated, (req, res) => {
   const { name, type } = req.body;
   const sqlText = `
     INSERT INTO donors (name, type)
@@ -37,7 +36,7 @@ router.post("/", (req, res) => {
 });
 
 // GET by id
-router.get("/:id", async (req, res) => {
+router.get("/:id", rejectUnauthenticated, async (req, res) => {
   const donorId = req.params.id;
 
   const sqlText = `
@@ -50,7 +49,7 @@ router.get("/:id", async (req, res) => {
     const result = await pool.query(sqlText, [donorId]);
 
     if (result.rowCount === 0) {
-      return res.sendStatus(404); 
+      return res.sendStatus(404);
     }
 
     res.json(result.rows[0]);
@@ -61,7 +60,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //  PUT /api/donors/:id
-router.put("/:id", async (req, res) => {
+router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const donorId = req.params.id;
   const { name, type } = req.body;
 
@@ -87,7 +86,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //  DELETE /api/donors/:id
-router.delete("/:id", (req, res) => {
+router.delete("/:id", rejectUnauthenticated, (req, res) => {
   const sqlText = `DELETE FROM donors WHERE id = $1;`;
 
   pool
