@@ -23,7 +23,7 @@ function App() {
   return (
     <>
       <header>
-        <h1>EDA Solo Project</h1>
+        <h1>Churches United Dashboard</h1>
         <Nav />
       </header>
       <main>
