@@ -31,6 +31,18 @@ CREATE TABLE "user" (
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+---------kitchen table
+CREATE TABLE "kitchen" (
+  "id" SERIAL PRIMARY KEY,
+  "week_start_date" DATE NOT NULL,
+  "week_end_date" DATE NOT NULL,
+  "total_meals_served" INTEGER NOT NULL CHECK (total_meals_served >= 0),
+  "notes" TEXT,
+  "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(week_start_date, week_end_date)
+);
 
 -------------------------------------------------------
 --------------------------------------------------
