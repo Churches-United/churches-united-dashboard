@@ -1,11 +1,14 @@
 import { create } from "zustand";
-import userSlice from './slices/user.slice.js';
+import { devtools } from "zustand/middleware";
+import userSlice from "./slices/user.slice.js";
 
 
 // Combine all slices in the store:
-const useStore = create((...args) => ({
-  ...userSlice(...args),
-}))
-
+// update.. added devtools
+const useStore = create(
+  devtools((...args) => ({
+    ...userSlice(...args),
+  }))
+);
 
 export default useStore;
