@@ -2,6 +2,9 @@ const express = require("express");
 const encryptLib = require("../modules/encryption");
 const pool = require("../modules/pool");
 const userStrategy = require("../strategies/user.strategy");
+const {
+  rejectUnauthenticated,
+} = require("../modules/authentication-middleware");
 
 const router = express.Router();
 
@@ -70,5 +73,100 @@ router.delete("/logout", (req, res, next) => {
     res.sendStatus(200);
   });
 });
+
+// GET user by id
+router.get("/:id", rejectUnauthenticated, async (req, res) => {
+  const userId = req.params.id;
+  const sqlText = `
+  SELECT * FROM "user" WHERE id = $1;
+  `;
+  try {
+    const result = await pool.query(sqlText, [userId]);
+
+    if (result.rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("GET /api/user/:id error:", err);
+    res.sendStatus(500);
+  }
+});
+// PUT user by id
+router.put("/:id", rejectUnauthenticated, async (req, res) => {
+  const userId = req.params.id;
+  const { username, email, first_name, last_name, role, department } = req.body;
+  const sqlText = `
+  UPDATE "user" 
+  SET 
+  "username" = $1, 
+  "email" = $2, 
+  "first_name" = $3, 
+  "last_name" = $4, 
+  "role" = $5, 
+  "department" = $6,
+  updated_at = NOW()
+  WHERE id = $7
+  RETURNING *;
+  `;
+
+  const sqlValues = [
+    username,
+    email,
+    first_name,
+    last_name,
+    role,
+    department,
+    userId,
+  ];
+
+  try {
+    const result = await pool.query(sqlText, sqlValues);
+
+    if (result.rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("PUT /api/user/:id error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// DELETE user by id
+router.delete(
+  "/:id",
+  rejectUnauthenticated,
+  async (req, res) => {
+    const userId = Number(req.params.id);
+
+    // Only admins can delete users
+    if (req.user.role !== "admin") {
+      return res.sendStatus(403);
+    }
+
+    const sqlText = `
+      DELETE FROM "user"
+      WHERE id = $1
+      RETURNING id;
+    `;
+
+    try {
+      const result = await pool.query(sqlText, [userId]);
+
+      if (result.rowCount === 0) {
+        return res.sendStatus(404);
+      }
+
+      res.sendStatus(204); 
+    } catch (err) {
+      console.error("DELETE /api/user/:id error:", err);
+      res.sendStatus(500);
+    }
+  }
+);
+
 
 module.exports = router;
