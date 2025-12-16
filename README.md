@@ -68,5 +68,6 @@ Once you've attained that, you'll have the opportunity to:
 
 - Take stock of how much time is left, as well as how much bandwidth you have.
 - Reason about which stretch goal(s) to attempt.
+------
 
 
