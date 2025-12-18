@@ -18,6 +18,7 @@ const donationRouter = require('./routes/donation.router');
 const kitchenRouter = require('./routes/kitchenWeekly.router')
 const volunteersRouter = require('./routes/volunteers.router');
 const weekCompliance = require('./routes/complianceWeekly.router');
+const shelterWeeklyRouter = require('./routes/shelterWeekly.router');
 
 
 // Apply middleware:

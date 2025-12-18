@@ -86,6 +86,69 @@ CREATE TABLE "volunteer_events" (
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+
+
+
+-- ============================================
+-- COMPLIANCE WEEKLY TABLE - FRESH START
+-- ============================================
+
+-- Drop existing table if exists
+DROP TABLE IF EXISTS compliance_weekly CASCADE;
+
+-- Create table
+CREATE TABLE "compliance_weekly" (
+    "id" SERIAL PRIMARY KEY,
+    "date" DATE NOT NULL UNIQUE,
+    
+    "hh_without_children" INTEGER NOT NULL DEFAULT 0 CHECK (hh_without_children >= 0),
+    "hh_with_children" INTEGER NOT NULL DEFAULT 0 CHECK (hh_with_children >= 0),
+    "total_households" INTEGER GENERATED ALWAYS AS (hh_without_children + hh_with_children) STORED,
+    
+    "adults" INTEGER NOT NULL DEFAULT 0 CHECK (adults >= 0),
+    "children" INTEGER NOT NULL DEFAULT 0 CHECK (children >= 0),
+    "seniors_55_plus" INTEGER NOT NULL DEFAULT 0 CHECK (seniors_55_plus >= 0),
+    "total_individuals" INTEGER GENERATED ALWAYS AS (adults + children + seniors_55_plus) STORED,
+    
+    "female" INTEGER NOT NULL DEFAULT 0 CHECK (female >= 0),
+    "male" INTEGER NOT NULL DEFAULT 0 CHECK (male >= 0),
+    "other_gender" INTEGER NOT NULL DEFAULT 0 CHECK (other_gender >= 0),
+    "total_gender" INTEGER GENERATED ALWAYS AS (female + male + other_gender) STORED,
+    
+    "white" INTEGER NOT NULL DEFAULT 0 CHECK (white >= 0),
+    "black_african_american" INTEGER NOT NULL DEFAULT 0 CHECK (black_african_american >= 0),
+    "native_american" INTEGER NOT NULL DEFAULT 0 CHECK (native_american >= 0),
+    "other_race" INTEGER NOT NULL DEFAULT 0 CHECK (other_race >= 0),
+    "multi_racial" INTEGER NOT NULL DEFAULT 0 CHECK (multi_racial >= 0),
+    "total_race" INTEGER GENERATED ALWAYS AS (white + black_african_american + native_american + other_race + multi_racial) STORED,
+    
+    "one_condition" INTEGER NOT NULL DEFAULT 0 CHECK (one_condition >= 0),
+    "two_conditions" INTEGER NOT NULL DEFAULT 0 CHECK (two_conditions >= 0),
+    "three_plus_conditions" INTEGER NOT NULL DEFAULT 0 CHECK (three_plus_conditions >= 0),
+    "total_conditions" INTEGER GENERATED ALWAYS AS (one_condition + two_conditions + three_plus_conditions) STORED,
+    
+    "total_exits" INTEGER NOT NULL DEFAULT 0 CHECK (total_exits >= 0),
+    
+    "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "submitted_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "submitted_at" TIMESTAMPTZ
+);
+
+-- Create indexes
+CREATE INDEX idx_compliance_date ON compliance_weekly(date);
+CREATE INDEX idx_compliance_year ON compliance_weekly((EXTRACT(YEAR FROM date)));
+CREATE INDEX idx_compliance_created_by ON compliance_weekly(created_by);
+CREATE INDEX idx_compliance_submitted_by ON compliance_weekly(submitted_by);
+
+-- Add comments
+COMMENT ON TABLE compliance_weekly IS 'Weekly compliance reports - date is always Monday via DATE_TRUNC on INSERT';
+COMMENT ON COLUMN compliance_weekly.date IS 'Always stores Monday of the week (enforced by DATE_TRUNC in INSERT)';
+
+-- Success message
+SELECT 'compliance_weekly table created successfully!' AS status;
+
 -------------------------------------------------------
 --------------------------------------------------
 -- SEED DATA:
