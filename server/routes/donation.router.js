@@ -61,11 +61,16 @@ router.get("/:id", rejectUnauthenticated, async (req, res) => {
 router.post("/", rejectUnauthenticated, async (req, res) => {
   const { donor_id, date, amount, notable, restricted, notes } = req.body;
 
+  if (!donor_id || !date || !amount) {
+    return res
+      .status(400)
+      .json({ message: "Donor, date, and amount are required." });
+  }
+
   const sqlText = `
-  INSERT INTO donations 
-  (donor_id, date, amount, notable, restricted, notes)
-  VALUES ($1, $2, $3, $4, $5, $6)
-  RETURNING *;
+      INSERT INTO donations (donor_id, date, amount, notable, restricted, notes)
+      VALUES ( $1, date_trunc('week', $2::date), $3, $4, $5, $6 )
+      RETURNING *;
   `;
   try {
     const result = await pool.query(sqlText, [
@@ -138,6 +143,97 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(204);
   } catch (err) {
     console.error("DELETE /api/donations/:id error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET /api/donations/reports/weekly
+router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      DATE_TRUNC('week', d.date)::date AS week_start,
+
+      TO_CHAR(DATE_TRUNC('week', d.date), 'YYYY-DD-MM') || ' - ' ||
+      TO_CHAR(DATE_TRUNC('week', d.date) + INTERVAL '6 days', 'YYYY-DD-MM') AS week_range,
+
+      SUM(d.amount) AS total_amount,
+      COUNT(*) AS donation_count,
+
+      SUM(CASE WHEN d.restricted THEN d.amount ELSE 0 END) AS restricted_amount,
+      COUNT(*) FILTER (WHERE d.restricted) AS restricted_count,
+
+      SUM(CASE WHEN d.notable THEN d.amount ELSE 0 END) AS notable_amount,
+      COUNT(*) FILTER (WHERE d.notable) AS notable_count
+
+    FROM donations d
+    GROUP BY DATE_TRUNC('week', d.date)
+    ORDER BY week_start DESC;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/donations/reports/weekly error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET /api/donations/reports/monthly
+router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      DATE_TRUNC('month', d.date) AS month_start,
+      TO_CHAR(DATE_TRUNC('month', d.date), 'YYYY-MM') AS month_label,
+      SUM(d.amount) AS total_amount,
+      COUNT(*) AS donation_count,
+
+      SUM(CASE WHEN d.restricted THEN d.amount ELSE 0 END) AS restricted_amount,
+      COUNT(*) FILTER (WHERE d.restricted) AS restricted_count,
+
+      SUM(CASE WHEN d.notable THEN d.amount ELSE 0 END) AS notable_amount,
+      COUNT(*) FILTER (WHERE d.notable) AS notable_count
+      
+    FROM donations d
+    GROUP BY month_start
+    ORDER BY month_start DESC;
+
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/donations/reports/monthly error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET /api/donations/reports/by-donor
+router.get("/reports/by-donor", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+  SELECT 
+  donors.id AS donor_id,
+  donors.name AS donor_name,
+  donors.type AS donor_type,
+
+  COUNT(d.id) AS donation_count,
+  SUM(d.amount) AS total_donated,
+
+  SUM(CASE WHEN d.restricted THEN d.amount ELSE 0 END) AS restricted_total,
+  SUM(CASE WHEN d.notable THEN d.amount ELSE 0 END) AS notable_total
+
+  FROM donations d
+  JOIN donors ON d.donor_id = donors.id
+  GROUP BY donors.id, donors.name, donors.type
+  ORDER by total_donated DESC;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/donations/reports/by-donor error:", err);
     res.sendStatus(500);
   }
 });
