@@ -19,6 +19,7 @@ const kitchenRouter = require('./routes/kitchenWeekly.router')
 const volunteersRouter = require('./routes/volunteers.router');
 const weekCompliance = require('./routes/complianceWeekly.router');
 const shelterWeeklyRouter = require('./routes/shelterWeekly.router');
+const pantryWeeklyRouter = require("./routes/pantryweekly.router");
 
 
 // Apply middleware:
@@ -36,6 +37,9 @@ app.use('/api/donations', donationRouter);
 app.use('/api/volunteers', volunteersRouter);
 app.use('/api/compliance/weekly', weekCompliance)
 app.use('/api/kitchen', kitchenRouter);
+app.use('/api/pantry', pantryWeeklyRouter);
+
+
 
 
 // Start the server:
