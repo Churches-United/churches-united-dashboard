@@ -30,124 +30,36 @@ CREATE TABLE "user" (
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
----------Donations
 
-CREATE TABLE "donors" (
+---------pantry
+CREATE TABLE "pantry" (
   "id" SERIAL PRIMARY KEY,
-  "name" VARCHAR(255) NOT NULL,
-  "type" VARCHAR(50) NOT NULL,
-  "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE "donations" (
-  "id" SERIAL PRIMARY KEY,
-  "donor_id" INTEGER NOT NULL REFERENCES donors(id),
-  "date" DATE NOT NULL,
-  "amount" DECIMAL(8,2) NOT NULL,
-  "notable" BOOLEAN NOT NULL DEFAULT FALSE,
-  "restricted" BOOLEAN NOT NULL DEFAULT FALSE,
-  "notes" TEXT,
-  "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-  
----------kitchen table
-CREATE TABLE "kitchen" (
-  "id" SERIAL PRIMARY KEY,
-  "week_start_date" DATE NOT NULL,
-  "week_end_date" DATE NOT NULL,
-  "total_meals_served" INTEGER NOT NULL CHECK (total_meals_served >= 0),
+  "week_date" DATE NOT NULL UNIQUE,  
+  "first_time_households" INTEGER NOT NULL DEFAULT 0 CHECK (first_time_households >= 0),
+  "returning_households" INTEGER NOT NULL DEFAULT 0 CHECK (returning_households >= 0),
+  "total_adults" INTEGER NOT NULL DEFAULT 0 CHECK (total_adults >= 0),
+  "total_children" INTEGER NOT NULL DEFAULT 0 CHECK (total_children >= 0),
+  "total_seniors" INTEGER NOT NULL DEFAULT 0 CHECK (total_seniors >= 0),
+  "total_pounds_distributed" DECIMAL(10, 2) NOT NULL DEFAULT 0 CHECK (total_pounds_distributed >= 0),
   "notes" TEXT,
   "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(week_start_date, week_end_date)
-);
----------Volunteers tables
-CREATE TABLE "volunteers" (
-  "id" SERIAL PRIMARY KEY,
-  "name" VARCHAR(255) NOT NULL,
-  "type" VARCHAR(50) NOT NULL, 
-  "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
+  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE "volunteer_events" (
-  "id" SERIAL PRIMARY KEY,
-  "volunteer_id" INTEGER NOT NULL
-    REFERENCES volunteers(id),
-  "event_date" DATE NOT NULL,
-  location VARCHAR(255) NOT NULL,
-  "number_volunteers" INTEGER NOT NULL DEFAULT 1,
-  "software_signups" INTEGER NOT NULL DEFAULT 0,
-  "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+--seed data
 
+INSERT INTO "pantry" 
+  ("week_date", "first_time_households", "returning_households", "total_adults", "total_children", "total_seniors", "total_pounds_distributed", "notes", "created_by")
+VALUES
+  ('2024-11-04', 5, 8, 20, 15, 3, 450.50, 'Normal week', 1),
+  ('2024-11-11', 3, 10, 18, 12, 4, 380.75, 'Veterans Day week', 1),
+  ('2024-11-18', 7, 12, 25, 18, 5, 520.00, 'Thanksgiving prep', 1),
+  ('2024-11-25', 2, 9, 15, 10, 2, 340.25, 'Post-Thanksgiving', 1),
+  ('2024-12-02', 4, 11, 22, 14, 3, 410.50, 'Back to normal', 1),
+  ('2024-12-09', 6, 13, 28, 20, 6, 495.75, 'Holiday rush', 1),
+  ('2024-12-16', 3, 8, 16, 11, 2, 350.00, 'Holiday week', 1);
 
-
-
--- ============================================
--- COMPLIANCE WEEKLY TABLE - FRESH START
--- ============================================
-
--- Drop existing table if exists
-DROP TABLE IF EXISTS compliance_weekly CASCADE;
-
--- Create table
-CREATE TABLE "compliance_weekly" (
-    "id" SERIAL PRIMARY KEY,
-    "date" DATE NOT NULL UNIQUE,
-    
-    "hh_without_children" INTEGER NOT NULL DEFAULT 0 CHECK (hh_without_children >= 0),
-    "hh_with_children" INTEGER NOT NULL DEFAULT 0 CHECK (hh_with_children >= 0),
-    "total_households" INTEGER GENERATED ALWAYS AS (hh_without_children + hh_with_children) STORED,
-    
-    "adults" INTEGER NOT NULL DEFAULT 0 CHECK (adults >= 0),
-    "children" INTEGER NOT NULL DEFAULT 0 CHECK (children >= 0),
-    "seniors_55_plus" INTEGER NOT NULL DEFAULT 0 CHECK (seniors_55_plus >= 0),
-    "total_individuals" INTEGER GENERATED ALWAYS AS (adults + children + seniors_55_plus) STORED,
-    
-    "female" INTEGER NOT NULL DEFAULT 0 CHECK (female >= 0),
-    "male" INTEGER NOT NULL DEFAULT 0 CHECK (male >= 0),
-    "other_gender" INTEGER NOT NULL DEFAULT 0 CHECK (other_gender >= 0),
-    "total_gender" INTEGER GENERATED ALWAYS AS (female + male + other_gender) STORED,
-    
-    "white" INTEGER NOT NULL DEFAULT 0 CHECK (white >= 0),
-    "black_african_american" INTEGER NOT NULL DEFAULT 0 CHECK (black_african_american >= 0),
-    "native_american" INTEGER NOT NULL DEFAULT 0 CHECK (native_american >= 0),
-    "other_race" INTEGER NOT NULL DEFAULT 0 CHECK (other_race >= 0),
-    "multi_racial" INTEGER NOT NULL DEFAULT 0 CHECK (multi_racial >= 0),
-    "total_race" INTEGER GENERATED ALWAYS AS (white + black_african_american + native_american + other_race + multi_racial) STORED,
-    
-    "one_condition" INTEGER NOT NULL DEFAULT 0 CHECK (one_condition >= 0),
-    "two_conditions" INTEGER NOT NULL DEFAULT 0 CHECK (two_conditions >= 0),
-    "three_plus_conditions" INTEGER NOT NULL DEFAULT 0 CHECK (three_plus_conditions >= 0),
-    "total_conditions" INTEGER GENERATED ALWAYS AS (one_condition + two_conditions + three_plus_conditions) STORED,
-    
-    "total_exits" INTEGER NOT NULL DEFAULT 0 CHECK (total_exits >= 0),
-    
-    "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
-    "submitted_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "submitted_at" TIMESTAMPTZ
-);
-
--- Create indexes
-CREATE INDEX idx_compliance_date ON compliance_weekly(date);
-CREATE INDEX idx_compliance_year ON compliance_weekly((EXTRACT(YEAR FROM date)));
-CREATE INDEX idx_compliance_created_by ON compliance_weekly(created_by);
-CREATE INDEX idx_compliance_submitted_by ON compliance_weekly(submitted_by);
-
--- Add comments
-COMMENT ON TABLE compliance_weekly IS 'Weekly compliance reports - date is always Monday via DATE_TRUNC on INSERT';
-COMMENT ON COLUMN compliance_weekly.date IS 'Always stores Monday of the week (enforced by DATE_TRUNC in INSERT)';
-
--- Success message
-SELECT 'compliance_weekly table created successfully!' AS status;
 
 -------------------------------------------------------
 --------------------------------------------------
