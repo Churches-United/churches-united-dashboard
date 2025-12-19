@@ -17,6 +17,7 @@ const donorRouter = require('./routes/donor.router');
 const donationRouter = require('./routes/donation.router');
 const kitchenRouter = require('./routes/kitchenWeekly.router')
 const volunteersRouter = require('./routes/volunteers.router');
+const volunteerEventsRouter = require('./routes/volunteerEvents.router');
 const weekCompliance = require('./routes/complianceWeekly.router');
 const shelterWeeklyRouter = require('./routes/shelterWeekly.router');
 const pantryWeeklyRouter = require("./routes/pantryweekly.router");
@@ -35,6 +36,7 @@ app.use('/api/user', userRouter);
 app.use('/api/donors', donorRouter);
 app.use('/api/donations', donationRouter);
 app.use('/api/volunteers', volunteersRouter);
+app.use('/api/volunteer-events', volunteerEventsRouter);
 app.use('/api/compliance/weekly', weekCompliance)
 app.use('/api/kitchen', kitchenRouter);
 app.use('/api/pantry', pantryWeeklyRouter);

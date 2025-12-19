@@ -86,6 +86,40 @@ CREATE TABLE "volunteer_events" (
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+---------Event table
+CREATE TABLE "events" (
+    "id" SERIAL PRIMARY KEY, 
+    "name" VARCHAR(255) NOT NULL,
+    "datetime" TIMESTAMPTZ NOT NULL, 
+    "venue" VARCHAR(255) NOT NULL,
+    "type" VARCHAR(255) NOT NULL,
+    "shelter_id" INTEGER REFERENCES shelters(id),
+    "notes" VARCHAR(255) NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+---------Shelter tables
+CREATE TABLE "shelters" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL,
+    "address" TEXT NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE "shelter_info" (
+    "id" SERIAL PRIMARY KEY,    
+    "shelter_id" INTEGER NOT NULL REFERENCES shelters(id),
+    "occupancy_percent" DECIMAL(5,2),
+    "operational_reserves" DECIMAL(12,2),
+    "replacement_reserves" DECIMAL(12,2),
+    "current_vacancies" INTEGER,
+    "upcoming_vacancies" INTEGER,
+    "upcoming_new_leases" INTEGER,
+    "notes" TEXT,
+    "last_updated" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
 
 
 
