@@ -15,6 +15,7 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const donorRouter = require('./routes/donor.router');
 const donationRouter = require('./routes/donation.router');
+const eventsRouter = require('./routes/events.router');
 const kitchenRouter = require('./routes/kitchenWeekly.router')
 const volunteersRouter = require('./routes/volunteers.router');
 const volunteerEventsRouter = require('./routes/volunteerEvents.router');
@@ -35,6 +36,7 @@ app.use(passport.session());
 app.use('/api/user', userRouter);
 app.use('/api/donors', donorRouter);
 app.use('/api/donations', donationRouter);
+app.use('/api/events', eventsRouter);
 app.use('/api/volunteers', volunteersRouter);
 app.use('/api/volunteer-events', volunteerEventsRouter);
 app.use('/api/compliance/weekly', weekCompliance)

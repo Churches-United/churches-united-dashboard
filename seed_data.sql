@@ -41,3 +41,54 @@ VALUES
 
 -- Other
 (10, '2025-11-19', 'Other', 2, 0);
+
+INSERT INTO "shelters" (name)
+VALUES
+('Micah''s Mission'),
+('Dorothy Day Food Pantry'),
+('Silver Linings'),
+('Bright Sky'),
+('Faith Helpers');
+
+INSERT INTO "events" (name, datetime, venue, type, shelter_id, notes)
+VALUES
+-- Upcoming Events
+('Holiday Fundraiser', '2025-12-15 18:00:00-06', 'Community Hall', 'Fundraiser', NULL, 'Annual holiday fundraising event'),
+('Winter Coat Drive', '2025-12-20 10:00:00-06', 'Micah''s Mission - Basement', 'Community Events', 1, 'Collecting coats for families in need'),
+('Soup Kitchen Prep', '2025-12-22 09:00:00-06', 'Kitchen', 'Large Volunteer Event', NULL, 'Preparing meals for the community'),
+('Neighborhood Clean-Up', '2025-12-28 08:30:00-06', 'Bright Sky', 'Community Events', NULL, NULL),
+
+-- Past Events
+('Summer Picnic', '2025-06-10 12:00:00-06', 'Community Picnic', 'Community Events', NULL, 'Fun picnic with games and food'),
+('Back-to-School Drive', '2025-08-20 14:00:00-06', 'Dorothy Day Food Pantry', 'Fundraiser', 2, 'Supplies for students'),
+('Volunteer Appreciation Night', '2025-09-15 18:30:00-06', 'Silver Linings', 'Other', NULL, 'Celebrating our volunteers'),
+
+-- Misc
+('Emergency Shelter Setup', '2025-11-05 16:00:00-06', 'Micah''s Mission - Pantry', 'Large Volunteer Event', 1, 'Preparing emergency kits'),
+('Community Art Fair', '2025-10-12 10:00:00-06', 'Community Hall', 'Community Events', NULL, 'Local artists showcase'),
+('Charity Auction', '2025-11-22 19:00:00-06', 'Community Hall', 'Fundraiser', NULL, 'Auction to support programs');
+
+
+INSERT INTO "donors" (name, type)
+VALUES
+('Bob Johnson', 'person'),
+('Faith Helpers', 'group'),
+('Community Giving Circle', 'group'),
+('Anonymous Donor', 'person'),
+('Silver Linings Foundation', 'group');
+
+INSERT INTO "donations" (
+  donor_id,
+  date,
+  amount,
+  notable,
+  restricted,
+  notes
+)
+VALUES
+(1, '2025-01-05', 150.00, FALSE, FALSE, 'Monthly support donation'),
+(2, '2025-01-12', 500.00, TRUE,  FALSE, 'Group fundraiser contribution'),
+(3, '2025-02-03', 250.00, FALSE, TRUE,  'Restricted for food pantry'),
+(4, '2025-02-10', 75.00,  FALSE, FALSE, 'Anonymous cash donation'),
+(1, '2025-03-01', 200.00, TRUE,  FALSE, 'Winter support donation'),
+(5, '2025-03-15', 1000.00, TRUE,  TRUE,  'Annual grant restricted to shelter services');
