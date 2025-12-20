@@ -15,13 +15,16 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const donorRouter = require('./routes/donor.router');
 const donationRouter = require('./routes/donation.router');
+const eventsRouter = require('./routes/events.router');
 const kitchenRouter = require('./routes/kitchenWeekly.router')
 const volunteersRouter = require('./routes/volunteers.router');
+const volunteerEventsRouter = require('./routes/volunteerEvents.router');
 const weekCompliance = require('./routes/complianceWeekly.router');
 const shelterWeeklyRouter = require('./routes/shelterWeekly.router');
 const pantryWeeklyRouter = require("./routes/pantryweekly.router");
 const financeWeeklyRouter = require('./routes/Financeweekly.router');
 
+const hrRouter = require('./routes/hrWeekly.router');
 
 
 // Apply middleware:
@@ -36,11 +39,14 @@ app.use(passport.session());
 app.use('/api/user', userRouter);
 app.use('/api/donors', donorRouter);
 app.use('/api/donations', donationRouter);
+app.use('/api/events', eventsRouter);
 app.use('/api/volunteers', volunteersRouter);
+app.use('/api/volunteer-events', volunteerEventsRouter);
 app.use('/api/compliance/weekly', weekCompliance)
 app.use('/api/kitchen', kitchenRouter);
 app.use('/api/pantry', pantryWeeklyRouter);
 app.use('/api/finance/weekly', financeWeeklyRouter);
+app.use('/api/hr', hrRouter);
 
 
 

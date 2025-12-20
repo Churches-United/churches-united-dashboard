@@ -153,8 +153,8 @@ router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
     SELECT
       DATE_TRUNC('week', d.date)::date AS week_start,
 
-      TO_CHAR(DATE_TRUNC('week', d.date), 'YYYY-DD-MM') || ' - ' ||
-      TO_CHAR(DATE_TRUNC('week', d.date) + INTERVAL '6 days', 'YYYY-DD-MM') AS week_range,
+      TO_CHAR(DATE_TRUNC('week', d.date), 'YYYY-MM-DD') || ' - ' ||
+      TO_CHAR(DATE_TRUNC('week', d.date) + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
 
       SUM(d.amount) AS total_amount,
       COUNT(*) AS donation_count,

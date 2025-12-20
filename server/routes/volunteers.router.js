@@ -1,25 +1,39 @@
 const express = require("express");
-const encryptLib = require("../modules/encryption");
 const pool = require("../modules/pool");
-const userStrategy = require("../strategies/user.strategy");
-const { rejectUnauthenticated,} = require("../modules/authentication-middleware");
+const {
+  rejectUnauthenticated,
+} = require("../modules/authentication-middleware");
 
 const router = express.Router();
 
-
 // GET /api/volunteers
-router.get("/", rejectUnauthenticated, (req,res) => {
-    const sqlText = `SELECT * FROM volunteers ORDER BY name;`;
+router.get("/", rejectUnauthenticated, (req, res) => {
+  const sqlText = `SELECT * FROM volunteers ORDER BY name;`;
 
-    pool.query(sqlText).then((result) => res.json(result.rows))
+  pool
+    .query(sqlText)
+    .then((result) => res.json(result.rows))
     .catch((err) => {
-        console.error("GET /api/volunteers error:", err);
-        res.sendStatus(500);
-    })
-})
+      console.error("GET /api/volunteers error:", err);
+      res.sendStatus(500);
+    });
+});
 
+// POST /api/volunteers
 router.post("/", rejectUnauthenticated, (req, res) => {
   const { name, type } = req.body;
+
+  if (!name || !type) {
+    return res.status(400).json({ error: "Name and type are required" });
+  }
+  if (typeof name !== "string" || name.trim().length === 0) {
+    return res.status(400).json({ error: "Name cannot be empty" });
+  }
+  const allowedTypes = ["Individual", "Group"];
+  if (!allowedTypes.includes(type)) {
+    return res.status(400).json({ error: "Invalid type" });
+  }
+
   const sqlText = `
     INSERT INTO volunteers (name, type)
     VALUES ($1, $2)
@@ -63,9 +77,17 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const volunteerId = req.params.id;
   const { name, type } = req.body;
 
+  const allowedTypes = ["Individual", "Group"];
+  if (type !== undefined && !allowedTypes.includes(type)) {
+    return res.status(400).json({ error: "Invalid type" });
+  }
+
   const sqlText = `
     UPDATE volunteers
-    SET name = $1, type = $2, updated_at = CURRENT_TIMESTAMP
+    SET
+        name = COALESCE($1, name),
+        type = COALESCE($2, type),
+        updated_at = CURRENT_TIMESTAMP
     WHERE id = $3
     RETURNING *;
     `;
@@ -101,7 +123,5 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-
 
 module.exports = router;
