@@ -60,8 +60,8 @@ VALUES
   ('2024-12-09', 6, 13, 28, 20, 6, 495.75, 'Holiday rush', 1),
   ('2024-12-16', 3, 8, 16, 11, 2, 350.00, 'Holiday week', 1);
 
-// hr_weekly table
-   CREATE TABLE "hr_weekly" (
+--------- hr_weekly table
+   CREATE TABLE "hr_weekly" ("id", "week_date", "total_positions", "open_positions", "new_hires_this_week", "employee_turnover", "note", "created_by")
   "id" SERIAL PRIMARY KEY,
   "week_date" DATE NOT NULL UNIQUE,
   "total_positions" INTEGER NOT NULL DEFAULT 0 CHECK (total_positions >= 0),
@@ -179,7 +179,7 @@ CREATE TABLE "compliance_weekly" (
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "submitted_at" TIMESTAMPTZ
 );
-// fake seed data for hr weekly testing 
+--  fake seed data for hr weekly testing 
 INSERT INTO "hr_weekly"
   ("week_date", "total_positions", "open_positions", "new_hires_this_week", "employee_turnover", "evaluations_due", "notes", "created_by")
 VALUES
