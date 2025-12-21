@@ -61,7 +61,7 @@ VALUES
   ('2024-12-16', 3, 8, 16, 11, 2, 350.00, 'Holiday week', 1);
 
 --------- hr_weekly table
-   CREATE TABLE "hr_weekly" ("id", "week_date", "total_positions", "open_positions", "new_hires_this_week", "employee_turnover", "note", "created_by")
+   CREATE TABLE "hr_weekly"(
   "id" SERIAL PRIMARY KEY,
   "week_date" DATE NOT NULL UNIQUE,
   "total_positions" INTEGER NOT NULL DEFAULT 0 CHECK (total_positions >= 0),
@@ -73,7 +73,7 @@ VALUES
   "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
+   );
 
 ---------Event table
 CREATE TABLE "events" (
@@ -95,7 +95,7 @@ CREATE TABLE "shelters" (
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
+-- North Campus 
 CREATE TABLE "shelter_info" (
     "id" SERIAL PRIMARY KEY,    
     "shelter_id" INTEGER NOT NULL REFERENCES shelters(id),
