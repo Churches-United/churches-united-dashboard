@@ -97,8 +97,9 @@ CREATE TABLE "shelters" (
 );
 -- North Campus 
 CREATE TABLE "shelter_info" (
-    "id" SERIAL PRIMARY KEY,    
+    "id" SERIAL PRIMARY KEY,
     "shelter_id" INTEGER NOT NULL REFERENCES shelters(id),
+    "month_date" DATE NOT NULL, 
     "occupancy_percent" DECIMAL(5,2),
     "operational_reserves" DECIMAL(12,2),
     "replacement_reserves" DECIMAL(12,2),
@@ -106,7 +107,9 @@ CREATE TABLE "shelter_info" (
     "upcoming_vacancies" INTEGER,
     "upcoming_new_leases" INTEGER,
     "notes" TEXT,
-    "last_updated" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE ("shelter_id", "report_month")
 );
 
 ---------Donation tables
