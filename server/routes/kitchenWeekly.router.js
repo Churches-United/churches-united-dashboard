@@ -1,17 +1,25 @@
 const express = require("express");
-const encryptLib = require("../modules/encryption");
 const pool = require("../modules/pool");
-const userStrategy = require("../strategies/user.strategy");
 const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
 
 const router = express.Router();
 
-// GET rOUTE KITCHEN
+// GET all kitchen records
 router.get("/", rejectUnauthenticated, (req, res) => {
-  // query
-  const sqlText = `SELECT * FROM kitchen ORDER BY week_date DESC;`;
+  const sqlText = `
+    SELECT 
+      id,
+      week_date::date as week_date,
+      total_meals_served,
+      notes,
+      created_by,
+      created_at,
+      updated_at
+    FROM kitchen 
+    ORDER BY week_date DESC;
+  `;
 
   pool
     .query(sqlText)
@@ -22,18 +30,17 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
-// kitchen post route
-
+// POST new kitchen record
 router.post("/", rejectUnauthenticated, (req, res) => {
   const { week_date, total_meals_served, notes } = req.body;
 
-  // validation checks
+  // Validation checks
   if (!week_date || total_meals_served === undefined) {
     return res.status(400).json({
       message: "Week date and total meals served are required",
     });
   }
-  // validation if meals are less than 0
+
   if (total_meals_served < 0) {
     return res.status(400).json({
       message: "Total meals served must be a positive number",
@@ -43,7 +50,14 @@ router.post("/", rejectUnauthenticated, (req, res) => {
   const sqlText = `
     INSERT INTO kitchen (week_date, total_meals_served, notes, created_by)
     VALUES ($1, $2, $3, $4)
-    RETURNING *;
+    RETURNING 
+      id,
+      week_date::date as week_date,
+      total_meals_served,
+      notes,
+      created_by,
+      created_at,
+      updated_at;
   `;
 
   pool
@@ -52,7 +66,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     .catch((error) => {
       console.error("POST /api/kitchen error:", error);
 
-      // postgress will check if duplicate exists
+      // PostgreSQL will check if duplicate exists
       if (error.code === "23505") {
         res.status(409).json({
           message: `A record for ${week_date} already exists`,
@@ -63,12 +77,71 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
-// get single week by id
+// GET weekly kitchen report
+router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      DATE_TRUNC('week', week_date)::date AS week_start,
+      
+      TO_CHAR(DATE_TRUNC('week', week_date), 'YYYY-MM-DD') || ' - ' ||
+      TO_CHAR(DATE_TRUNC('week', week_date) + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
+      
+      SUM(total_meals_served) AS total_meals,
+      
+      COUNT(*) AS record_count
+      
+    FROM kitchen
+    GROUP BY DATE_TRUNC('week', week_date)
+    ORDER BY week_start DESC;
+  `;
 
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/kitchen/reports/weekly error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET monthly kitchen report
+router.get("/reports/monthly", rejectUnauthenticated, (req, res) => {
+  const sqlText = `
+    SELECT 
+      TO_CHAR(week_date, 'YYYY-MM') as month,
+      TO_CHAR(week_date, 'Month YYYY') as month_name,
+      SUM(total_meals_served) as total_meals,
+      COUNT(*) as total_weeks
+    FROM kitchen
+    GROUP BY TO_CHAR(week_date, 'YYYY-MM'), TO_CHAR(week_date, 'Month YYYY')
+    ORDER BY month DESC;
+  `;
+
+  pool
+    .query(sqlText)
+    .then((result) => res.json(result.rows))
+    .catch((err) => {
+      console.error("GET /api/kitchen/reports/monthly error:", err);
+      res.sendStatus(500);
+    });
+});
+
+// GET single kitchen record by id
 router.get("/:id", rejectUnauthenticated, (req, res) => {
   const kitchenId = req.params.id;
 
-  const sqlText = `SELECT * FROM kitchen WHERE id = $1;`;
+  const sqlText = `
+    SELECT 
+      id,
+      week_date::date as week_date,
+      total_meals_served,
+      notes,
+      created_by,
+      created_at,
+      updated_at
+    FROM kitchen 
+    WHERE id = $1;
+  `;
 
   pool
     .query(sqlText, [kitchenId])
@@ -84,8 +157,7 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
     });
 });
 
-// update
-// PUT /api/kitchen/:id
+// PUT update kitchen record
 router.put("/:id", rejectUnauthenticated, (req, res) => {
   const kitchenId = req.params.id;
   const { total_meals_served, notes } = req.body;
@@ -105,9 +177,19 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
 
   const sqlText = `
     UPDATE kitchen
-    SET total_meals_served = $1, notes = $2, updated_at = CURRENT_TIMESTAMP
+    SET 
+      total_meals_served = $1, 
+      notes = $2, 
+      updated_at = CURRENT_TIMESTAMP
     WHERE id = $3
-    RETURNING *;
+    RETURNING 
+      id,
+      week_date::date as week_date,
+      total_meals_served,
+      notes,
+      created_by,
+      created_at,
+      updated_at;
   `;
 
   pool
@@ -124,7 +206,7 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
     });
 });
 
-// DELETE /api/kitchen/:id
+// DELETE kitchen record
 router.delete("/:id", rejectUnauthenticated, (req, res) => {
   const kitchenId = req.params.id;
 
@@ -140,29 +222,6 @@ router.delete("/:id", rejectUnauthenticated, (req, res) => {
     })
     .catch((err) => {
       console.error("DELETE /api/kitchen/:id error:", err);
-      res.sendStatus(500);
-    });
-});
-
-router.get("/reports/monthly", rejectUnauthenticated, (req, res) => {
-  const sqlText = `
-    SELECT 
-      TO_CHAR(week_date, 'YYYY-MM') as month,
-      TO_CHAR(week_date, 'Month YYYY') as month_name,
-      SUM(total_meals_served) as total_meals,
-      COUNT(*) as total_weeks
-    FROM kitchen
-    GROUP BY TO_CHAR(week_date, 'YYYY-MM'), TO_CHAR(week_date, 'Month YYYY')
-    ORDER BY month DESC;
-  `;
-
-  pool
-    .query(sqlText)
-    .then((result) => {
-      res.json(result.rows);
-    })
-    .catch((err) => {
-      console.error("GET /api/kitchen/reports/monthly error:", err);
       res.sendStatus(500);
     });
 });

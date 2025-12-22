@@ -76,6 +76,39 @@ VALUES
   "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+  ---------------
+   
+DROP TABLE IF EXISTS kitchen CASCADE;
+
+-- Create kitchen table
+CREATE TABLE "kitchen" (
+  "id" SERIAL PRIMARY KEY,
+  "week_date" DATE NOT NULL UNIQUE,
+  "total_meals_served" INTEGER NOT NULL DEFAULT 0 CHECK (total_meals_served >= 0),
+  "notes" TEXT,
+  "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+INSERT INTO "kitchen" 
+  ("week_date", "total_meals_served", "notes", "created_by")
+VALUES
+  ('2024-11-04', 385, 'Normal week, good volunteer turnout', 1),
+  ('2024-11-11', 420, 'Busy week, Veterans Day event', 1),
+  ('2024-11-18', 510, 'Thanksgiving preparation week', 1),
+  ('2024-11-25', 340, 'Post-Thanksgiving, slower week', 1),
+  ('2024-12-02', 395, 'Back to normal operations', 1),
+  ('2024-12-09', 475, 'Very busy week, holiday preparations', 1),
+  ('2024-12-16', 320, 'Holiday week, many volunteers away', 1),
+  ('2024-12-23', 280, 'Christmas week, reduced operations', 1),
+  ('2024-12-30', 250, 'New Year week, minimal staffing', 1),
+  ('2025-01-06', 410, 'Back to full operations after holidays', 1),
+  ('2025-01-13', 430, 'Normal winter week', 1),
+  ('2025-01-20', 445, 'MLK Day weekend, increased demand', 1);
+
    );
 
 ---------Event table
