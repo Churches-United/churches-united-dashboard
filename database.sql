@@ -237,3 +237,87 @@ CREATE TRIGGER on_user_update
 BEFORE UPDATE ON "user"
 FOR EACH ROW
 EXECUTE PROCEDURE set_updated_at_to_now();
+
+
+
+
+
+
+
+
+
+-- ============================================
+-- SHELTER WEEKLY TABLE - BASED ON ACTUAL DATA
+-- ============================================
+-- Tracks: Review dates, Shelter guests by type, Incidents, Community members served
+
+DROP TABLE IF EXISTS shelter_weekly CASCADE;
+
+
+CREATE TABLE "shelter_weekly" (
+    "id" SERIAL PRIMARY KEY,
+    "date" DATE NOT NULL UNIQUE,  -- Report date (always Monday via DATE_TRUNC)
+    
+    -- Shelter Guests by Category
+    "single_men" INTEGER NOT NULL DEFAULT 0 CHECK (single_men >= 0),
+    "housing_men" INTEGER NOT NULL DEFAULT 0 CHECK (housing_men >= 0),
+    "single_women" INTEGER NOT NULL DEFAULT 0 CHECK (single_women >= 0),
+    "housing_women" INTEGER NOT NULL DEFAULT 0 CHECK (housing_women >= 0),
+    "families" INTEGER NOT NULL DEFAULT 0 CHECK (families >= 0),
+    "hybrid_va_holdover" INTEGER NOT NULL DEFAULT 0 CHECK (hybrid_va_holdover >= 0),
+    "total_guests" INTEGER GENERATED ALWAYS AS (
+        single_men + housing_men + single_women + housing_women + families + hybrid_va_holdover
+    ) STORED,
+    
+    -- Incidents and Community Outreach
+    "incident_reports" INTEGER NOT NULL DEFAULT 0 CHECK (incident_reports >= 0),
+    "community_members_served" INTEGER NOT NULL DEFAULT 0 CHECK (community_members_served >= 0),
+    "nights_found_sleeping_outside" INTEGER NOT NULL DEFAULT 0 CHECK (nights_found_sleeping_outside >= 0),
+    
+    -- Metadata
+    "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "submitted_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "submitted_at" TIMESTAMPTZ,
+    
+    -- Notes
+    "notes" TEXT
+);
+
+
+
+
+-- ============================================
+-- FINANCE WEEKLY TABLE - BASED ON ACTUAL DATA
+-- ============================================
+-- Tracks: Assets, Operating account, Bills, Payroll, Revenue, Major expenses
+
+DROP TABLE IF EXISTS finance_weekly CASCADE;
+CREATE TABLE "finance_weekly" (
+    "id" SERIAL PRIMARY KEY,
+    "date" DATE NOT NULL UNIQUE,  -- Report date (always Monday via DATE_TRUNC)
+    
+    -- Financial Summary
+    "total_assets" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (total_assets >= 0),
+    "operating_account_balance" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (operating_account_balance >= 0),
+    "bills_paid" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (bills_paid >= 0),
+    "payroll_paid" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (payroll_paid >= 0),
+    "revenue_received" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (revenue_received >= 0),
+    
+    -- Major Expenses (free text list)
+    "major_expenses" TEXT,
+    
+    -- Notes
+    "notes" TEXT,
+    
+    -- Calculated Fields
+    "net_change" DECIMAL(12,2) GENERATED ALWAYS AS (revenue_received - bills_paid - payroll_paid) STORED,
+    
+    -- Metadata
+    "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "submitted_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "submitted_at" TIMESTAMPTZ
+);
