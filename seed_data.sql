@@ -88,8 +88,8 @@ VALUES
 
 INSERT INTO "shelters" (name)
 VALUES
-('BSA'),
-('SLA'),
+('Bright Sky Apartments'),
+('Silver Linings Apartments'),
 ('Micah''s Mission');
 -- ('Dorothy Day Food Pantry'),
 -- ('Silver Linings'),
