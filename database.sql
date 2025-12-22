@@ -60,8 +60,11 @@ VALUES
   ('2024-12-09', 6, 13, 28, 20, 6, 495.75, 'Holiday rush', 1),
   ('2024-12-16', 3, 8, 16, 11, 2, 350.00, 'Holiday week', 1);
 
-// hr_weekly table
-   CREATE TABLE "hr_weekly" (
+
+-------------------------------------------------------
+--------------------------------------------------
+--------- hr_weekly table
+   CREATE TABLE "hr_weekly"(
   "id" SERIAL PRIMARY KEY,
   "week_date" DATE NOT NULL UNIQUE,
   "total_positions" INTEGER NOT NULL DEFAULT 0 CHECK (total_positions >= 0),
@@ -106,6 +109,7 @@ VALUES
   ('2025-01-13', 430, 'Normal winter week', 1),
   ('2025-01-20', 445, 'MLK Day weekend, increased demand', 1);
 
+   );
 
 ---------Event table
 CREATE TABLE "events" (
@@ -127,10 +131,11 @@ CREATE TABLE "shelters" (
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
+--------North Campus 
 CREATE TABLE "shelter_info" (
-    "id" SERIAL PRIMARY KEY,    
+    "id" SERIAL PRIMARY KEY,
     "shelter_id" INTEGER NOT NULL REFERENCES shelters(id),
+    "month_date" DATE NOT NULL, 
     "occupancy_percent" DECIMAL(5,2),
     "operational_reserves" DECIMAL(12,2),
     "replacement_reserves" DECIMAL(12,2),
@@ -138,7 +143,9 @@ CREATE TABLE "shelter_info" (
     "upcoming_vacancies" INTEGER,
     "upcoming_new_leases" INTEGER,
     "notes" TEXT,
-    "last_updated" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE ("shelter_id", "report_month")
 );
 
 ---------Donation tables
@@ -161,6 +168,31 @@ CREATE TABLE "donors" (
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+------Media
+CREATE TABLE "media_stats" (
+    "id" SERIAL PRIMARY KEY,
+    "month_date" DATE NOT NULL,
+    "platform" VARCHAR(50) NOT NULL, 
+    "total_visits" INTEGER DEFAULT 0,
+    "unique_visits" INTEGER DEFAULT 0,
+    "pageviews" INTEGER DEFAULT 0,
+    "bounce_rate" DECIMAL(5,2),
+    "social_views" INTEGER DEFAULT 0,
+    "audience_start" INTEGER, 
+    "audience_end" INTEGER,   
+    "total_sent" INTEGER,     
+    "total_opens" INTEGER,
+    "open_rate" DECIMAL(5,2), 
+    "total_clicks" INTEGER,
+    "click_rate" DECIMAL(5,2),
+    "notes" TEXT,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE "media_stats"
+ADD CONSTRAINT unique_platform_month UNIQUE (platform, month_date);
+
 
 
 
@@ -211,7 +243,7 @@ CREATE TABLE "compliance_weekly" (
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "submitted_at" TIMESTAMPTZ
 );
-// fake seed data for hr weekly testing 
+--  fake seed data for hr weekly testing 
 INSERT INTO "hr_weekly"
   ("week_date", "total_positions", "open_positions", "new_hires_this_week", "employee_turnover", "evaluations_due", "notes", "created_by")
 VALUES
@@ -263,3 +295,87 @@ CREATE TRIGGER on_user_update
 BEFORE UPDATE ON "user"
 FOR EACH ROW
 EXECUTE PROCEDURE set_updated_at_to_now();
+
+
+
+
+
+
+
+
+
+-- ============================================
+-- SHELTER WEEKLY TABLE - BASED ON ACTUAL DATA
+-- ============================================
+-- Tracks: Review dates, Shelter guests by type, Incidents, Community members served
+
+DROP TABLE IF EXISTS shelter_weekly CASCADE;
+
+
+CREATE TABLE "shelter_weekly" (
+    "id" SERIAL PRIMARY KEY,
+    "date" DATE NOT NULL UNIQUE,  -- Report date (always Monday via DATE_TRUNC)
+    
+    -- Shelter Guests by Category
+    "single_men" INTEGER NOT NULL DEFAULT 0 CHECK (single_men >= 0),
+    "housing_men" INTEGER NOT NULL DEFAULT 0 CHECK (housing_men >= 0),
+    "single_women" INTEGER NOT NULL DEFAULT 0 CHECK (single_women >= 0),
+    "housing_women" INTEGER NOT NULL DEFAULT 0 CHECK (housing_women >= 0),
+    "families" INTEGER NOT NULL DEFAULT 0 CHECK (families >= 0),
+    "hybrid_va_holdover" INTEGER NOT NULL DEFAULT 0 CHECK (hybrid_va_holdover >= 0),
+    "total_guests" INTEGER GENERATED ALWAYS AS (
+        single_men + housing_men + single_women + housing_women + families + hybrid_va_holdover
+    ) STORED,
+    
+    -- Incidents and Community Outreach
+    "incident_reports" INTEGER NOT NULL DEFAULT 0 CHECK (incident_reports >= 0),
+    "community_members_served" INTEGER NOT NULL DEFAULT 0 CHECK (community_members_served >= 0),
+    "nights_found_sleeping_outside" INTEGER NOT NULL DEFAULT 0 CHECK (nights_found_sleeping_outside >= 0),
+    
+    -- Metadata
+    "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "submitted_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "submitted_at" TIMESTAMPTZ,
+    
+    -- Notes
+    "notes" TEXT
+);
+
+
+
+
+-- ============================================
+-- FINANCE WEEKLY TABLE - BASED ON ACTUAL DATA
+-- ============================================
+-- Tracks: Assets, Operating account, Bills, Payroll, Revenue, Major expenses
+
+DROP TABLE IF EXISTS finance_weekly CASCADE;
+CREATE TABLE "finance_weekly" (
+    "id" SERIAL PRIMARY KEY,
+    "date" DATE NOT NULL UNIQUE,  -- Report date (always Monday via DATE_TRUNC)
+    
+    -- Financial Summary
+    "total_assets" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (total_assets >= 0),
+    "operating_account_balance" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (operating_account_balance >= 0),
+    "bills_paid" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (bills_paid >= 0),
+    "payroll_paid" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (payroll_paid >= 0),
+    "revenue_received" DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (revenue_received >= 0),
+    
+    -- Major Expenses (free text list)
+    "major_expenses" TEXT,
+    
+    -- Notes
+    "notes" TEXT,
+    
+    -- Calculated Fields
+    "net_change" DECIMAL(12,2) GENERATED ALWAYS AS (revenue_received - bills_paid - payroll_paid) STORED,
+    
+    -- Metadata
+    "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "submitted_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "submitted_at" TIMESTAMPTZ
+);
