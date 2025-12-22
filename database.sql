@@ -91,29 +91,29 @@ CREATE TABLE "events" (
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
----------Shelter tables
-CREATE TABLE "shelters" (
-    "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(255) NOT NULL,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- North Campus Housing
+CREATE TABLE "housing_buildings" (
+  "id" SERIAL PRIMARY KEY,
+  "name" TEXT NOT NULL UNIQUE,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
---------North Campus 
-CREATE TABLE "shelter_info" (
-    "id" SERIAL PRIMARY KEY,
-    "shelter_id" INTEGER NOT NULL REFERENCES shelters(id),
-    "month_date" DATE NOT NULL, 
-    "occupancy_percent" DECIMAL(5,2),
-    "operational_reserves" DECIMAL(12,2),
-    "replacement_reserves" DECIMAL(12,2),
-    "current_vacancies" INTEGER,
-    "upcoming_vacancies" INTEGER,
-    "upcoming_new_leases" INTEGER,
-    "notes" TEXT,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE ("shelter_id", "report_month")
+CREATE TABLE housing (
+  "id" SERIAL PRIMARY KEY,
+  "housing_building_id" INTEGER NOT NULL
+    REFERENCES housing_buildings(id)
+    ON DELETE CASCADE,
+  "month_date" DATE NOT NULL,
+  "occupancy_percent" NUMERIC(5,2),
+  "operational_reserves" NUMERIC,
+  "replacement_reserves" NUMERIC,
+  "current_vacancies" INTEGER,
+  "upcoming_vacancies" INTEGER,
+  "upcoming_new_leases" INTEGER,
+  "notes" TEXT,
+  "last_updated" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (housing_building_id, month_date)
 );
+
 
 ---------Donation tables
 
