@@ -86,28 +86,6 @@ VALUES
 (1, '2025-03-01', 200.00, TRUE,  FALSE, 'Winter support donation'),
 (5, '2025-03-15', 1000.00, TRUE,  TRUE,  'Annual grant restricted to shelter services');
 
-INSERT INTO "shelters" (name)
-VALUES
-('BSA'),
-('SLA'),
-('Micah''s Mission');
--- ('Dorothy Day Food Pantry'),
--- ('Silver Linings'),
--- ('Bright Sky'),
--- ('Faith Helpers');
-
-
-INSERT INTO "shelter_info" (
-    "shelter_id",
-    "month_date",
-    "occupancy_percent",
-    "operational_reserves",
-    "replacement_reserves",
-    "current_vacancies",
-    "upcoming_vacancies",
-    "upcoming_new_leases",
-    "notes"
-)
 VALUES
 -- December 2025
 (1, DATE '2025-12-01', 90.5, 12000.00, 5000.00, 2, 1, 1, 'All systems normal'),
@@ -142,3 +120,28 @@ INSERT INTO media_stats (
 ('2025-10-24', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2998, 786, 13.10, 118, 4, 'Oct 24 Newsletter'),
 ('2025-10-31', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2995, 537, 18.10, 79, 2.70, 'Oct 31 Newsletter'),
 ('2025-11-07', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2996, 544, 18.30, 82, 2.80, 'Nov 7 Newsletter');
+
+
+INSERT INTO "housing_building" (name)
+VALUES
+('Bright Sky Apartments'),
+('Silver Linings Apartments'),
+('Micah''s Mission');
+
+
+INSERT INTO housing (
+    housing_building_id, month_date, occupancy_percent, operational_reserves, replacement_reserves,
+    current_vacancies, upcoming_vacancies, upcoming_new_leases, notes
+)
+VALUES
+-- Bright Sky Apartments
+(1, '2025-09-01', 91.0, 11500, 4800, 2, 1, 1, 'September data'),
+(1, '2025-10-01', 89.5, 11800, 4900, 3, 1, 2, 'October data'),
+(1, '2025-11-01', 90.5, 12000, 5000, 3, 1, 2, 'November data'),
+(1, '2025-12-01', 85.0, 12500, 5200, 4, 2, 1, 'December data initial'),
+
+-- Silver Linings Apartments
+(2, '2025-09-01', 93.0, 14500, 5800, 1, 0, 1, 'September data'),
+(2, '2025-10-01', 91.5, 14800, 5900, 2, 1, 1, 'October data'),
+(2, '2025-11-01', 92.0, 15000, 6000, 2, 0, 1, 'November data'),
+(2, '2025-12-01', 88.0, 15500, 6200, 3, 1, 2, 'December data initial');

@@ -20,12 +20,11 @@ const kitchenRouter = require('./routes/kitchenWeekly.router')
 const volunteersRouter = require('./routes/volunteers.router');
 const volunteerEventsRouter = require('./routes/volunteerEvents.router');
 const weekCompliance = require('./routes/complianceWeekly.router');
-const shelterInfoRouter = require('./routes/shelterInfo.router');
+const housingRouter = require('./routes/housing.router');
 const shelterWeeklyRouter = require('./routes/shelterWeekly.router');
 const pantryWeeklyRouter = require("./routes/pantryweekly.router");
 const financeWeeklyRouter = require('./routes/Financeweekly.router');
 const mediaRouter = require('./routes/media.router');
-
 const hrRouter = require('./routes/hrWeekly.router');
 
 
@@ -47,11 +46,10 @@ app.use('/api/volunteer-events', volunteerEventsRouter);
 app.use('/api/compliance/weekly', weekCompliance)
 app.use('/api/kitchen', kitchenRouter);
 app.use('/api/pantry', pantryWeeklyRouter);
+app.use('/api/housing', housingRouter);
 app.use('/api/finance/weekly', financeWeeklyRouter);
-app.use('/api/shelter/information', shelterInfoRouter);
 app.use('/api/hr', hrRouter);
 app.use('/api/media', mediaRouter);
-
 
 
 
