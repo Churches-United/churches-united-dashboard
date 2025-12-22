@@ -24,6 +24,7 @@ const shelterInfoRouter = require('./routes/shelterInfo.router');
 const shelterWeeklyRouter = require('./routes/shelterWeekly.router');
 const pantryWeeklyRouter = require("./routes/pantryweekly.router");
 const financeWeeklyRouter = require('./routes/Financeweekly.router');
+const mediaRouter = require('./routes/media.router');
 
 const hrRouter = require('./routes/hrWeekly.router');
 
@@ -49,6 +50,8 @@ app.use('/api/pantry', pantryWeeklyRouter);
 app.use('/api/finance/weekly', financeWeeklyRouter);
 app.use('/api/shelter/information', shelterInfoRouter);
 app.use('/api/hr', hrRouter);
+app.use('/api/media', mediaRouter);
+
 
 
 

@@ -98,7 +98,7 @@ CREATE TABLE "shelters" (
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
--- North Campus 
+--------North Campus 
 CREATE TABLE "shelter_info" (
     "id" SERIAL PRIMARY KEY,
     "shelter_id" INTEGER NOT NULL REFERENCES shelters(id),
@@ -135,6 +135,31 @@ CREATE TABLE "donors" (
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+------Media
+CREATE TABLE "media_stats" (
+    "id" SERIAL PRIMARY KEY,
+    "month_date" DATE NOT NULL,
+    "platform" VARCHAR(50) NOT NULL, 
+    "total_visits" INTEGER DEFAULT 0,
+    "unique_visits" INTEGER DEFAULT 0,
+    "pageviews" INTEGER DEFAULT 0,
+    "bounce_rate" DECIMAL(5,2),
+    "social_views" INTEGER DEFAULT 0,
+    "audience_start" INTEGER, 
+    "audience_end" INTEGER,   
+    "total_sent" INTEGER,     
+    "total_opens" INTEGER,
+    "open_rate" DECIMAL(5,2), 
+    "total_clicks" INTEGER,
+    "click_rate" DECIMAL(5,2),
+    "notes" TEXT,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE "media_stats"
+ADD CONSTRAINT unique_platform_month UNIQUE (platform, month_date);
+
 
 
 
