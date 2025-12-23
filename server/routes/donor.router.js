@@ -5,6 +5,7 @@ const {
 } = require("../modules/authentication-middleware");
 
 const router = express.Router();
+const allowedTypes = ["Individual", "Organization", "Corporate"];
 
 ///////// DONORS
 //  GET /api/development/donors
@@ -23,6 +24,16 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 //  POST /api/development/donors
 router.post("/", rejectUnauthenticated, (req, res) => {
   const { name, type } = req.body;
+
+  if (!name || !name.trim()) {
+    return res.status(400).json({ error: "Name is required" });
+  }
+  if (!allowedTypes.includes(type)) {
+    return res
+      .status(400)
+      .json({ error: `Type must be one of: ${allowedTypes.join(", ")}` });
+  }
+
   const sqlText = `
     INSERT INTO donors (name, type)
     VALUES ($1, $2)
@@ -65,6 +76,15 @@ router.get("/:id", rejectUnauthenticated, async (req, res) => {
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const donorId = req.params.id;
   const { name, type } = req.body;
+
+  if (!name || !name.trim()) {
+    return res.status(400).json({ error: "Name is required" });
+  }
+  if (!allowedTypes.includes(type)) {
+    return res
+      .status(400)
+      .json({ error: `Type must be one of: ${allowedTypes.join(", ")}` });
+  }
 
   const sqlText = `
     UPDATE donors
