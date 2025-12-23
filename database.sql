@@ -193,8 +193,32 @@ CREATE TABLE "media_stats" (
 ALTER TABLE "media_stats"
 ADD CONSTRAINT unique_platform_month UNIQUE (platform, month_date);
 
+----- Volunteer Tables
+CREATE TABLE "volunteers" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL,
+  "type" VARCHAR(50) NOT NULL, 
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
+DROP TABLE IF EXISTS "volunteer_events" CASCADE;
+DROP TABLE IF EXISTS "volunteer_engagements" CASCADE;
 
+CREATE TABLE "volunteer_engagements" (
+  "id" SERIAL PRIMARY KEY,
+  "volunteer_id" INTEGER NOT NULL
+    REFERENCES volunteers(id),
+  "event_date" DATE NOT NULL,
+  location VARCHAR(255) NOT NULL,
+  "number_volunteers" INTEGER NOT NULL DEFAULT 1
+    CHECK (number_volunteers >= 1),
+  "software_signups" INTEGER NOT NULL DEFAULT 0
+    CHECK (software_signups >= 0),
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CONSTRAINT location_not_empty CHECK (length(trim(location)) > 0)
+);
 
 
 -- ============================================

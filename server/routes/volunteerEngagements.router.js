@@ -5,23 +5,26 @@ const {
 } = require("../modules/authentication-middleware");
 
 const router = express.Router();
-// GET /api/volunteer-events
+
+// GET /api/volunteers/engagements
 router.get("/", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
-  SELECT ve.*, v.name AS volunteer_name
-  FROM volunteer_events ve
-  JOIN volunteers v ON ve.volunteer_id = v.id
-  ORDER BY ve.event_date DESC;
+    SELECT ve.*, v.name AS volunteer_name
+    FROM volunteer_engagements ve
+    JOIN volunteers v ON ve.volunteer_id = v.id
+    ORDER BY ve.event_date DESC;
   `;
+
   try {
     const result = await pool.query(sqlText);
     res.json(result.rows);
   } catch (err) {
-    console.error("GET /api/volunteer-events error:", err);
+    console.error("GET /api/volunteers/engagements error:", err);
     res.sendStatus(500);
   }
 });
-// POST /api/volunteer-events
+
+// POST /api/volunteers/engagements
 router.post("/", rejectUnauthenticated, async (req, res) => {
   const {
     volunteer_id,
@@ -49,6 +52,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
       error: "software_signups must be 0 or greater",
     });
   }
+
   if (isNaN(Date.parse(event_date))) {
     return res.status(400).json({
       error: "event_date must be a valid date",
@@ -56,10 +60,10 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   }
 
   const sqlText = `
-  INSERT INTO volunteer_events
-  (volunteer_id, event_date, location, number_volunteers, software_signups)
-  VALUES ($1, DATE_TRUNC('week', $2::date), $3, $4, $5)
-  RETURNING *;
+    INSERT INTO volunteer_engagements
+      (volunteer_id, event_date, location, number_volunteers, software_signups)
+    VALUES ($1, DATE_TRUNC('week', $2::date), $3, $4, $5)
+    RETURNING *;
   `;
 
   try {
@@ -72,26 +76,24 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     ]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error("POST /api/volunteer-events error:", err);
+    console.error("POST /api/volunteers/engagements error:", err);
     res.sendStatus(500);
   }
 });
 
-// Report section
-// GET /api/volunteer-events/reports/weekly
+// GET /api/volunteers/engagements/reports/weekly
 router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
-  
   const sqlText = `
     SELECT
       week_start,
       TO_CHAR(week_start, 'YYYY-MM-DD') || ' - ' ||
-      TO_CHAR(week_start + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,      
+      TO_CHAR(week_start + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
       SUM(number_volunteers) AS total_volunteers,
       SUM(software_signups) AS total_signups,
       COUNT(DISTINCT volunteer_id) AS volunteer_count
     FROM (
       SELECT *, DATE_TRUNC('week', event_date)::date AS week_start
-      FROM volunteer_events
+      FROM volunteer_engagements
     ) ve
     GROUP BY week_start
     ORDER BY week_start DESC;
@@ -101,12 +103,12 @@ router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
     const result = await pool.query(sqlText);
     res.json(result.rows);
   } catch (err) {
-    console.error("GET /api/volunteer-events/reports/weekly error:", err);
+    console.error("GET /api/volunteers/engagements/reports/weekly error:", err);
     res.sendStatus(500);
   }
 });
 
-// GET /api/volunteer-events/reports/monthly
+// GET /api/volunteers/engagements/reports/monthly
 router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
     SELECT
@@ -117,7 +119,7 @@ router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
       COUNT(DISTINCT volunteer_id) AS volunteer_count
     FROM (
       SELECT *, DATE_TRUNC('month', event_date)::date AS month_start
-      FROM volunteer_events
+      FROM volunteer_engagements
     ) ve
     GROUP BY month_start
     ORDER BY month_start DESC;
@@ -127,12 +129,15 @@ router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
     const result = await pool.query(sqlText);
     res.json(result.rows);
   } catch (err) {
-    console.error("GET /api/volunteer-events/reports/monthly error:", err);
+    console.error(
+      "GET /api/volunteers/engagements/reports/monthly error:",
+      err
+    );
     res.sendStatus(500);
   }
 });
 
-// GET /api/volunteer-events/reports/location
+// GET /api/volunteers/engagements/reports/location
 router.get("/reports/location", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
     SELECT
@@ -140,7 +145,7 @@ router.get("/reports/location", rejectUnauthenticated, async (req, res) => {
       SUM(number_volunteers) AS total_volunteers,
       SUM(software_signups) AS total_signups,
       COUNT(DISTINCT volunteer_id) AS volunteer_count
-    FROM volunteer_events
+    FROM volunteer_engagements
     GROUP BY location
     ORDER BY total_volunteers DESC;
   `;
@@ -149,38 +154,41 @@ router.get("/reports/location", rejectUnauthenticated, async (req, res) => {
     const result = await pool.query(sqlText);
     res.json(result.rows);
   } catch (err) {
-    console.error("GET /api/volunteer-events/reports/location error:", err);
+    console.error(
+      "GET /api/volunteers/engagements/reports/location error:",
+      err
+    );
     res.sendStatus(500);
   }
 });
 
-// GET /api/volunteer-events/reports/monthly-location
+// GET /api/volunteers/engagements/reports/monthly-location
 router.get(
   "/reports/monthly-location",
   rejectUnauthenticated,
   async (req, res) => {
     const sqlText = `
-    SELECT
-      month_start,
-      TO_CHAR(month_start, 'YYYY-MM') AS month_label,
-      location,
-      SUM(number_volunteers) AS total_volunteers,
-      SUM(software_signups) AS total_signups,
-      COUNT(DISTINCT volunteer_id) AS volunteer_count
-    FROM (
-      SELECT *, DATE_TRUNC('month', event_date)::date AS month_start
-      FROM volunteer_events
-    ) ve
-    GROUP BY month_start, location
-    ORDER BY month_start DESC, total_volunteers DESC;
-  `;
+      SELECT
+        month_start,
+        TO_CHAR(month_start, 'YYYY-MM') AS month_label,
+        location,
+        SUM(number_volunteers) AS total_volunteers,
+        SUM(software_signups) AS total_signups,
+        COUNT(DISTINCT volunteer_id) AS volunteer_count
+      FROM (
+        SELECT *, DATE_TRUNC('month', event_date)::date AS month_start
+        FROM volunteer_engagements
+      ) ve
+      GROUP BY month_start, location
+      ORDER BY month_start DESC, total_volunteers DESC;
+    `;
 
     try {
       const result = await pool.query(sqlText);
       res.json(result.rows);
     } catch (err) {
       console.error(
-        "GET /api/volunteer-events/reports/monthly-location error:",
+        "GET /api/volunteers/engagements/reports/monthly-location error:",
         err
       );
       res.sendStatus(500);
@@ -188,28 +196,30 @@ router.get(
   }
 );
 
-// By Id
-// GET /api/volunteer-events/:id
+// GET /api/volunteers/engagements/:id
 router.get("/:id", rejectUnauthenticated, async (req, res) => {
-  const eventId = req.params.id;
+  const engagementId = req.params.id;
+
   const sqlText = `
-  SELECT ve.*, v.name AS volunteer_name
-  FROM volunteer_events ve
-  JOIN volunteers v ON ve.volunteer_id = v.id
-  WHERE ve.id = $1;
+    SELECT ve.*, v.name AS volunteer_name
+    FROM volunteer_engagements ve
+    JOIN volunteers v ON ve.volunteer_id = v.id
+    WHERE ve.id = $1;
   `;
+
   try {
-    const result = await pool.query(sqlText, [eventId]);
+    const result = await pool.query(sqlText, [engagementId]);
     if (result.rowCount === 0) return res.sendStatus(404);
     res.json(result.rows[0]);
   } catch (err) {
-    console.error("GET /api/volunteer-events/:id error:", err);
+    console.error("GET /api/volunteers/engagements/:id error:", err);
     res.sendStatus(500);
   }
 });
-// PUT /api/volunteer-events/:id
+
+// PUT /api/volunteers/engagements/:id
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
-  const eventId = req.params.id;
+  const engagementId = req.params.id;
   const {
     volunteer_id,
     event_date,
@@ -219,7 +229,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   } = req.body;
 
   const sqlText = `
-    UPDATE volunteer_events
+    UPDATE volunteer_engagements
     SET
       volunteer_id = COALESCE($1, volunteer_id),
       event_date = COALESCE(DATE_TRUNC('week', $2::date), event_date),
@@ -238,27 +248,32 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
       location,
       number_volunteers,
       software_signups,
-      eventId,
+      engagementId,
     ]);
+
     if (result.rowCount === 0) return res.sendStatus(404);
     res.json(result.rows[0]);
   } catch (err) {
-    console.error("PUT /api/volunteer-events/:id error:", err);
+    console.error("PUT /api/volunteers/engagements/:id error:", err);
     res.sendStatus(500);
   }
 });
 
-// DELETE /api/volunteer-events/:id
+// DELETE /api/volunteers/engagements/:id
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
-  const eventId = req.params.id;
+  const engagementId = req.params.id;
 
-  const sqlText = `DELETE FROM volunteer_events WHERE id = $1;`;
+  const sqlText = `
+    DELETE FROM volunteer_engagements
+    WHERE id = $1;
+  `;
+
   try {
-    const result = await pool.query(sqlText, [eventId]);
+    const result = await pool.query(sqlText, [engagementId]);
     if (result.rowCount === 0) return res.sendStatus(404);
     res.sendStatus(204);
   } catch (err) {
-    console.error("DELETE /api/volunteer-events/:id error:", err);
+    console.error("DELETE /api/volunteers/engagements/:id error:", err);
     res.sendStatus(500);
   }
 });

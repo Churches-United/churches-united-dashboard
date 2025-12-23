@@ -14,18 +14,18 @@ Before you get started, make sure you have the following software installed on y
 
 Create a new database, then create a `user` table using the query found in `database.sql`.
 
-<!-- * Note: `pool.js` is initially configured to connect to a database named `eda_solo_project`. If you choose your own name, you'll need to modify `pool.js` so it knows how to connect to your database. -->
+* Note: `pool.js` is initially configured to connect to a database named `eda_solo_project`. If you choose your own name, you'll need to modify `pool.js` so it knows how to connect to your database.
 
 ## Initial Setup Instructions
 
-<!-- - In this repo's **root directory**, run `npm install`. -->
-<!-- - Create an `.env` file in the **root directory**, then paste this line into the file:
+- In this repo's **root directory**, run `npm install`.
+ - Create an `.env` file in the **root directory**, then paste this line into the file:
     ```plaintext
       SERVER_SESSION_SECRET=superDuperSecret
     ```
 - While you're in your new `.env` file, take the time to replace `superDuperSecret` with some a random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. 
     - Here's a site that can help you: [Password Generator Plus](https://passwordsgenerator.net).
-    - If you skip this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you'll get a big warning message each time you start your server. -->
+    - If you skip this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you'll get a big warning message each time you start your server.
 - Run `npm run server` to start the server.
 - Run `npm run client` to start the client.
 - Navigate to `localhost:5173`.

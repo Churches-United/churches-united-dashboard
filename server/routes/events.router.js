@@ -13,7 +13,7 @@ const allowedTypes = [
   "Other",
 ];
 
-// GET /api/events
+// GET /api/development/events
 router.get("/", rejectUnauthenticated, async (req, res) => {
   const sqlText = `SELECT * FROM events ORDER BY datetime DESC;`;
   try {
@@ -25,7 +25,7 @@ router.get("/", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// POST /api/events
+// POST /api/development/events
 router.post("/", rejectUnauthenticated, async (req, res) => {
   const { name, datetime, venue, type, shelter_id, notes } = req.body;
 
@@ -60,7 +60,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// GET /api/events/:id
+// GET /api/development/events/:id
 router.get("/:id", rejectUnauthenticated, async (req, res) => {
   const eventId = req.params.id;
   const sqlText = `SELECT * FROM events WHERE id=$1`;
@@ -74,7 +74,7 @@ router.get("/:id", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(500);
   }
 });
-// PUT /api/events/:id
+// PUT /api/development/events/:id
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const eventId = req.params.id;
   const { name, datetime, venue, type, shelter_id, notes } = req.body;
@@ -114,7 +114,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// DELETE /api/events/:id
+// DELETE /api/development/events/:id
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   const eventId = req.params.id;
   const sqlText = `DELETE FROM events WHERE id = $1 RETURNING *;`;
@@ -130,7 +130,7 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
 });
 
 // Reports
-// GET /api/events/reports/upcoming
+// GET /api/development/events/reports/upcoming
 router.get("/reports/upcoming", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
     SELECT *
@@ -147,7 +147,7 @@ router.get("/reports/upcoming", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// GET /api/events/reports/venue
+// GET /api/development/events/reports/venue
 router.get("/reports/venue", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
     SELECT venue, COUNT(*) AS event_count
@@ -164,7 +164,7 @@ router.get("/reports/venue", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// GET /api/events/reports/past
+// GET /api/development/events/reports/past
 router.get("/reports/past", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
     SELECT *

@@ -5,7 +5,7 @@ const {
 } = require("../modules/authentication-middleware");
 const router = express.Router();
 
-//  GET /api/donations
+//  GET /api/development/donations
 // Returns all donations, joined with donor info for easier display on client.
 router.get("/", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
@@ -57,7 +57,7 @@ router.get("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-//  POST /api/donations
+//  POST /api/development/donations
 router.post("/", rejectUnauthenticated, async (req, res) => {
   const { donor_id, date, amount, notable, restricted, notes } = req.body;
 
@@ -88,7 +88,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-//  PUT /api/donations/:id
+//  PUT /api/development/donations/:id
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const { date, amount, notable, restricted, notes } = req.body;
 
@@ -126,7 +126,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-//  DELETE /api/donations/:id
+//  DELETE /api/development/donations/:id
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   const sqlText = ` 
   DELETE FROM donations 
@@ -147,7 +147,7 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// GET /api/donations/reports/weekly
+// GET /api/development/donations/reports/weekly
 router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
     SELECT
@@ -179,7 +179,7 @@ router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// GET /api/donations/reports/monthly
+// GET /api/development/donations/reports/monthly
 router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
     SELECT
@@ -209,7 +209,7 @@ router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// GET /api/donations/reports/by-donor
+// GET /api/development/donations/reports/by-donor
 router.get("/reports/by-donor", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
   SELECT 

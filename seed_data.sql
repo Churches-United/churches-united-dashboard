@@ -7,7 +7,7 @@ VALUES
 ('Eastside Volunteers', 'Group'),
 ('Faith Helpers', 'Group');
 
-INSERT INTO volunteer_events (volunteer_id, event_date, location, number_volunteers, software_signups)
+INSERT INTO "volunteer_engagements" (volunteer_id, event_date, location, number_volunteers, software_signups)
 VALUES
 -- Micah's Mission Basement
 (5, '2025-11-03', 'Micah''s Mission - Basement', 1, 0),
