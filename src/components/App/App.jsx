@@ -8,6 +8,8 @@ import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import Development from "../Development/DevelopmentHome";
 import DonorsPage from "../Development/Donors";
+import ComplianceWeeklyList from "../ComplianceWeekly/ComplianceWeeklyList";
+import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -106,8 +108,11 @@ function App() {
           <Route path="/pantry" element={<h2>Pantry</h2>} />
           <Route path="/finance" element={<h2>Finance</h2>} />
           <Route path="/hr" element={<h2>HR</h2>} />
-          <Route path="/compliance" element={<h2>Compliance</h2>} />
           <Route path="/outreach" element={<h2>Volunteers</h2>} />
+          <Route path="/compliance" element={<ComplianceWeeklyList />} />
+          <Route path="/compliance/weekly/new" element={<ComplianceWeeklyForm />} />
+          <Route path="/compliance/weekly/edit/:id" element={<ComplianceWeeklyForm />} />
+          
         </Routes>
       </main>
       <footer>
