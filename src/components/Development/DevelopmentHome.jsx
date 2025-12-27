@@ -5,7 +5,7 @@ export default function DevelopmentHome() {
   const sections = [
     { path: "/development/donors", label: "Donors" },
     { path: "/development/donations", label: "Donations" },
-    { path: "/development/upcoming-events", label: "Upcoming Events" },
+    { path: "/development/events", label: "Upcoming Events" },
   ];
 
   return (

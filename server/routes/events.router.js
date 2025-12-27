@@ -59,7 +59,57 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(500);
   }
 });
+// Reports
+// GET /api/development/events/reports/upcoming
+router.get("/reports/upcoming", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT *
+    FROM events
+    WHERE datetime >= NOW()
+    ORDER BY datetime ASC;
+  `;
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/events/reports/upcoming error:", err);
+    res.sendStatus(500);
+  }
+});
 
+// GET /api/development/events/reports/venue
+router.get("/reports/venue", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT venue, COUNT(*) AS event_count
+    FROM events
+    GROUP BY venue
+    ORDER BY event_count DESC;
+  `;
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/events/reports/venue error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET /api/development/events/reports/past
+router.get("/reports/past", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT *
+    FROM events
+    WHERE datetime < NOW()
+    ORDER BY datetime DESC;
+  `;
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/events/reports/past error:", err);
+    res.sendStatus(500);
+  }
+});
 // GET /api/development/events/:id
 router.get("/:id", rejectUnauthenticated, async (req, res) => {
   const eventId = req.params.id;
@@ -125,58 +175,6 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(204);
   } catch (err) {
     console.error("DELETE /api/events/:id error:", err);
-    res.sendStatus(500);
-  }
-});
-
-// Reports
-// GET /api/development/events/reports/upcoming
-router.get("/reports/upcoming", rejectUnauthenticated, async (req, res) => {
-  const sqlText = `
-    SELECT *
-    FROM events
-    WHERE datetime >= NOW()
-    ORDER BY datetime ASC;
-  `;
-  try {
-    const result = await pool.query(sqlText);
-    res.json(result.rows);
-  } catch (err) {
-    console.error("GET /api/events/reports/upcoming error:", err);
-    res.sendStatus(500);
-  }
-});
-
-// GET /api/development/events/reports/venue
-router.get("/reports/venue", rejectUnauthenticated, async (req, res) => {
-  const sqlText = `
-    SELECT venue, COUNT(*) AS event_count
-    FROM events
-    GROUP BY venue
-    ORDER BY event_count DESC;
-  `;
-  try {
-    const result = await pool.query(sqlText);
-    res.json(result.rows);
-  } catch (err) {
-    console.error("GET /api/events/reports/venue error:", err);
-    res.sendStatus(500);
-  }
-});
-
-// GET /api/development/events/reports/past
-router.get("/reports/past", rejectUnauthenticated, async (req, res) => {
-  const sqlText = `
-    SELECT *
-    FROM events
-    WHERE datetime < NOW()
-    ORDER BY datetime DESC;
-  `;
-  try {
-    const result = await pool.query(sqlText);
-    res.json(result.rows);
-  } catch (err) {
-    console.error("GET /api/events/reports/past error:", err);
     res.sendStatus(500);
   }
 });
