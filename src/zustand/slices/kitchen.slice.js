@@ -15,6 +15,17 @@ export default function KitchenPage() {
   const [notes, setNotes] = useState("");
   const [editId, setEditId] = useState("");
 
+
+    useEffect(() => {
+    fetchKitchenRecords();
+  }, [fetchKitchenRecords]);
+
+  const formatDate = (dateString) =>
+    new Date(dateString).toLocaleDateString("en-US");
+
+  if (loading) return <p>Loading kitchen records...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div>
       <h2>Kitchen Operations</h2>
