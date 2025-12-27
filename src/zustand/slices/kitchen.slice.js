@@ -23,6 +23,14 @@ export default function KitchenPage() {
   const formatDate = (dateString) =>
     new Date(dateString).toLocaleDateString("en-US");
 
+  // Fill form with record data for editing
+const handleEdit = (record) => {
+  setEditId(record.id);
+  setWeekDate(record.week_date);
+  setTotalMeals(record.total_meals_served);
+  setNotes(record.notes || "");
+};
+
   // Handle form submission for add and edit
 const handleAddKitchenRecord = async (e) => {
   e.preventDefault();
@@ -95,6 +103,36 @@ const handleAddKitchenRecord = async (e) => {
         </button>
       )}
     </form>
+    <h3>All Kitchen Records</h3>
+
+{kitchenRecords.length === 0 ? (
+  <p>No kitchen records found.</p>
+) : (
+  <table>
+    <thead>
+      <tr>
+        <th>Week Date</th>
+        <th>Total Meals Served</th>
+        <th>Notes</th>
+        <th>Created By</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {kitchenRecords.map((record) => (
+        <tr key={record.id}>
+          <td>{formatDate(record.week_date)}</td>
+          <td>{record.total_meals_served}</td>
+          <td>{record.notes || "—"}</td>
+          <td>User #{record.created_by}</td>
+          <td>
+            <button onClick={() => handleEdit(record)}>Edit</button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
   </div>
 );
 }
