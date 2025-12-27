@@ -37,13 +37,24 @@ export default function EventsPage() {
       return;
     }
 
-    await addEvent({
-      name,
-      datetime,
-      venue,
-      type,
-      notes,
-    });
+    if (editId) {
+      await editEvent(editId, {
+        name,
+        datetime,
+        venue,
+        type,
+        notes,
+      });
+      setEditId(null);
+    } else {
+      await addEvent({
+        name,
+        datetime,
+        venue,
+        type,
+        notes,
+      });
+    }
 
     // reset form
     setName("");
@@ -52,6 +63,7 @@ export default function EventsPage() {
     setType("");
     setNotes("");
   };
+
   const handleEdit = (event) => {
     setEditId(event.id);
     setName(event.name);
@@ -65,12 +77,6 @@ export default function EventsPage() {
     if (!window.confirm("Are you sure you want to delete this event?")) return;
     await deleteEvent(id);
   };
-
-  const formatDateTime = (value) =>
-    new Date(value).toLocaleString("en-US", {
-      dateStyle: "short",
-      timeStyle: "short",
-    });
 
   if (loading) return <p>Loading events...</p>;
   if (error) return <p>Error: {error}</p>;
