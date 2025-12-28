@@ -5,7 +5,8 @@ import donorsSlice from "./slices/donors.slice.js";
 import donationsSlice from "./slices/donations.slice.js";
 import complianceWeeklySlice from "./slices/compliance.slice.js";
 import eventsSlice from "./slices/events.slice.js";
-import kitchenSlice from './slices/kitchen.slice.js';
+import kitchenSlice from "./slices/kitchen.slice.js";
+import donationReporting from "./slices/donationReportingSlice.js";
 
 // Combine all slices in the store:
 // update.. added devtools
@@ -17,6 +18,7 @@ const useStore = create(
     ...complianceWeeklySlice(...args),
     ...eventsSlice(...args),
     ...kitchenSlice(...args),
+    ...donationReporting(...args),
   }))
 );
 

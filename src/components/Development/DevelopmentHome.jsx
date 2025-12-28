@@ -17,6 +17,9 @@ export default function DevelopmentHome() {
             <Link to={s.path}>{s.label}</Link>
           </li>
         ))}
+        <li>
+          <Link to="/development/reports">Reports</Link>
+        </li>
       </ul>
     </div>
   );
