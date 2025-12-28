@@ -25,7 +25,7 @@ export default function KitchenPage() {
 
   // Fill form with record data for editing
   const handleEdit = (record) => {
-    setEditId(record.id);
+   setWeekDate(record.week_date.split('T')[0]);
     setWeekDate(record.week_date);
     setTotalMeals(record.total_meals_served);
     setNotes(record.notes || "");
@@ -117,7 +117,7 @@ export default function KitchenPage() {
 
       <h3>All Kitchen Records</h3>
 
-      {kitchenRecords.length === 0 ? (
+    {!kitchenRecords || kitchenRecords.length === 0 ?(
         <p>No kitchen records found.</p>
       ) : (
         <table>
