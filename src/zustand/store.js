@@ -21,6 +21,7 @@ const useStore = create(
     ...kitchenSlice(...args),
     ...eventsReporting(...args),
     ...donationReporting(...args),
+
   }))
 );
 
