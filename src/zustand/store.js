@@ -17,6 +17,7 @@ const useStore = create(
     ...complianceWeeklySlice(...args),
     ...eventsSlice(...args),
     ...kitchenSlice(...args),
+
   }))
 );
 
