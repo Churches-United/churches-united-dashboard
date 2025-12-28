@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
-import DevelopmentReporting from "../Development/DevelopmentReporting";
 import EventsReporting from "../Development/EventsReporting";
+import DonationReporting from "./DonationReporting";
 
 export default function DevelopmentHome() {
   const sections = [
@@ -12,7 +12,7 @@ export default function DevelopmentHome() {
 
   return (
     <div>
-      <h1>Development Dashboard</h1>
+      <h2>Development Dashboard</h2>
       <ul>
         {sections.map((s) => (
           <li key={s.path}>
@@ -23,7 +23,7 @@ export default function DevelopmentHome() {
           <Link to="/development/reports">Reports</Link>
         </li> */}
       </ul>
-      <DevelopmentReporting />
+      <DonationReporting  />
       <EventsReporting  />
     </div>
   );

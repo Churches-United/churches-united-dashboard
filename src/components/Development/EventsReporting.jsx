@@ -18,7 +18,7 @@ export default function EventsReporting() {
   if (loadingEventsReports) return <p>Loading events report...</p>;
 
   const renderUpcoming = () => (
-    <table>
+    <table className="table">
       <thead>
         <tr>
           <th>Event Name</th>
@@ -31,10 +31,10 @@ export default function EventsReporting() {
       <tbody>
         {upcomingEvents.map((e) => (
           <tr key={e.id}>
-            <td>{e.event_name}</td>
+            <td>{e.name}</td>
             <td>{new Date(e.datetime).toLocaleString()}</td>
             <td>{e.venue}</td>
-            <td>{e.event_type}</td>
+            <td>{e.type}</td>
             <td>{e.notes || "-"}</td>
           </tr>
         ))}
@@ -43,7 +43,7 @@ export default function EventsReporting() {
   );
 
   const renderByVenue = () => (
-    <table>
+    <table className="table table--compact">
       <thead>
         <tr>
           <th>Venue</th>

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import "../../styles/tables.css";
 
 import useStore from "../../zustand/store";
 import Nav from "../Nav/Nav";
@@ -7,13 +8,13 @@ import HomePage from "../HomePage/HomePage";
 import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import Development from "../Development/DevelopmentHome";
-import DevelopmentReporting from "../Development/DevelopmentReporting";
 import DonorsPage from "../Development/Donors";
 import Events from "../Development/Events";
 import DonationsPage from "../Development/Donations";
 import ComplianceWeeklyList from "../ComplianceWeekly/ComplianceWeeklyList";
 import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
 import KitchenPage from "../kitchen/kitchenPage";
+
 
 function App() {
   const user = useStore((state) => state.user);
@@ -109,7 +110,6 @@ function App() {
           <Route path="/development/donors" element={<DonorsPage />} />
           <Route path="/development/donations" element={<DonationsPage />} />
           <Route path="/development/events" element={<Events />} />
-          <Route path="/development/reports" element={<DevelopmentReporting />} />
 
           <Route path="/media" element={<h2>Media</h2>} />
           <Route path="/kitchen" element={<KitchenPage />} />

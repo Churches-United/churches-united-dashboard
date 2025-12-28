@@ -89,7 +89,7 @@ export default function DonorsPage() {
       {donors.length === 0 ? (
         <p>No donors found.</p>
       ) : (
-        <table>
+        <table className="table">
           <thead>
             <tr>
               <th>Name</th>

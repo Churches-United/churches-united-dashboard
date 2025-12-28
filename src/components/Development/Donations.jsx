@@ -140,7 +140,7 @@ export default function DonationsPage() {
       {donations.length === 0 ? (
         <p>No donations found.</p>
       ) : (
-        <table>
+        <table className="table">
           <thead>
             <tr>
               <th>Date</th>

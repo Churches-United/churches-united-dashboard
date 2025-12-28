@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import useStore from "../../zustand/store"; 
-// import EventsReporting from "../Development/EventsReporting";
 
 export default function DonationReporting() {
   const [activeTab, setActiveTab] = useState("weekly");
@@ -22,7 +21,7 @@ export default function DonationReporting() {
   if (loadingReports) return <p>Loading reports...</p>;
 
   const renderWeekly = () => (
-    <table>
+    <table className="table">
       <thead>
         <tr>
           <th>Week</th>
@@ -47,7 +46,7 @@ export default function DonationReporting() {
   );
 
   const renderMonthly = () => (
-    <table>
+    <table className="table">
       <thead>
         <tr>
           <th>Month</th>
@@ -72,7 +71,7 @@ export default function DonationReporting() {
   );
 
   const renderByDonor = () => (
-    <table>
+    <table className="table">
       <thead>
         <tr>
           <th>Donor</th>
@@ -112,7 +111,6 @@ export default function DonationReporting() {
         {activeTab === "monthly" && renderMonthly()}
         {activeTab === "byDonor" && renderByDonor()}
       </div>
-      {/* <EventsReporting  /> */}
     </div>
   );
 }

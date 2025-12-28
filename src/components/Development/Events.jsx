@@ -145,7 +145,7 @@ export default function EventsPage() {
       {events.length === 0 ? (
         <p>No events found.</p>
       ) : (
-        <table>
+        <table className="table">
           <thead>
             <tr>
               <th>Name</th>
