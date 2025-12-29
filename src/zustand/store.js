@@ -10,6 +10,7 @@ import eventsSlice from "./slices/events.slice.js";
 import kitchenSlice from "./slices/kitchen.slice.js";
 import donationReporting from "./slices/donationReportingSlice.js";
 import eventsReporting from "./slices/eventsReporting.slice.js";
+import pantrySlice from "./slices/pantry.slice.js";
 
 
 // Combine all slices in the store:
@@ -25,6 +26,7 @@ const useStore = create(
     ...kitchenSlice(...args),
     ...eventsReporting(...args),
     ...donationReporting(...args),
+    ...pantrySlice(...args)
 
   }))
 );
