@@ -45,9 +45,6 @@ const pantrySlice = (set, get) => ({
     }
   },
 
-
-
-
   // Edit kitchen record
   editKitchenRecord: async (id, total_meals_served, notes) => {
     set({ loading: true, error: null });
@@ -64,7 +61,7 @@ const pantrySlice = (set, get) => ({
       }));
     } catch (err) {
       console.error("editKitchenRecord error:", err);
-      
+
       if (err.response?.status === 404) {
         set({ error: "Record not found", loading: false });
       } else if (err.response?.status === 400) {
@@ -75,18 +72,20 @@ const pantrySlice = (set, get) => ({
     }
   },
 
-    // Delete kitchen record
+  // Delete kitchen record
   deleteKitchenRecord: async (id) => {
     set({ loading: true, error: null });
     try {
       await axios.delete(`/api/kitchen/${id}`);
       set((state) => ({
-        kitchenRecords: state.kitchenRecords.filter((record) => record.id !== id),
+        kitchenRecords: state.kitchenRecords.filter(
+          (record) => record.id !== id
+        ),
         loading: false,
       }));
     } catch (err) {
       console.error("deleteKitchenRecord error:", err);
-      
+
       if (err.response?.status === 404) {
         set({ error: "Record not found", loading: false });
       } else {
@@ -94,7 +93,6 @@ const pantrySlice = (set, get) => ({
       }
     }
   },
-
 
   // Fetch weekly reports
   fetchWeeklyReports: async () => {
@@ -107,7 +105,7 @@ const pantrySlice = (set, get) => ({
       set({ error: err.message, loading: false });
     }
   },
-  
+
   // Fetch monthly reports
   fetchMonthlyReports: async () => {
     set({ loading: true, error: null });
@@ -123,8 +121,5 @@ const pantrySlice = (set, get) => ({
   // Clear error
   clearKitchenError: () => set({ error: null }),
 });
-
-  
-
 
 export default pantrySlice;
