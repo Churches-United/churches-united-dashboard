@@ -82,12 +82,38 @@ function ComplianceWeeklyForm() {
   // Validate demographics
   const isValid = totalGender === totalRace && totalGender === totalIndividuals;
   
-  // Handle input changes
+  // ✅ NEW: Handle input changes with number validation
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // For date field, keep as string
+    if (name === 'date') {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+      setValidationError(null);
+      return;
+    }
+    
+    // For number fields, validate and convert
+    // Allow empty string (user is typing) or valid numbers
+    if (value === '') {
+      setFormData({
+        ...formData,
+        [name]: 0,
+      });
+      setValidationError(null);
+      return;
+    }
+    
+    // Only allow digits
+    const numericValue = value.replace(/[^0-9]/g, '');
+    const numberValue = parseInt(numericValue, 10) || 0;
+    
     setFormData({
       ...formData,
-      [name]: name === 'date' ? value : Number(value),
+      [name]: numberValue,
     });
     setValidationError(null);
   };
@@ -123,6 +149,13 @@ function ComplianceWeeklyForm() {
     }
   };
   
+  // ✅ NEW: Style to remove spinner arrows
+  const numberInputStyle = {
+    MozAppearance: 'textfield',
+    WebkitAppearance: 'none',
+    appearance: 'textfield',
+  };
+  
   return (
     <div>
       <h2>{isEditMode ? 'Edit' : 'New'} Compliance Weekly Report</h2>
@@ -131,6 +164,21 @@ function ComplianceWeeklyForm() {
       
       {error && <div style={{ color: 'red' }}>❌ {error}</div>}
       {validationError && <div style={{ color: 'red' }}>⚠️ {validationError}</div>}
+      
+      {/* ✅ NEW: Add global style to hide spinners */}
+      <style>
+        {`
+          input[type="number"]::-webkit-inner-spin-button,
+          input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+          input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+          }
+        `}
+      </style>
       
       <form onSubmit={handleSubmit}>
         
@@ -155,22 +203,26 @@ function ComplianceWeeklyForm() {
           <div>
             <label>Without Children:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="hh_without_children"
               value={formData.hh_without_children}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>With Children:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="hh_with_children"
               value={formData.hh_with_children}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
@@ -184,33 +236,39 @@ function ComplianceWeeklyForm() {
           <div>
             <label>Adults:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="adults"
               value={formData.adults}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Children:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="children"
               value={formData.children}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Seniors (55+):</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="seniors_55_plus"
               value={formData.seniors_55_plus}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
@@ -224,33 +282,39 @@ function ComplianceWeeklyForm() {
           <div>
             <label>Female:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="female"
               value={formData.female}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Male:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="male"
               value={formData.male}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Other:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="other_gender"
               value={formData.other_gender}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
@@ -266,55 +330,65 @@ function ComplianceWeeklyForm() {
           <div>
             <label>White:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="white"
               value={formData.white}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Black/African American:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="black_african_american"
               value={formData.black_african_american}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Native American:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="native_american"
               value={formData.native_american}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Other Race:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="other_race"
               value={formData.other_race}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Multi-racial:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="multi_racial"
               value={formData.multi_racial}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
@@ -326,37 +400,43 @@ function ComplianceWeeklyForm() {
         </fieldset>
         
         <fieldset>
-          <legend>Health Conditions</legend>
+          <legend>Conditions</legend>
           <div>
             <label>One Condition:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="one_condition"
               value={formData.one_condition}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Two Conditions:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="two_conditions"
               value={formData.two_conditions}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
           <div>
             <label>Three+ Conditions:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="three_plus_conditions"
               value={formData.three_plus_conditions}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
           
@@ -370,11 +450,13 @@ function ComplianceWeeklyForm() {
           <div>
             <label>Total Exits:</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="total_exits"
               value={formData.total_exits}
               onChange={handleChange}
-              min="0"
+              style={numberInputStyle}
             />
           </div>
         </fieldset>
