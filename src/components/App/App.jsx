@@ -13,6 +13,7 @@ import Events from "../Development/Events";
 import DonationsPage from "../Development/Donations";
 import ComplianceWeeklyList from "../ComplianceWeekly/ComplianceWeeklyList";
 import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
+import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
 import KitchenPage from "../kitchen/kitchenPage";
 
 
@@ -119,15 +120,12 @@ function App() {
           <Route path="/hr" element={<h2>HR</h2>} />
           <Route path="/outreach" element={<h2>Volunteers</h2>} />
           <Route path="/compliance" element={<ComplianceWeeklyList />} />
-          <Route
-            path="/compliance/weekly/new"
-            element={<ComplianceWeeklyForm />}
-          />
-          <Route
-            path="/compliance/weekly/edit/:id"
-            element={<ComplianceWeeklyForm />}
-          />
+          <Route path="/compliance/weekly/new" element={<ComplianceWeeklyForm />}/>
+          <Route path="/compliance/weekly/edit/:id" element={<ComplianceWeeklyForm />}/>
+          <Route path="/compliance/reports" element={<ComplianceReporting />} />
+
         </Routes>
+        
       </main>
       <footer>
         <p>Copyright © {new Date().getFullYear()}</p>
