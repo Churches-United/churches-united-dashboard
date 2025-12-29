@@ -94,6 +94,19 @@ const pantrySlice = (set, get) => ({
       }
     }
   },
+
+
+  // Fetch weekly reports
+  fetchWeeklyReports: async () => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch("/api/kitchen/reports/weekly");
+      const data = await res.json();
+      set({ weeklyReports: data, loading: false });
+    } catch (err) {
+      set({ error: err.message, loading: false });
+    }
+  },
   
 
 
