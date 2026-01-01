@@ -5,7 +5,9 @@ import donorsSlice from "./slices/donors.slice.js";
 import donationsSlice from "./slices/donations.slice.js";
 import complianceWeeklySlice from "./slices/compliance.slice.js";
 import complianceReportsSlice from "./slices/complianceReports.slice.js"; 
+import shelterWeeklySlice from "./slices/shelter.slice.js";           
 
+import shelterReportsSlice from "./slices/shelterReports.slice.js"; 
 import eventsSlice from "./slices/events.slice.js";
 import kitchenSlice from "./slices/kitchen.slice.js";
 import donationReporting from "./slices/donationReportingSlice.js";
@@ -21,6 +23,8 @@ const useStore = create(
     ...donationsSlice(...args),
     ...complianceWeeklySlice(...args),
     ...complianceReportsSlice(...args),
+        ...shelterWeeklySlice(...args),        
+    ...shelterReportsSlice(...args), 
     ...eventsSlice(...args),
     ...kitchenSlice(...args),
     ...eventsReporting(...args),

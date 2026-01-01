@@ -16,6 +16,10 @@ import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
 import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
 import KitchenPage from "../kitchen/kitchenPage";
 
+import ShelterWeeklyList from "../Shelter/ShelterWeeklyList";
+import ShelterWeeklyForm from "../Shelter/ShelterWeeklyForm";
+import ShelterReporting from "../shelter/ShelterReporting";
+
 
 function App() {
   const user = useStore((state) => state.user);
@@ -123,6 +127,11 @@ function App() {
           <Route path="/compliance/weekly/new" element={<ComplianceWeeklyForm />}/>
           <Route path="/compliance/weekly/edit/:id" element={<ComplianceWeeklyForm />}/>
           <Route path="/compliance/reports" element={<ComplianceReporting />} />
+
+          <Route path="/shelter" element={<ShelterWeeklyList />} />
+          <Route path="/shelter/weekly/new" element={<ShelterWeeklyForm />} />
+          <Route path="/shelter/weekly/edit/:id" element={<ShelterWeeklyForm />} />
+          <Route path="/shelter/reports" element={<ShelterReporting />} />
 
         </Routes>
         
