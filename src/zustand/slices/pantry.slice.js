@@ -66,26 +66,26 @@ editPantryRecord: async (id, recordData) => {
 },
 
   // Delete kitchen record
-  deleteKitchenRecord: async (id) => {
-    set({ loading: true, error: null });
-    try {
-      await axios.delete(`/api/kitchen/${id}`);
-      set((state) => ({
-        kitchenRecords: state.kitchenRecords.filter(
-          (record) => record.id !== id
-        ),
-        loading: false,
-      }));
-    } catch (err) {
-      console.error("deleteKitchenRecord error:", err);
+ deletePantryRecord: async (id) => {
+  set({ loading: true, error: null });
+  try {
+    await axios.delete(`/api/pantry/${id}`);
+    set((state) => ({
+      pantryRecords: state.pantryRecords.filter(
+        (record) => record.id !== id
+      ),
+      loading: false,
+    }));
+  } catch (err) {
+    console.error("deletePantryRecord error:", err);
 
-      if (err.response?.status === 404) {
-        set({ error: "Record not found", loading: false });
-      } else {
-        set({ error: "Failed to delete kitchen record", loading: false });
-      }
+    if (err.response?.status === 404) {
+      set({ error: "Record not found", loading: false });
+    } else {
+      set({ error: "Failed to delete pantry record", loading: false });
     }
-  },
+  }
+},
 
   // Fetch weekly reports
   fetchWeeklyReports: async () => {
