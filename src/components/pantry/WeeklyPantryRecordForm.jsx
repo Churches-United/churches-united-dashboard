@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import useStore from "../store/useStore"; // Adjust path as needed
+import { useState, useEffect } from 'react';
+import useStore from '../../zustand/store';
 
 const WeeklyPantryRecordForm = () => {
   const addPantryRecord = useStore((state) => state.addPantryRecord);
@@ -13,7 +13,7 @@ const WeeklyPantryRecordForm = () => {
     adults: 0,
     children: 0,
     seniors: 0,
-    total_pounds: 0,
+    total_pounds: 0
   });
 
   // Calculate current week's Monday (start of week)
@@ -22,21 +22,21 @@ const WeeklyPantryRecordForm = () => {
     const day = today.getDay();
     const diff = today.getDate() - day + (day === 0 ? -6 : 1);
     const monday = new Date(today.setDate(diff));
-    return monday.toISOString().split("T")[0];
+    return monday.toISOString().split('T')[0];
   }
 
   const handleNumberChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: parseFloat(value) || 0,
+      [name]: parseFloat(value) || 0
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await addPantryRecord(formData);
-
+    
     if (!error) {
       // Reset form on success
       setFormData({
@@ -46,7 +46,7 @@ const WeeklyPantryRecordForm = () => {
         adults: 0,
         children: 0,
         seniors: 0,
-        total_pounds: 0,
+        total_pounds: 0
       });
     }
   };
@@ -54,9 +54,9 @@ const WeeklyPantryRecordForm = () => {
   return (
     <div>
       <h2>Weekly Pantry Record</h2>
-
+      
       {error && <div>{error}</div>}
-
+      
       <form onSubmit={handleSubmit}>
         <div>
           <label>Week Period</label>
@@ -142,7 +142,7 @@ const WeeklyPantryRecordForm = () => {
 
         <div>
           <button type="submit" disabled={loading}>
-            {loading ? "Saving..." : "Save Weekly Record"}
+            {loading ? 'Saving...' : 'Save Weekly Record'}
           </button>
         </div>
       </form>
