@@ -5,16 +5,16 @@ const pantrySlice = (set, get) => ({
   loading: false,
   error: null,
   // get all records
-  fetchPantryRecords: async () => {
-    set({ loading: true, error: null });
-    try {
-      const res = await fetch("/api/pantry");
-      const data = await res.json();
-      set({ pantryRecords: data, loading: false });
-    } catch (err) {
-      set({ error: err.message, loading: false });
-    }
-  },
+fetchPantryRecords: async () => {
+  set({ loading: true, error: null });
+  try {
+    const res = await axios.get("/api/pantry");
+    set({ pantryRecords: res.data, loading: false });
+  } catch (err) {
+    console.error("fetchPantryRecords error:", err);
+    set({ error: "Failed to fetch pantry records", loading: false });
+  }
+},
 
   // Add kitchen record
   addKitchenRecord: async (week_date, total_meals_served, notes) => {
