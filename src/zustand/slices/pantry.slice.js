@@ -17,33 +17,29 @@ fetchPantryRecords: async () => {
 },
 
   // Add kitchen record
-  addKitchenRecord: async (week_date, total_meals_served, notes) => {
-    set({ loading: true, error: null });
-    try {
-      const response = await axios.post("/api/kitchen", {
-        week_date,
-        total_meals_served,
-        notes,
-      });
-      set((state) => ({
-        kitchenRecords: [response.data, ...state.kitchenRecords],
-        loading: false,
-      }));
-    } catch (err) {
-      console.error("addKitchenRecord error:", err);
+ addPantryRecord: async (recordData) => {
+  set({ loading: true, error: null });
+  try {
+    const response = await axios.post("/api/pantry", recordData);
+    set((state) => ({
+      pantryRecords: [response.data, ...state.pantryRecords],
+      loading: false,
+    }));
+  } catch (err) {
+    console.error("addPantryRecord error:", err);
 
-      if (err.response?.status === 409) {
-        set({
-          error: `A record for ${week_date} already exists`,
-          loading: false,
-        });
-      } else if (err.response?.status === 400) {
-        set({ error: err.response.data.message, loading: false });
-      } else {
-        set({ error: "Failed to add kitchen record", loading: false });
-      }
+    if (err.response?.status === 409) {
+      set({
+        error: `A record for ${recordData.week_date} already exists`,
+        loading: false,
+      });
+    } else if (err.response?.status === 400) {
+      set({ error: err.response.data.message, loading: false });
+    } else {
+      set({ error: "Failed to add pantry record", loading: false });
     }
-  },
+  }
+},
 
   // Edit kitchen record
   editKitchenRecord: async (id, total_meals_served, notes) => {
