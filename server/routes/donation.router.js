@@ -172,6 +172,8 @@ router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
 
   try {
     const result = await pool.query(sqlText);
+    console.log('Weekly report rows:', result.rows);
+
     res.json(result.rows);
   } catch (err) {
     console.error("GET /api/donations/reports/weekly error:", err);

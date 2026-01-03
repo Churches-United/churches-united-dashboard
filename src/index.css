@@ -29,18 +29,19 @@ body {
 
 #root > * {
   padding: 0 20px
+  
 }
 
 main {
   flex-grow: 1;
 }
 
-header, footer {
+/* header, footer {
   display: flex;
   flex-basis: 6em;
   align-items: center;
   justify-content: space-between;
-}
+} */
 
 /* Nav Styles: */
 nav ul {

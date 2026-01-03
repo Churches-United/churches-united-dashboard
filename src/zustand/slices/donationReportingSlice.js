@@ -6,7 +6,7 @@ const donationReporting = ((set, get) => ({
   byDonorReports: [],
   loadingReports: false,
 
-  fetchWeeklyReports: async () => {
+  fetchWeeklyDonationReports: async () => {
     set({ loadingReports: true });
     try {
       const res = await axios.get("/api/development/donations/reports/weekly");
@@ -18,7 +18,7 @@ const donationReporting = ((set, get) => ({
     }
   },
 
-  fetchMonthlyReports: async () => {
+  fetchMonthlyDonationReports: async () => {
     set({ loadingReports: true });
     try {
       const res = await axios.get("/api/development/donations/reports/monthly");

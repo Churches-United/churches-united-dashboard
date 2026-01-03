@@ -8,13 +8,13 @@ export default function DonationReporting() {
   const monthlyReports = useStore((state) => state.monthlyReports);
   const byDonorReports = useStore((state) => state.byDonorReports);
   const loadingReports = useStore((state) => state.loadingReports);
-  const fetchWeeklyReports = useStore((state) => state.fetchWeeklyReports);
-  const fetchMonthlyReports = useStore((state) => state.fetchMonthlyReports);
+  const fetchWeeklyDonationReports = useStore((state) => state.fetchWeeklyDonationReports);
+  const fetchMonthlyDonationReports = useStore((state) => state.fetchMonthlyDonationReports);
   const fetchByDonorReports = useStore((state) => state.fetchByDonorReports);
 
   useEffect(() => {
-    if (activeTab === "weekly") fetchWeeklyReports();
-    if (activeTab === "monthly") fetchMonthlyReports();
+    if (activeTab === "weekly") fetchWeeklyDonationReports();
+    if (activeTab === "monthly") fetchMonthlyDonationReports();
     if (activeTab === "byDonor") fetchByDonorReports();
   }, [activeTab]);
 
@@ -99,7 +99,7 @@ export default function DonationReporting() {
 
   return (
     <div>
-      <h2>Donation Reports</h2>
+      <h3>Donation Reports</h3>
       <div>
         <button onClick={() => setActiveTab("weekly")}>Weekly</button>
         <button onClick={() => setActiveTab("monthly")}>Monthly</button>

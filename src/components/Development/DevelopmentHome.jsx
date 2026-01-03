@@ -1,30 +1,27 @@
 import { Link } from "react-router-dom";
-import React from "react";
-import EventsReporting from "../Development/EventsReporting";
-import DonationReporting from "./DonationReporting";
 
 export default function DevelopmentHome() {
-  const sections = [
-    { path: "/development/donors", label: "Donors" },
-    { path: "/development/donations", label: "Donations" },
-    { path: "/development/events", label: "Upcoming Events" },
-  ];
-
   return (
     <div>
-      <h2>Development Dashboard</h2>
-      <ul>
-        {sections.map((s) => (
-          <li key={s.path}>
-            <Link to={s.path}>{s.label}</Link>
+      <h2>Development</h2>
+      <nav>
+        <ul>
+          <li>
+            <Link to="donors">Donors</Link>
           </li>
-        ))}
-        {/* <li>
-          <Link to="/development/reports">Reports</Link>
-        </li> */}
-      </ul>
-      <DonationReporting  />
-      <EventsReporting  />
+          <li>
+            <Link to="donations">Donations</Link>
+          </li>
+          <li>
+            <Link to="events">Events</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <section style={{ marginTop: "2rem" }}>
+        <h3>Quick Overview</h3>
+        <p>Summary metrics/graphs/cards coming soon.</p>
+      </section>
     </div>
   );
 }

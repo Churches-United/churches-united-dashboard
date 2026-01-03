@@ -7,7 +7,6 @@ import Nav from "../Nav/Nav";
 import HomePage from "../HomePage/HomePage";
 import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
-import Development from "../Development/DevelopmentHome";
 import DonorsPage from "../Development/Donors";
 import Events from "../Development/Events";
 import DonationsPage from "../Development/Donations";
@@ -15,10 +14,15 @@ import ComplianceWeeklyList from "../ComplianceWeekly/ComplianceWeeklyList";
 import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
 import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
 import KitchenPage from "../kitchen/kitchenPage";
-
+import HousingHome from "../Housing/HousingHome";
+import HousingReports from "../Housing/HousingReports";
 import ShelterWeeklyList from "../shelter/ShelterWeeklyList";
 import ShelterWeeklyForm from "../shelter/ShelterWeeklyForm";
 import ShelterReporting from "../shelter/ShelterReporting";
+import DepartmentLayout from "../DepartmentLayout/DepartmentLayout";
+import DevelopmentHome from "../Development/DevelopmentHome";
+import DevelopmentReports from "../Development/DevelopmentReports";
+import PantryPage from "../pantry/PantryPage";
 
 import FinanceWeeklyList from "../Finance/FinanceWeeklyList";
 import FinanceWeeklyForm from "../Finance/FinanceWeeklyForm";
@@ -35,7 +39,7 @@ function App() {
   return (
     <>
       <header>
-        <h2>Churches United Dashboard</h2>
+        {/* <h2>Churches United Dashboard</h2> */}
         <Nav />
       </header>
       <main>
@@ -113,26 +117,49 @@ function App() {
               </>
             }
           />
-          <Route path="/housing" element={<h2>Housing</h2>} />
-          <Route path="/development" element={<Development />} />
+          <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
+            <Route index element={<HousingHome />} />
+            <Route path="reports" element={<HousingReports />} />
+          </Route>
+          {/* todo - delete if approved */}
+          {/* <Route path="/development" element={<Development />} />
           <Route path="/development/donors" element={<DonorsPage />} />
           <Route path="/development/donations" element={<DonationsPage />} />
-          <Route path="/development/events" element={<Events />} />
+          <Route path="/development/events" element={<Events />} /> */}
+          <Route
+            path="/development"
+            element={<DepartmentLayout title="Development Dashboard" />}
+          >
+            <Route index element={<DevelopmentHome />} />
+            <Route path="donors" element={<DonorsPage />} />
+            <Route path="donations" element={<DonationsPage />} />
+            <Route path="events" element={<Events />} />
+            <Route path="reports" element={<DevelopmentReports />} />
+          </Route>
 
           <Route path="/media" element={<h2>Media</h2>} />
           <Route path="/kitchen" element={<KitchenPage />} />
 
           <Route path="/pantry" element={<h2>Pantry</h2>} />
+          <Route path="/finance" element={<h2>Finance</h2>} />
           <Route path="/hr" element={<h2>HR</h2>} />
           <Route path="/outreach" element={<h2>Volunteers</h2>} />
           <Route path="/compliance" element={<ComplianceWeeklyList />} />
-          <Route path="/compliance/weekly/new" element={<ComplianceWeeklyForm />}/>
-          <Route path="/compliance/weekly/edit/:id" element={<ComplianceWeeklyForm />}/>
+          <Route
+            path="/compliance/weekly/new"
+            element={<ComplianceWeeklyForm />}
+          />
+          <Route
+            path="/compliance/weekly/edit/:id"
+            element={<ComplianceWeeklyForm />}
+          />
           <Route path="/compliance/reports" element={<ComplianceReporting />} />
-
           <Route path="/shelter" element={<ShelterWeeklyList />} />
           <Route path="/shelter/weekly/new" element={<ShelterWeeklyForm />} />
-          <Route path="/shelter/weekly/edit/:id" element={<ShelterWeeklyForm />} />
+          <Route
+            path="/shelter/weekly/edit/:id"
+            element={<ShelterWeeklyForm />}
+          />
           <Route path="/shelter/reports" element={<ShelterReporting />} />
 
           <Route path="/finance" element={<FinanceWeeklyList />} />
@@ -140,8 +167,8 @@ function App() {
           <Route path="/finance/weekly/edit/:id" element={<FinanceWeeklyForm />} />
           <Route path="/finance/reports" element={<FinanceReporting />} />
 
+          <Route path="/pantry" element={<PantryPage />} />
         </Routes>
-        
       </main>
       <footer>
         <p>Copyright © {new Date().getFullYear()}</p>

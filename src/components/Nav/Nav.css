@@ -1,0 +1,88 @@
+.nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #ddd;
+  background-color: #fff;
+}
+
+.nav-header nav ul {
+  gap: 32px;
+}
+
+.nav-header nav a {
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-header nav a.active {
+  color: #000;
+}
+
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-logo-img {
+  height: 36px;
+  width: auto;
+  padding-right: 5px;
+}
+
+
+.nav-right ul {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+
+  margin: 0;
+  padding: 0;
+}
+
+.nav-right a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-right a.active {
+  text-decoration: underline;
+}
+
+.nav-right ul {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.logout-btn:hover {
+  color: rgba(0, 0, 0, 0.75);
+  text-decoration: underline;
+  text-decoration-color: #20c997;
+  text-decoration-thickness: 2px;
+}
+

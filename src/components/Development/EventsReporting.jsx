@@ -63,7 +63,7 @@ export default function EventsReporting() {
 
   return (
     <div>
-      <h2>Events Reports</h2>
+      <h3>Events Reports</h3>
       <div>
         <button onClick={() => setActiveTab("upcoming")}>
           Upcoming Events

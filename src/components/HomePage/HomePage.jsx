@@ -21,7 +21,6 @@ function HomePage() {
 
   return (
     <section>
-      <h2>Churches United Department Dashboard</h2>
       <p>Welcome: {user.username}</p>
       <p>Select a department to manage data and reports.</p>
             <div className="dashboard-grid">

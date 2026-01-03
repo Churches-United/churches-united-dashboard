@@ -145,3 +145,48 @@ VALUES
 (2, '2025-10-01', 91.5, 14800, 5900, 2, 1, 1, 'October data'),
 (2, '2025-11-01', 92.0, 15000, 6000, 2, 0, 1, 'November data'),
 (2, '2025-12-01', 88.0, 15500, 6200, 3, 1, 2, 'December data initial');
+
+-- Seed donations for 2 months (approx. 8 weeks), 2–3 donations per week
+-- Mix of notable and restricted flags
+
+INSERT INTO donations (donor_id, date, amount, notable, restricted, notes)
+VALUES
+-- Week 1
+(4, '2025-11-03', 100.00, false, false, 'Regular donation'),
+(6, '2025-11-04', 250.00, true, false, 'Special contribution'),
+(7, '2025-11-06', 75.00, false, true, 'Restricted for food pantry'),
+
+-- Week 2
+(6, '2025-11-10', 150.00, true, false, 'Notable donation for Thanksgiving'),
+(4, '2025-11-12', 200.00, false, false, 'Regular donation'),
+(7, '2025-11-13', 50.00, false, true, 'Restricted to youth program'),
+
+-- Week 3
+(4, '2025-11-17', 300.00, true, true, 'Special restricted event donation'),
+(6, '2025-11-18', 80.00, false, false, NULL),
+(7, '2025-11-20', 120.00, false, false, 'Regular weekly donation'),
+
+-- Week 4
+(9, '2025-11-24', 90.00, false, true, 'Restricted for building fund'),
+(8, '2025-11-25', 400.00, true, false, 'Major contribution'),
+(4, '2025-11-27', 60.00, false, false, NULL),
+
+-- Week 5
+(4, '2025-12-01', 110.00, false, false, 'December donation'),
+(6, '2025-12-03', 220.00, true, false, 'Special event donation'),
+(9, '2025-12-04', 75.00, false, true, 'Restricted donation'),
+
+-- Week 6
+(10, '2025-12-08', 130.00, false, false, 'Regular donation'),
+(9, '2025-12-09', 250.00, true, true, 'Notable & restricted'),
+(8, '2025-12-11', 95.00, false, false, NULL),
+
+-- Week 7
+(8, '2025-12-15', 180.00, false, true, 'Restricted for program'),
+(4, '2025-12-16', 300.00, true, false, 'Notable donation'),
+(9, '2025-12-18', 60.00, false, false, NULL),
+
+-- Week 8
+(4, '2025-12-22', 150.00, false, false, 'Regular donation'),
+(11, '2025-12-23', 200.00, true, false, 'End-of-year donation'),
+(10, '2025-12-24', 75.00, false, true, 'Restricted for holiday fund');
