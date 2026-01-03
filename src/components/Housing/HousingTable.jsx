@@ -50,17 +50,7 @@ export default function HousingTable({ onEdit }) {
                 month: "short",
               })}
             </td>
-            <td>
-              <span
-                className={`badge ${
-                  r.occupancy_percent >= 90
-                    ? "badge--warning"
-                    : "badge--success"
-                }`}
-              >
-                {r.occupancy_percent ?? "-"}
-              </span>
-            </td>
+            <td>{r.occupancy_percent ?? "-"}</td>
             <td>${r.operational_reserves ?? 0}</td>
             <td>${r.replacement_reserves ?? 0}</td>
             <td>{r.current_vacancies ?? 0}</td>

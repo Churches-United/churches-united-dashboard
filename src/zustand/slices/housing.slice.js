@@ -4,6 +4,10 @@ const housingSlice = (set, get) => ({
   housingBuildings: [],
   housingRecords: [],
   loadingHousing: false,
+  // Reports state
+  housingMonthlyReport: [],
+  housingMonthlySummary: [],
+  loadingHousingReports: false,
 
   fetchHousingBuildings: async () => {
     set({ loadingHousing: true });
@@ -93,6 +97,29 @@ const housingSlice = (set, get) => ({
       console.error("Error deleting housing record:", err);
     } finally {
       set({ loadingHousing: false });
+    }
+  },
+
+  fetchHousingMonthlyReport: async () => {
+    set({ loadingHousingReports: true });
+    try {
+      const res = await axios.get("/api/housing/reports/monthly");
+      set({ housingMonthlyReport: res.data });
+    } catch (err) {
+      console.error("Error fetching housing monthly reports:", err);
+    } finally {
+      set({ loadingHousingReports: false });
+    }
+  },
+  fetchHousingMonthlySummary: async () => {
+    set({ loadingHousingReports: true });
+    try {
+      const res = await axios.get("/api/housing/reports/monthly-summary");
+      set({ housingMonthlySummary: res.data });
+    } catch (err) {
+      console.error("Error fetching housing monthly summary:", err);
+    } finally {
+      set({ loadingHousingReports: false });
     }
   },
 });

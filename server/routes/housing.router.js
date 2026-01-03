@@ -43,7 +43,7 @@ router.get("/", rejectUnauthenticated, async (req, res) => {
     FROM housing h
     JOIN housing_buildings b
       ON b.id = h.housing_building_id
-    ORDER BY b.name, h.month_date DESC;
+    ORDER BY h.month_date DESC, b.name;
   `;
 
   try {

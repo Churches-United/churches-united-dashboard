@@ -16,6 +16,7 @@ import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
 import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
 import KitchenPage from "../kitchen/kitchenPage";
 import HousingHome from "../Housing/HousingHome";
+import HousingReports from "../Housing/HousingReports";
 import ShelterWeeklyList from "../shelter/ShelterWeeklyList";
 import ShelterWeeklyForm from "../shelter/ShelterWeeklyForm";
 import ShelterReporting from "../shelter/ShelterReporting";
@@ -112,6 +113,7 @@ function App() {
           />
           {/* <Route path="/housing" element={<h2>Housing</h2>} /> */}
           <Route path="/housing" element={<HousingHome />} />
+          <Route path="/housing/reports" element={<HousingReports />} />
 
           <Route path="/development" element={<Development />} />
           <Route path="/development/donors" element={<DonorsPage />} />
