@@ -24,6 +24,9 @@ import DevelopmentHome from "../Development/DevelopmentHome";
 import DevelopmentReports from "../Development/DevelopmentReports";
 import PantryPage from "../pantry/PantryPage";
 
+import FinanceWeeklyList from "../Finance/FinanceWeeklyList";
+import FinanceWeeklyForm from "../Finance/FinanceWeeklyForm";
+import FinanceReporting from "../Finance/FinanceReporting";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -137,6 +140,7 @@ function App() {
           <Route path="/media" element={<h2>Media</h2>} />
           <Route path="/kitchen" element={<KitchenPage />} />
 
+          <Route path="/pantry" element={<h2>Pantry</h2>} />
           <Route path="/finance" element={<h2>Finance</h2>} />
           <Route path="/hr" element={<h2>HR</h2>} />
           <Route path="/outreach" element={<h2>Volunteers</h2>} />
@@ -157,6 +161,12 @@ function App() {
             element={<ShelterWeeklyForm />}
           />
           <Route path="/shelter/reports" element={<ShelterReporting />} />
+
+          <Route path="/finance" element={<FinanceWeeklyList />} />
+          <Route path="/finance/weekly/new" element={<FinanceWeeklyForm />} />
+          <Route path="/finance/weekly/edit/:id" element={<FinanceWeeklyForm />} />
+          <Route path="/finance/reports" element={<FinanceReporting />} />
+
           <Route path="/pantry" element={<PantryPage />} />
         </Routes>
       </main>

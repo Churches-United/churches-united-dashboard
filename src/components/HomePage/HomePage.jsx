@@ -6,11 +6,11 @@ function HomePage() {
   const user = useStore((state) => state.user);
   const logOut = useStore((state) => state.logOut);
   const sections = [
-    { path: "/compliance", label: "Compliance", description: "Weekly compliance checks" },
-    { path: "/shelter", label: "Shelter", description: "Weekly shelter operations and guest tracking" },  
+    { path: "/compliance", label: "Compliance", description: "Weekly compliance" },
+    { path: "/shelter", label: "Shelter", description: "Weekly shelter operations and guest tracking" }, 
+    { path: "/finance", label: "Finance", description: "Weekly financial reporting and metrics" }, 
     { path: "/outreach", label: "Community Outreach", description: "Volunteers & Volunteer Engagement" },
     { path: "/development", label: "Development", description: "Donor, donations, and notable events" },
-    { path: "/finance", label: "Finance", description: "Weekly financials" },
     { path: "/housing", label: "Housing", description: "Occupancy, vacancies, reserves" },
     { path: "/hr", label: "Human Resources", description: "Weekly HR updates" },
     { path: "/kitchen", label: "Kitchen", description: "Weekly kitchen reporting" },
