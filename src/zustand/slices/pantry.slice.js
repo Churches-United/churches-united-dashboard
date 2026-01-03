@@ -2,124 +2,117 @@ import axios from "axios";
 
 const pantrySlice = (set, get) => ({
   pantryRecords: [],
+  pantryWeeklyReports: [], // ← ADD THIS
+  pantryMonthlyReports: [],
   loading: false,
   error: null,
   // get all records
   fetchPantryRecords: async () => {
     set({ loading: true, error: null });
     try {
-      const res = await fetch("/api/pantry");
-      const data = await res.json();
-      set({ pantryRecords: data, loading: false });
+      const res = await axios.get("/api/pantry");
+      set({ pantryRecords: res.data, loading: false });
     } catch (err) {
-      set({ error: err.message, loading: false });
+      console.error("fetchPantryRecords error:", err);
+      set({ error: "Failed to fetch pantry records", loading: false });
     }
   },
 
-  // Add kitchen record
-  addKitchenRecord: async (week_date, total_meals_served, notes) => {
+  // Add pantry record
+  addPantryRecord: async (recordData) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.post("/api/kitchen", {
-        week_date,
-        total_meals_served,
-        notes,
-      });
+      const response = await axios.post("/api/pantry", recordData);
       set((state) => ({
-        kitchenRecords: [response.data, ...state.kitchenRecords],
+        pantryRecords: [response.data, ...state.pantryRecords],
         loading: false,
       }));
     } catch (err) {
-      console.error("addKitchenRecord error:", err);
+      console.error("addPantryRecord error:", err);
 
       if (err.response?.status === 409) {
         set({
-          error: `A record for ${week_date} already exists`,
+          error: `A record for ${recordData.week_date} already exists`,
           loading: false,
         });
       } else if (err.response?.status === 400) {
         set({ error: err.response.data.message, loading: false });
       } else {
-        set({ error: "Failed to add kitchen record", loading: false });
+        set({ error: "Failed to add pantry record", loading: false });
       }
     }
   },
 
-  // Edit kitchen record
-  editKitchenRecord: async (id, total_meals_served, notes) => {
+  // Edit pantry record
+  editPantryRecord: async (id, recordData) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.put(`/api/kitchen/${id}`, {
-        total_meals_served,
-        notes,
-      });
+      const response = await axios.put(`/api/pantry/${id}`, recordData);
       set((state) => ({
-        kitchenRecords: state.kitchenRecords.map((record) =>
+        pantryRecords: state.pantryRecords.map((record) =>
           record.id === id ? response.data : record
         ),
         loading: false,
       }));
     } catch (err) {
-      console.error("editKitchenRecord error:", err);
+      console.error("editPantryRecord error:", err);
 
       if (err.response?.status === 404) {
         set({ error: "Record not found", loading: false });
       } else if (err.response?.status === 400) {
         set({ error: err.response.data.message, loading: false });
       } else {
-        set({ error: "Failed to edit kitchen record", loading: false });
+        set({ error: "Failed to edit pantry record", loading: false });
       }
     }
   },
 
-  // Delete kitchen record
-  deleteKitchenRecord: async (id) => {
+  // Delete pantry record
+  deletePantryRecord: async (id) => {
     set({ loading: true, error: null });
     try {
-      await axios.delete(`/api/kitchen/${id}`);
+      await axios.delete(`/api/pantry/${id}`);
       set((state) => ({
-        kitchenRecords: state.kitchenRecords.filter(
-          (record) => record.id !== id
-        ),
+        pantryRecords: state.pantryRecords.filter((record) => record.id !== id),
         loading: false,
       }));
     } catch (err) {
-      console.error("deleteKitchenRecord error:", err);
+      console.error("deletePantryRecord error:", err);
 
       if (err.response?.status === 404) {
         set({ error: "Record not found", loading: false });
       } else {
-        set({ error: "Failed to delete kitchen record", loading: false });
+        set({ error: "Failed to delete pantry record", loading: false });
       }
     }
   },
 
-  // Fetch weekly reports
-  fetchWeeklyReports: async () => {
+  // Fetch weekly pantry reports
+  fetchPantryWeeklyReports: async () => {
     set({ loading: true, error: null });
     try {
-      const res = await fetch("/api/kitchen/reports/weekly");
-      const data = await res.json();
-      set({ weeklyReports: data, loading: false });
+      const res = await axios.get("/api/pantry/reports/weekly");
+      set({ pantryWeeklyReports: res.data, loading: false });
     } catch (err) {
-      set({ error: err.message, loading: false });
+      console.error("fetchPantryWeeklyReports error:", err);
+      set({ error: "Failed to fetch weekly pantry reports", loading: false });
     }
   },
 
-  // Fetch monthly reports
-  fetchMonthlyReports: async () => {
+  // Fetch monthly pantry reports
+  fetchPantryMonthlyReports: async () => {
     set({ loading: true, error: null });
     try {
-      const res = await fetch("/api/kitchen/reports/monthly");
-      const data = await res.json();
-      set({ monthlyReports: data, loading: false });
+      const res = await axios.get("/api/pantry/reports/monthly");
+      set({ pantryMonthlyReports: res.data, loading: false });
     } catch (err) {
-      set({ error: err.message, loading: false });
+      console.error("fetchPantryMonthlyReports error:", err);
+      set({ error: "Failed to fetch monthly pantry reports", loading: false });
     }
   },
 
   // Clear error
-  clearKitchenError: () => set({ error: null }),
+  clearPantryError: () => set({ error: null }),
 });
 
 export default pantrySlice;
