@@ -1,24 +1,17 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+import "../DepartmentLayout/DepartmentLayout.css"
+
 
 export default function DepartmentLayout({ title }) {
   return (
-    <section>
-      <header>
-        <h2>{title}</h2>
+    <main>
+      <h1>{title}</h1>
 
-        <nav className="section-nav">
-          <NavLink to="" end>
-            Data Entry
-          </NavLink>
-          <NavLink to="reports">
-            Reports
-          </NavLink>
-        </nav>
-      </header>
-
-      <div className="section-content">
-        <Outlet />
-      </div>
-    </section>
+      <nav className="department-nav">
+        <Link to="." end>Data Entry</Link>
+        <Link to="reports">Reports</Link>
+      </nav>
+      <Outlet />
+    </main>
   );
 }

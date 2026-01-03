@@ -99,7 +99,7 @@ export default function DonationReporting() {
 
   return (
     <div>
-      <h2>Donation Reports</h2>
+      <h3>Donation Reports</h3>
       <div>
         <button onClick={() => setActiveTab("weekly")}>Weekly</button>
         <button onClick={() => setActiveTab("monthly")}>Monthly</button>

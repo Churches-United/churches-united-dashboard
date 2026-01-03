@@ -19,8 +19,8 @@ export default function HousingReports() {
   return (
     <>
       <h2>Housing Reports</h2>
-      <HousingMonthlySummary />
       <HousingMonthlyTable />
+      <HousingMonthlySummary />
     </>
   );
 }
