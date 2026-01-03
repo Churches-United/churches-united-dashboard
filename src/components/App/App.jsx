@@ -9,7 +9,7 @@ import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import DonorsPage from "../Development/Donors";
 import Events from "../Development/Events";
-import DonationsPage from "../Development/Donations";
+import DonationsPage from "../Development/DonationsPage";
 import ComplianceWeeklyList from "../ComplianceWeekly/ComplianceWeeklyList";
 import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
 import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
