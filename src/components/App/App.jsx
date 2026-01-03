@@ -20,6 +20,7 @@ import HousingReports from "../Housing/HousingReports";
 import ShelterWeeklyList from "../shelter/ShelterWeeklyList";
 import ShelterWeeklyForm from "../shelter/ShelterWeeklyForm";
 import ShelterReporting from "../shelter/ShelterReporting";
+import DepartmentLayout from "../DepartmentLayout/DepartmentLayout";
 
 
 function App() {
@@ -111,10 +112,10 @@ function App() {
               </>
             }
           />
-          {/* <Route path="/housing" element={<h2>Housing</h2>} /> */}
-          <Route path="/housing" element={<HousingHome />} />
-          <Route path="/housing/reports" element={<HousingReports />} />
-
+          <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
+            <Route index element={<HousingHome />} />
+            <Route path="reports" element={<HousingReports />} />
+          </Route>
           <Route path="/development" element={<Development />} />
           <Route path="/development/donors" element={<DonorsPage />} />
           <Route path="/development/donations" element={<DonationsPage />} />
