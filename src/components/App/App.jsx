@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import "../../styles/tables.css";
 import useStore from "../../zustand/store";
 import Nav from "../Nav/Nav";
+
 import HomePage from "../HomePage/HomePage";
 import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
@@ -22,7 +23,6 @@ import DevelopmentHome from "../Development/DevelopmentHome";
 import DevelopmentReports from "../Development/DevelopmentReports";
 import PantryPage from "../pantry/PantryPage";
 import DonationsPage from "../Development/Donors/DonationsPage";
-
 import FinanceWeeklyList from "../Finance/FinanceWeeklyList";
 import FinanceWeeklyForm from "../Finance/FinanceWeeklyForm";
 import FinanceReporting from "../Finance/FinanceReporting";
