@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useStore from "../../zustand/store";
+import "./KitchenPage.css";
 
 export default function KitchenPage() {
   const fetchKitchenRecords = useStore((state) => state.fetchKitchenRecords);
@@ -19,14 +20,13 @@ export default function KitchenPage() {
     fetchKitchenRecords();
   }, [fetchKitchenRecords]);
 
-  
   const formatDate = (dateString) =>
     new Date(dateString).toLocaleDateString("en-US");
 
   // Fill form with record data for editing
   const handleEdit = (record) => {
-     setEditId(record.id);
-   setWeekDate(record.week_date.split('T')[0]);
+    setEditId(record.id);
+    setWeekDate(record.week_date.split("T")[0]);
     setTotalMeals(record.total_meals_served);
     setNotes(record.notes || "");
   };
@@ -59,92 +59,100 @@ export default function KitchenPage() {
     }
   };
 
-  if (loading) return <p>Loading kitchen records...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p className="loading-message">Loading kitchen records...</p>;
+  if (error) return <p className="error-message">Error: {error}</p>;
 
   return (
-    <div>
-      <h2>Kitchen Operations</h2>
+    <div className="kitchen-container">
+      <h2 className="kitchen-header">Kitchen Operations</h2>
 
-      <h3>{editId ? "Edit Kitchen Record" : "Add Kitchen Record"}</h3>
+      <div className="form-section">
+        <h3>{editId ? "Edit Kitchen Record" : "Add Kitchen Record"}</h3>
 
-      <form onSubmit={handleAddKitchenRecord}>
-        {/* Date input */}
-        <input
-          type="date"
-          value={weekDate}
-          onChange={(e) => setWeekDate(e.target.value)}
-          disabled={editId}
-          required
-        />
+        <form className="kitchen-form" onSubmit={handleAddKitchenRecord}>
+        
+          <input
+            type="date"
+            value={weekDate}
+            onChange={(e) => setWeekDate(e.target.value)}
+            disabled={editId}
+            required
+          />
 
-        {/* Meals served */}
-        <input
-          type="number"
-          placeholder="Total Meals Served"
-          value={totalMeals}
-          onChange={(e) => setTotalMeals(e.target.value)}
-          min="0"
-          required
-        />
+          {/* Meals served */}
+          <input
+            type="number"
+            placeholder="Total Meals Served"
+            value={totalMeals}
+            onChange={(e) => setTotalMeals(e.target.value)}
+            min="0"
+            required
+          />
 
-        {/* Optional notes */}
-        <input
-          placeholder="Notes (optional)"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        />
+          {/* Optional notes */}
+          <input
+            type="text"
+            placeholder="Notes (optional)"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
 
-        <button type="submit">
-          {editId ? "Update Record" : "Add Record"}
-        </button>
-
-        {/* Cancel button only shows when editing */}
-        {editId && (
-          <button
-            type="button"
-            onClick={() => {
-              setEditId(null);
-              setWeekDate("");
-              setTotalMeals("");
-              setNotes("");
-            }}
-          >
-            Cancel
+          <button type="submit">
+            {editId ? "Update Record" : "Add Record"}
           </button>
+
+          {/* Cancel button only shows when editing */}
+          {editId && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditId(null);
+                setWeekDate("");
+                setTotalMeals("");
+                setNotes("");
+              }}
+            >
+              Cancel
+            </button>
+          )}
+        </form>
+      </div>
+
+      <div className="records-section">
+        <h3>All Kitchen Records</h3>
+
+        {!kitchenRecords || kitchenRecords.length === 0 ? (
+          <p className="no-records">No kitchen records found.</p>
+        ) : (
+          <table className="kitchen-table">
+            <thead>
+              <tr>
+                <th>Week Date</th>
+                <th>Total Meals Served</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {kitchenRecords.map((record) => (
+                <tr key={record.id}>
+                  <td>{formatDate(record.week_date)}</td>
+                  <td>{record.total_meals_served}</td>
+                  <td>{record.notes || "—"}</td>
+                  <td>
+                    <button className="edit-btn" onClick={() => handleEdit(record)}>
+                      Edit
+                    </button>
+                    <button className="delete-btn" onClick={() => handleDelete(record.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
-      </form>
-
-      <h3>All Kitchen Records</h3>
-
-    {!kitchenRecords || kitchenRecords.length === 0 ?(
-        <p>No kitchen records found.</p>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Week Date</th>
-              <th>Total Meals Served</th>
-              <th>Notes</th>
-              <th>Created By</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-         <tbody>
-  {kitchenRecords.map((record) => (
-    <tr key={record.id}>
-      <td>{formatDate(record.week_date)}</td>
-      <td>{record.total_meals_served}</td>
-      <td>{record.notes || "—"}</td>
-      <td>
-        <button onClick={() => handleEdit(record)}>Edit</button>
-        <button onClick={() => handleDelete(record.id)}>Delete</button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-        </table>
-      )}
+      </div>
     </div>
   );
 }
