@@ -20,6 +20,18 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
   const [numberVolunteers, setNumberVolunteers] = useState(1);
   const [softwareSignups, setSoftwareSignups] = useState(0);
 
+  // todo - stretch goal, add table for location crud. 
+  const LOCATIONS = [
+    "Bright Sky",
+    "Community Picnic",
+    "Dorothy Day Food Pantry",
+    "Kitchen",
+    "Micah's Mission Basement",
+    "Micah's Mission Pantry",
+    "Silver Linings",
+    "Other",
+  ];
+
   useEffect(() => {
     fetchVolunteers();
   }, [fetchVolunteers]);
@@ -58,7 +70,7 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
 
     if (editId) {
       await editEngagement(editId, payload);
-      setEditId(null); 
+      setEditId(null);
     } else {
       await addEngagement(payload);
     }
@@ -102,15 +114,20 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
           required
         />
       </label>
-
       <label>
-        Location:
-        <input
-          type="text"
+        Location
+        <select
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           required
-        />
+        >
+          <option value="">Select a location</option>
+          {LOCATIONS.map((loc) => (
+            <option key={loc} value={loc}>
+              {loc}
+            </option>
+          ))}
+        </select>
       </label>
 
       <label>
@@ -153,7 +170,7 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
               setLocation("");
               setNumberVolunteers(1);
               setSoftwareSignups(0);
-              setEditId(null); 
+              setEditId(null);
             }}
           >
             Cancel
