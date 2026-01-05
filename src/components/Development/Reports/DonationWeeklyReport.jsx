@@ -2,15 +2,15 @@ import useStore from "../../../zustand/store";
 import { useEffect } from "react";
 
 export default function DonationWeeklyReport() {
-  const weeklyReports = useStore((state) => state.weeklyReports);
+  const donationWeeklyReports = useStore((state) => state.donationWeeklyReports);
   const fetchWeeklyDonationReports = useStore((state) => state.fetchWeeklyDonationReports);
-  const loadingReports = useStore((state) => state.loadingReports);
+  const loadingDonationReports = useStore((state) => state.loadingDonationReports);
 
   useEffect(() => {
     fetchWeeklyDonationReports();
   }, []);
 
-  if (loadingReports) return <p>Loading weekly reports...</p>;
+  if (loadingDonationReports) return <p>Loading weekly reports...</p>;
 
   return (
     <table className="table">
@@ -24,7 +24,7 @@ export default function DonationWeeklyReport() {
         </tr>
       </thead>
       <tbody>
-        {weeklyReports.map((r) => (
+        {donationWeeklyReports.map((r) => (
           <tr key={r.week_start}>
             <td>{r.week_range}</td>
             <td>${r.total_amount}</td>

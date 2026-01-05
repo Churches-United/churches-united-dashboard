@@ -2,15 +2,15 @@ import useStore from "../../../zustand/store";
 import { useEffect } from "react";
 
 export default function DonationMonthlyReport() {
-  const monthlyReports = useStore((state) => state.monthlyReports);
+  const donationMonthlyReports = useStore((state) => state.donationMonthlyReports);
   const fetchMonthlyDonationReports = useStore((state) => state.fetchMonthlyDonationReports);
-  const loadingReports = useStore((state) => state.loadingReports);
+  const loadingDonationReports = useStore((state) => state.loadingDonationReports);
 
   useEffect(() => {
     fetchMonthlyDonationReports();
   }, []);
 
-  if (loadingReports) return <p>Loading monthly reports...</p>;
+  if (loadingDonationReports) return <p>Loading monthly reports...</p>;
 
   return (
     <table className="table">
@@ -24,7 +24,7 @@ export default function DonationMonthlyReport() {
         </tr>
       </thead>
       <tbody>
-        {monthlyReports.map((r) => (
+        {donationMonthlyReports.map((r) => (
           <tr key={r.month_start}>
             <td>{r.month_label}</td>
             <td>${r.total_amount}</td>

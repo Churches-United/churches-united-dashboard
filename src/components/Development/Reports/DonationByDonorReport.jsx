@@ -2,15 +2,15 @@ import useStore from "../../../zustand/store";
 import { useEffect } from "react";
 
 export default function DonationByDonorReport() {
-  const byDonorReports = useStore((state) => state.byDonorReports);
+  const donationByDonorReports = useStore((state) => state.donationByDonorReports);
   const fetchByDonorReports = useStore((state) => state.fetchByDonorReports);
-  const loadingReports = useStore((state) => state.loadingReports);
+  const loadingDonationReports = useStore((state) => state.loadingDonationReports);
 
   useEffect(() => {
     fetchByDonorReports();
   }, []);
 
-  if (loadingReports) return <p>Loading donor reports...</p>;
+  if (loadingDonationReports) return <p>Loading donor reports...</p>;
 
   return (
     <table className="table">
@@ -25,7 +25,7 @@ export default function DonationByDonorReport() {
         </tr>
       </thead>
       <tbody>
-        {byDonorReports.map((r) => (
+        {donationByDonorReports.map((r) => (
           <tr key={r.donor_id}>
             <td>{r.donor_name}</td>
             <td>{r.donor_type}</td>

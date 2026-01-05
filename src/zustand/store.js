@@ -16,6 +16,7 @@ import pantrySlice from "./slices/pantry.slice.js";
 import housingSlice from "./slices/housing.slice.js";
 import volunteersSlice from "./slices/volunteer.slice.js";
 import volunteerEngagementsSlice from "./slices/volunteerEngagement.slice.js";
+import volunteerReportingSlice from "./slices/volunteerReports.slice.js";
 
 // Combine all slices in the store:
 // update.. added devtools
@@ -36,6 +37,9 @@ const useStore = create(
     ...housingSlice(...args),
     ...volunteersSlice(...args),
     ...volunteerEngagementsSlice(...args),
+    ...volunteerReportingSlice(...args),
+
+
   }))
 );
 
