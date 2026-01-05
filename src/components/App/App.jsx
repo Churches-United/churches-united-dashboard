@@ -109,7 +109,7 @@ function App() {
           <Route path="/media" element={<h2>Media</h2>} />
           <Route path="/kitchen" element={<KitchenPage />} />
 
-          <Route path="/pantry" element={<h2>Pantry</h2>} />
+         
           <Route path="/finance" element={<h2>Finance</h2>} />
           <Route path="/hr" element={<h2>HR</h2>} />
           <Route path="/outreach" element={<h2>Volunteers</h2>} />

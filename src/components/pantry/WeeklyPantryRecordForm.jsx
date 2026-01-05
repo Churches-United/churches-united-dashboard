@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useStore from '../../zustand/store';
 
 const WeeklyPantryRecordForm = () => {
@@ -10,13 +10,13 @@ const WeeklyPantryRecordForm = () => {
     week_date: getCurrentWeekMonday(),
     first_time_households: 0,
     returning_households: 0,
-    adults: 0,
-    children: 0,
-    seniors: 0,
-    total_pounds: 0
+    total_adults: 0,
+    total_children: 0,
+    total_seniors: 0,
+    total_pounds_distributed: 0,
   });
 
-  // Calculate current week's Monday (start of week)
+  // Calculate current week's Monday .force to start
   function getCurrentWeekMonday() {
     const today = new Date();
     const day = today.getDay();
@@ -27,26 +27,26 @@ const WeeklyPantryRecordForm = () => {
 
   const handleNumberChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: parseFloat(value) || 0
+      [name]: parseFloat(value) || 0,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await addPantryRecord(formData);
-    
+
     if (!error) {
-      // Reset form on success
+      // Reset form 
       setFormData({
         week_date: getCurrentWeekMonday(),
         first_time_households: 0,
         returning_households: 0,
-        adults: 0,
-        children: 0,
-        seniors: 0,
-        total_pounds: 0
+        total_adults: 0,
+        total_children: 0,
+        total_seniors: 0,
+        total_pounds_distributed: 0,
       });
     }
   };
@@ -54,9 +54,9 @@ const WeeklyPantryRecordForm = () => {
   return (
     <div>
       <h2>Weekly Pantry Record</h2>
-      
+
       {error && <div>{error}</div>}
-      
+
       <form onSubmit={handleSubmit}>
         <div>
           <label>Week Period</label>
@@ -95,8 +95,8 @@ const WeeklyPantryRecordForm = () => {
           <label>Adults</label>
           <input
             type="number"
-            name="adults"
-            value={formData.adults}
+            name="total_adults"
+            value={formData.total_adults}
             onChange={handleNumberChange}
             min="0"
             required
@@ -107,8 +107,8 @@ const WeeklyPantryRecordForm = () => {
           <label>Children</label>
           <input
             type="number"
-            name="children"
-            value={formData.children}
+            name="total_children"
+            value={formData.total_children}
             onChange={handleNumberChange}
             min="0"
             required
@@ -119,8 +119,8 @@ const WeeklyPantryRecordForm = () => {
           <label>Seniors (55+)</label>
           <input
             type="number"
-            name="seniors"
-            value={formData.seniors}
+            name="total_seniors"
+            value={formData.total_seniors}
             onChange={handleNumberChange}
             min="0"
             required
@@ -132,8 +132,8 @@ const WeeklyPantryRecordForm = () => {
           <input
             type="number"
             step="0.01"
-            name="total_pounds"
-            value={formData.total_pounds}
+            name="total_pounds_distributed"
+            value={formData.total_pounds_distributed}
             onChange={handleNumberChange}
             min="0"
             required
