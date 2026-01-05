@@ -1,9 +1,10 @@
 import axios from "axios";
 
-const volunteerReportingSlice = (set, get) => ({
+const volunteerReportsSlice = (set, get) => ({
   volunteerWeeklyReports: [],
   volunteerMonthlyReports: [],
   volunteerByLocationReports: [],
+  volunteerMonthlyByLocationReports: [],
   loadingVolunteerReports: false,
   errorVolunteerReports: null,
 
@@ -14,6 +15,8 @@ const volunteerReportingSlice = (set, get) => ({
       set({ volunteerWeeklyReports: res.data });
     } catch (err) {
       console.error("Error fetching volunteer weekly reports:", err);
+      set({ errorVolunteerReports: "Failed to load weekly reports" });
+    } finally {
       set({ loadingVolunteerReports: false });
     }
   },
@@ -70,4 +73,4 @@ const volunteerReportingSlice = (set, get) => ({
   },
 });
 
-export default volunteerReportingSlice;
+export default volunteerReportsSlice;

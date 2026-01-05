@@ -7,6 +7,14 @@ VALUES
 ('Eastside Volunteers', 'Group'),
 ('Faith Helpers', 'Group');
 
+INSERT INTO volunteers (id, name, type) VALUES
+(11, 'Grace Lee', 'Individual'),
+(12, 'Hannah Kim', 'Individual'),
+(13, 'Northside Volunteers', 'Group'),
+(14, 'Southside Helpers', 'Group'),
+(15, 'Ian Thompson', 'Individual');
+
+
 INSERT INTO "volunteer_engagements" (volunteer_id, event_date, location, number_volunteers, software_signups)
 VALUES
 -- Micah's Mission Basement
@@ -41,6 +49,71 @@ VALUES
 
 -- Other
 (10, '2025-11-19', 'Other', 2, 0);
+
+INSERT INTO "volunteer_engagements" (volunteer_id, event_date, location, number_volunteers, software_signups)
+VALUES
+-- Micah's Mission Basement
+(5, '2025-12-01', 'Micah''s Mission - Basement', 2, 1),
+(6, '2025-12-08', 'Micah''s Mission - Basement', 1, 0),
+(11, '2025-12-15', 'Micah''s Mission - Basement', 3, 2),
+
+-- Micah's Mission Pantry
+(8, '2025-12-02', 'Micah''s Mission - Pantry', 2, 1),
+(9, '2025-12-09', 'Micah''s Mission - Pantry', 3, 0),
+(12, '2025-12-16', 'Micah''s Mission - Pantry', 1, 0),
+
+-- Kitchen
+(5, '2025-12-03', 'Kitchen', 1, 0),
+(13, '2025-12-10', 'Kitchen', 4, 1),
+(8, '2025-12-17', 'Kitchen', 2, 0),
+
+-- Dorothy Day Food Pantry
+(7, '2025-12-04', 'Dorothy Day Food Pantry', 5, 1),
+(9, '2025-12-11', 'Dorothy Day Food Pantry', 3, 2),
+(14, '2025-12-18', 'Dorothy Day Food Pantry', 2, 0),
+
+-- Community Picnic
+(10, '2025-12-05', 'Community Picnic', 6, 1),
+(7, '2025-12-12', 'Community Picnic', 4, 0),
+(15, '2025-12-19', 'Community Picnic', 3, 0),
+
+-- Silver Linings
+(6, '2025-12-06', 'Silver Linings', 2, 1),
+(9, '2025-12-13', 'Silver Linings', 3, 0),
+(11, '2025-12-20', 'Silver Linings', 1, 1),
+
+-- Bright Sky
+(5, '2025-12-07', 'Bright Sky', 1, 0),
+(8, '2025-12-14', 'Bright Sky', 2, 1),
+(12, '2025-12-21', 'Bright Sky', 1, 0),
+
+-- Other
+(10, '2025-12-08', 'Other', 3, 1),
+(13, '2025-12-15', 'Other', 2, 0),
+(14, '2025-12-22', 'Other', 1, 0),
+
+-- January 2026
+
+-- Micah's Mission Basement
+(5, '2026-01-05', 'Micah''s Mission - Basement', 1, 0),
+(6, '2026-01-12', 'Micah''s Mission - Basement', 2, 1),
+(11, '2026-01-19', 'Micah''s Mission - Basement', 3, 0),
+
+-- Kitchen
+(8, '2026-01-06', 'Kitchen', 1, 0),
+(13, '2026-01-13', 'Kitchen', 4, 1),
+(5, '2026-01-20', 'Kitchen', 2, 0),
+
+-- Dorothy Day Food Pantry
+(7, '2026-01-07', 'Dorothy Day Food Pantry', 3, 0),
+(14, '2026-01-14', 'Dorothy Day Food Pantry', 5, 2),
+(9, '2026-01-21', 'Dorothy Day Food Pantry', 2, 1),
+
+-- Community Picnic
+(10, '2026-01-08', 'Community Picnic', 4, 1),
+(15, '2026-01-15', 'Community Picnic', 3, 0),
+(7, '2026-01-22', 'Community Picnic', 6, 2);
+
 
 
 INSERT INTO "events" (name, datetime, venue, type, shelter_id, notes)
