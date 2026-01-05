@@ -110,7 +110,6 @@ function App() {
           <Route path="/kitchen" element={<KitchenPage />} />
 
          
-          <Route path="/finance" element={<h2>Finance</h2>} />
           <Route path="/hr" element={<h2>HR</h2>} />
           <Route path="/outreach" element={<h2>Volunteers</h2>} />
           <Route path="/compliance" element={<ComplianceWeeklyList />} />
