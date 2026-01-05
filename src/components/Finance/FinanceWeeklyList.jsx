@@ -78,7 +78,7 @@ function FinanceWeeklyList() {
             fontSize: '16px'
           }}
         >
-          📊 View Reports & Analytics
+          📊 View Reports
         </button>
       </div>
       
