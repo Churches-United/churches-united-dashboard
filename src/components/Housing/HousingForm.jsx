@@ -1,8 +1,9 @@
-import useStore from "../../zustand/store";
 import { useState, useEffect } from "react";
+import useStore from "../../zustand/store";
 
 export default function HousingForm({ editingRecord, setEditingRecord }) {
   const housingBuildings = useStore((state) => state.housingBuildings);
+  const fetchHousingBuildings = useStore((state) => state.fetchHousingBuildings);
   const addHousingRecord = useStore((state) => state.addHousingRecord);
   const updateHousingRecord = useStore((state) => state.updateHousingRecord);
   const fetchHousingRecords = useStore((state) => state.fetchHousingRecords);
@@ -21,11 +22,16 @@ export default function HousingForm({ editingRecord, setEditingRecord }) {
   });
 
   useEffect(() => {
+    fetchHousingBuildings();
+  }, [fetchHousingBuildings]);
+
+  useEffect(() => {
     if (editingRecord) {
       setFormData({
         ...editingRecord,
         month_date: editingRecord.month_date.slice(0, 7),
         id: editingRecord.id,
+        housing_building_id: editingRecord.housing_building_id.toString(),
       });
     }
   }, [editingRecord]);
@@ -40,12 +46,13 @@ export default function HousingForm({ editingRecord, setEditingRecord }) {
 
     const payload = {
       ...formData,
+      housing_building_id: parseInt(formData.housing_building_id, 10),
       month_date: formData.month_date ? formData.month_date + "-01" : null,
     };
 
     if (formData.id) {
       await updateHousingRecord(
-        formData.housing_building_id,
+        payload.housing_building_id,
         payload.month_date,
         payload
       );
@@ -68,12 +75,13 @@ export default function HousingForm({ editingRecord, setEditingRecord }) {
       notes: "",
     });
 
-    setEditingRecord(null); // Reset editing mode
+    setEditingRecord(null);
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h3>{formData.id ? "Edit Housing Record" : "Add Housing Record"}</h3>
+
       <label>
         Building:
         <select
@@ -84,7 +92,7 @@ export default function HousingForm({ editingRecord, setEditingRecord }) {
         >
           <option value="">Select a building</option>
           {housingBuildings.map((b) => (
-            <option key={b.id} value={b.id}>
+            <option key={b.id} value={b.id.toString()}>
               {b.name}
             </option>
           ))}
