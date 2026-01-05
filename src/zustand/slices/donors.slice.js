@@ -4,14 +4,15 @@ const donorsSlice = (set, get) => ({
   donors: [],
   loading: false,
   error: null,
-  fetchDonors: async () => {
-    set({ loading: true });
+  
+ fetchDonors: async () => {
+    set({ loading: true, error: null });
     try {
-      const res = await fetch("/api/development/donors");
-      const data = await res.json();
-      set({ donors: data, loading: false });
+      const res = await axios.get("/api/development/donors");
+      set({ donors: res.data, loading: false });
     } catch (err) {
-      set({ error: err.message, loading: false });
+      console.error("fetchDonors error:", err);
+      set({ error: "Failed to fetch donors", loading: false });
     }
   },
   // Add donor

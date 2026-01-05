@@ -1,6 +1,6 @@
 import React from "react";
-import DonationReporting from "./DonationReporting";
-import EventsReporting from "./EventsReporting";
+import DonationReporting from "./Reports/DonationReporting";
+import EventsReporting from "./Reports/EventsReporting";
 
 export default function DevelopmentReports() {
   return (
@@ -10,7 +10,7 @@ export default function DevelopmentReports() {
       <section style={{ marginBottom: "2rem" }}>
         <DonationReporting />
       </section>
-
+      {/* todo - should these two be tabs? */}
       <section>
         <EventsReporting />
       </section>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useStore from "../../zustand/store";
+import useStore from "../../../zustand/store";
 
 export default function DonorsPage() {
   const fetchDonors = useStore((state) => state.fetchDonors);
