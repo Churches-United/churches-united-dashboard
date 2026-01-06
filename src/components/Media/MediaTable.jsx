@@ -16,14 +16,21 @@ export default function MediaTable({ records, setEditRecord }) {
           <th>Audience Start</th>
           <th>Audience End</th>
           <th>Audience Gain</th>
+          <th>Total Sent</th>
+          <th>Total Opens</th>
+          <th>Open Rate</th>
+          <th>Total Clicks</th>
+          <th>Click Rate</th>
+          <th>Notes</th>
           <th>Actions</th>
         </tr>
       </thead>
-
       <tbody>
         {records.map((r) => {
           const audienceGain =
-            r.audience_start != null && r.audience_end != null
+            r.platform === "Facebook" &&
+            r.audience_start != null &&
+            r.audience_end != null
               ? r.audience_end - r.audience_start
               : "";
 
@@ -34,14 +41,20 @@ export default function MediaTable({ records, setEditRecord }) {
               <td>{r.total_visits ?? ""}</td>
               <td>{r.unique_visits ?? ""}</td>
               <td>
-                {r.platform === "Facebook"
-                  ? r.social_views ?? ""
-                  : r.pageviews ?? ""}
+                {r.platform === "Website"
+                  ? r.pageviews ?? ""
+                  : r.social_views ?? ""}
               </td>
-              <td>{r.bounce_rate ?? ""}</td>
-              <td>{r.audience_start ?? ""}</td>
-              <td>{r.audience_end ?? ""}</td>
+              <td>{r.platform === "Website" ? r.bounce_rate ?? "" : ""}</td>
+              <td>{r.platform === "Facebook" ? r.audience_start ?? "" : ""}</td>
+              <td>{r.platform === "Facebook" ? r.audience_end ?? "" : ""}</td>
               <td>{audienceGain}</td>
+              <td>{r.platform === "Newsletter" ? r.total_sent ?? "" : ""}</td>
+              <td>{r.platform === "Newsletter" ? r.total_opens ?? "" : ""}</td>
+              <td>{r.platform === "Newsletter" ? r.open_rate ?? "" : ""}</td>
+              <td>{r.platform === "Newsletter" ? r.total_clicks ?? "" : ""}</td>
+              <td>{r.platform === "Newsletter" ? r.click_rate ?? "" : ""}</td>
+              <td>{r.notes ?? ""}</td>
               <td>
                 <button onClick={() => setEditRecord(r)}>Edit</button>
                 <button

@@ -5,33 +5,22 @@ import MediaTable from "./MediaTable";
 
 export default function MediaPage() {
   const [editRecord, setEditRecord] = useState(null);
-
-  const fetchMediaRecords = useStore((state) => state.fetchMediaRecords);
   const mediaRecords = useStore((state) => state.mediaRecords);
+  const fetchMediaRecords = useStore((state) => state.fetchMediaRecords);
 
   useEffect(() => {
     fetchMediaRecords();
   }, [fetchMediaRecords]);
 
+  const sortedRecords = [...mediaRecords].sort(
+    (a, b) => new Date(b.month_date) - new Date(a.month_date)
+  );
+
   return (
     <div className="media-page">
       <h2>Media Records</h2>
-      {!editRecord && (
-        <MediaForm editRecord={null} setEditRecord={setEditRecord} />
-      )}
-      {editRecord && (
-        <div className="edit-form-section">
-          <h3>
-            Editing {editRecord.platform} -{" "}
-            {new Date(editRecord.month_date).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-            })}
-          </h3>
-          <MediaForm editRecord={editRecord} setEditRecord={setEditRecord} />
-        </div>
-      )}
-      <MediaTable records={mediaRecords} setEditRecord={setEditRecord} />
+      <MediaForm editRecord={editRecord} setEditRecord={setEditRecord} />
+      <MediaTable records={sortedRecords} setEditRecord={setEditRecord} />
     </div>
   );
 }
