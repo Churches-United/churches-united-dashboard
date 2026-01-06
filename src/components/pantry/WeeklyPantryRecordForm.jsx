@@ -16,7 +16,9 @@ const WeeklyPantryRecordForm = () => {
     total_pounds_distributed: 0,
   });
 
-  // Calculate current week's Monday .force to start
+  // Calculate current week's Monday 
+  // helper function that would force to moday 
+  // will use this function in my other components for reusability 
   function getCurrentWeekMonday() {
     const today = new Date();
     const day = today.getDay();
@@ -70,7 +72,7 @@ const WeeklyPantryRecordForm = () => {
         <div>
           <label>First-Time Households</label>
           <input
-            type="number"
+            type="text"
             name="first_time_households"
             value={formData.first_time_households}
             onChange={handleNumberChange}
@@ -82,7 +84,7 @@ const WeeklyPantryRecordForm = () => {
         <div>
           <label>Returning Households</label>
           <input
-            type="number"
+            type="text"
             name="returning_households"
             value={formData.returning_households}
             onChange={handleNumberChange}
@@ -94,7 +96,7 @@ const WeeklyPantryRecordForm = () => {
         <div>
           <label>Adults</label>
           <input
-            type="number"
+            type="text"
             name="total_adults"
             value={formData.total_adults}
             onChange={handleNumberChange}
@@ -106,7 +108,7 @@ const WeeklyPantryRecordForm = () => {
         <div>
           <label>Children</label>
           <input
-            type="number"
+            type="text"
             name="total_children"
             value={formData.total_children}
             onChange={handleNumberChange}
@@ -118,7 +120,7 @@ const WeeklyPantryRecordForm = () => {
         <div>
           <label>Seniors (55+)</label>
           <input
-            type="number"
+            type="text"
             name="total_seniors"
             value={formData.total_seniors}
             onChange={handleNumberChange}
@@ -130,7 +132,7 @@ const WeeklyPantryRecordForm = () => {
         <div>
           <label>Total Pounds Distributed</label>
           <input
-            type="number"
+            type="text"
             step="0.01"
             name="total_pounds_distributed"
             value={formData.total_pounds_distributed}
