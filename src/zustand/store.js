@@ -7,8 +7,8 @@ import complianceWeeklySlice from "./slices/compliance.slice.js";
 import complianceReportsSlice from "./slices/complianceReports.slice.js";
 import shelterWeeklySlice from "./slices/shelter.slice.js";
 import shelterReportsSlice from "./slices/shelterReports.slice.js";
-import financeWeeklySlice from "./slices/finance.slice.js";           
-import financeReportsSlice from "./slices/financeReports.slice.js"; 
+import financeWeeklySlice from "./slices/finance.slice.js";
+import financeReportsSlice from "./slices/financeReports.slice.js";
 
 import eventsSlice from "./slices/events.slice.js";
 import kitchenSlice from "./slices/kitchen.slice.js";
@@ -19,6 +19,7 @@ import housingSlice from "./slices/housing.slice.js";
 import volunteersSlice from "./slices/volunteer.slice.js";
 import volunteerEngagementsSlice from "./slices/volunteerEngagement.slice.js";
 import volunteerReportsSlice from "./slices/volunteerReports.slice.js";
+import mediaSlice from "./slices/media.slice.js";
 
 // Combine all slices in the store:
 // update.. added devtools
@@ -31,8 +32,8 @@ const useStore = create(
     ...complianceReportsSlice(...args),
     ...shelterWeeklySlice(...args),
     ...shelterReportsSlice(...args),
-    ...financeWeeklySlice(...args),      
-    ...financeReportsSlice(...args), 
+    ...financeWeeklySlice(...args),
+    ...financeReportsSlice(...args),
     ...eventsSlice(...args),
     ...kitchenSlice(...args),
     ...eventsReporting(...args),
@@ -42,6 +43,7 @@ const useStore = create(
     ...volunteersSlice(...args),
     ...volunteerEngagementsSlice(...args),
     ...volunteerReportsSlice(...args),
+    ...mediaSlice(...args),
   }))
 );
 

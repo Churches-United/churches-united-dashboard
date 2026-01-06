@@ -31,6 +31,7 @@ import VolunteerPage from "../CommunityOutreach/Volunteer/VolunteerPage";
 import OutreachHome from "../CommunityOutreach/OutreachHome";
 import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEngagementPage";
 import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
+import MediaPage from "../Media/MediaPage";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -85,6 +86,10 @@ function App() {
           <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
             <Route index element={<HousingHome />} />
             <Route path="reports" element={<HousingReports />} />
+          </Route>
+           <Route path="/media" element={<DepartmentLayout title="Media" />}>
+            <Route index element={<MediaPage />} />
+            {/* <Route path="reports" element={<HousingReports />} /> */}
           </Route>
           <Route
             path="/development"
