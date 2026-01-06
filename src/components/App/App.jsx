@@ -32,6 +32,7 @@ import OutreachHome from "../CommunityOutreach/OutreachHome";
 import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEngagementPage";
 import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
 import MediaPage from "../Media/MediaPage";
+import ReportsDashboard from "../ReportingHub/ReportsDashboard";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -87,7 +88,7 @@ function App() {
             <Route index element={<HousingHome />} />
             <Route path="reports" element={<HousingReports />} />
           </Route>
-           <Route path="/media" element={<DepartmentLayout title="Media" />}>
+          <Route path="/media" element={<DepartmentLayout title="Media" />}>
             <Route index element={<MediaPage />} />
             {/* <Route path="reports" element={<HousingReports />} /> */}
           </Route>
@@ -108,13 +109,12 @@ function App() {
             <Route index element={<OutreachHome />} />
             <Route path="volunteers" element={<VolunteerPage />} />
             <Route path="engagements" element={<VolunteerEngagementPage />} />
-            <Route path="reports" element={<VolunteerReportsPage  />} />
+            <Route path="reports" element={<VolunteerReportsPage />} />
           </Route>
 
           <Route path="/media" element={<h2>Media</h2>} />
           <Route path="/kitchen" element={<KitchenPage />} />
 
-         
           <Route path="/hr" element={<h2>HR</h2>} />
           <Route path="/outreach" element={<h2>Volunteers</h2>} />
           <Route path="/compliance" element={<ComplianceWeeklyList />} />
@@ -144,6 +144,7 @@ function App() {
           <Route path="/finance/reports" element={<FinanceReporting />} />
 
           <Route path="/pantry" element={<PantryPage />} />
+          <Route path="/reporting" element={<ReportsDashboard />} />
         </Routes>
       </main>
       <footer>

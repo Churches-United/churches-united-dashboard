@@ -3,6 +3,13 @@ import useStore from "../../zustand/store";
 export default function MediaTable({ records, setEditRecord }) {
   const deleteMediaRecord = useStore((state) => state.deleteMediaRecord);
 
+  const mainViews = (r) => {
+    if (r.platform === "Website") return r.pageviews ?? 0;
+    if (["Facebook", "Instagram", "TikTok"].includes(r.platform))
+      return r.social_views ?? 0;
+    return "";
+  };
+
   return (
     <table className="table">
       <thead>
@@ -10,20 +17,29 @@ export default function MediaTable({ records, setEditRecord }) {
           <th>Month</th>
           <th>Platform</th>
           <th>Total Visits</th>
-          <th>Unique</th>
-          <th>Pageviews / Views</th>
+          <th>Unique Visits</th>
+          <th>Main Views</th>
           <th>Bounce Rate</th>
           <th>Audience Start</th>
           <th>Audience End</th>
           <th>Audience Gain</th>
+          <th>Total Sent</th>
+          <th>Total Opens</th>
+          <th>Open Rate</th>
+          <th>Total Clicks</th>
+          <th>Click Rate</th>
+          <th>Notes</th>
           <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
         {records.map((r) => {
+          // Compute audience gain only for Facebook
           const audienceGain =
-            r.audience_start != null && r.audience_end != null
+            r.platform === "Facebook" &&
+            r.audience_start != null &&
+            r.audience_end != null
               ? r.audience_end - r.audience_start
               : "";
 
@@ -33,15 +49,17 @@ export default function MediaTable({ records, setEditRecord }) {
               <td>{r.platform}</td>
               <td>{r.total_visits ?? ""}</td>
               <td>{r.unique_visits ?? ""}</td>
-              <td>
-                {r.platform === "Facebook"
-                  ? r.social_views ?? ""
-                  : r.pageviews ?? ""}
-              </td>
-              <td>{r.bounce_rate ?? ""}</td>
-              <td>{r.audience_start ?? ""}</td>
-              <td>{r.audience_end ?? ""}</td>
+              <td>{mainViews(r)}</td>
+              <td>{r.platform === "Website" ? r.bounce_rate ?? "" : ""}</td>
+              <td>{r.platform === "Facebook" ? r.audience_start ?? "" : ""}</td>
+              <td>{r.platform === "Facebook" ? r.audience_end ?? "" : ""}</td>
               <td>{audienceGain}</td>
+              <td>{r.platform === "Newsletter" ? r.total_sent ?? "" : ""}</td>
+              <td>{r.platform === "Newsletter" ? r.total_opens ?? "" : ""}</td>
+              <td>{r.platform === "Newsletter" ? r.open_rate ?? "" : ""}</td>
+              <td>{r.platform === "Newsletter" ? r.total_clicks ?? "" : ""}</td>
+              <td>{r.platform === "Newsletter" ? r.click_rate ?? "" : ""}</td>
+              <td>{r.notes ?? ""}</td>
               <td>
                 <button onClick={() => setEditRecord(r)}>Edit</button>
                 <button

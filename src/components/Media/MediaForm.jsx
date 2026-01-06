@@ -11,8 +11,6 @@ const emptyForm = {
   social_views: "",
   audience_start: "",
   audience_end: "",
-  instagram_views: "",
-  tiktok_views: "",
   total_sent: "",
   total_opens: "",
   open_rate: "",
@@ -36,6 +34,8 @@ export default function MediaForm({ editRecord, setEditRecord }) {
         ...editRecord,
         month_date: editRecord.month_date.slice(0, 7),
       });
+    } else {
+      setFormData(emptyForm);
     }
   }, [editRecord]);
 
@@ -47,15 +47,12 @@ export default function MediaForm({ editRecord, setEditRecord }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Convert "YYYY-MM" to "YYYY-MM-01" for Postgres
     const normalizedData = {
       ...formData,
       month_date:
         formData.month_date.length === 7
           ? formData.month_date + "-01"
           : formData.month_date,
-
-      // Integer fields
       total_visits: formData.total_visits ? parseInt(formData.total_visits) : 0,
       unique_visits: formData.unique_visits
         ? parseInt(formData.unique_visits)
@@ -68,20 +65,15 @@ export default function MediaForm({ editRecord, setEditRecord }) {
       audience_end: formData.audience_end
         ? parseInt(formData.audience_end)
         : null,
-      instagram_views: formData.instagram_views
-        ? parseInt(formData.instagram_views)
-        : 0,
-      tiktok_views: formData.tiktok_views ? parseInt(formData.tiktok_views) : 0,
       total_sent: formData.total_sent ? parseInt(formData.total_sent) : 0,
       total_opens: formData.total_opens ? parseInt(formData.total_opens) : 0,
       total_clicks: formData.total_clicks ? parseInt(formData.total_clicks) : 0,
-
-      // Decimal / numeric fields
       bounce_rate: formData.bounce_rate
         ? parseFloat(formData.bounce_rate)
         : null,
       open_rate: formData.open_rate ? parseFloat(formData.open_rate) : null,
       click_rate: formData.click_rate ? parseFloat(formData.click_rate) : null,
+      notes: formData.notes || "",
     };
 
     if (editRecord) {
@@ -106,15 +98,13 @@ export default function MediaForm({ editRecord, setEditRecord }) {
   return (
     <form onSubmit={handleSubmit} className="media-form">
       <h3>{editRecord ? "Edit Media Record" : "Add Media Record"}</h3>
-
-      {/* Month + Platform */}
       <div className="form-section-inline">
         <label>
           Month:
           <input
             type="month"
             name="month_date"
-            value={formData.month_date}
+            value={formData.month_date || ""}
             onChange={handleChange}
             required
           />
@@ -124,7 +114,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
           Platform:
           <select
             name="platform"
-            value={formData.platform}
+            value={formData.platform || ""}
             onChange={handleChange}
             disabled={!!editRecord}
             required
@@ -144,105 +134,79 @@ export default function MediaForm({ editRecord, setEditRecord }) {
         <>
           <h4>Website Data</h4>
           <label>
-            Total Visits:{" "}
+            Total Visits:
             <input
               type="number"
               name="total_visits"
-              value={formData.total_visits}
+              value={formData.total_visits || ""}
               onChange={handleChange}
             />
           </label>
           <label>
-            Unique Visits:{" "}
+            Unique Visits:
             <input
               type="number"
               name="unique_visits"
-              value={formData.unique_visits}
+              value={formData.unique_visits || ""}
               onChange={handleChange}
             />
           </label>
           <label>
-            Pageviews:{" "}
+            Pageviews:
             <input
               type="number"
               name="pageviews"
-              value={formData.pageviews}
+              value={formData.pageviews || ""}
               onChange={handleChange}
             />
           </label>
           <label>
-            Bounce Rate (%):{" "}
+            Bounce Rate (%):
             <input
               type="number"
               step="0.01"
               name="bounce_rate"
-              value={formData.bounce_rate}
+              value={formData.bounce_rate || ""}
               onChange={handleChange}
             />
           </label>
         </>
       )}
 
-      {formData.platform === "Facebook" && (
+      {["Facebook", "Instagram", "TikTok"].includes(formData.platform) && (
         <>
-          <h4>Facebook Data</h4>
+          <h4>{formData.platform} Data</h4>
           <label>
-            Views:{" "}
+            Views:
             <input
               type="number"
               name="social_views"
-              value={formData.social_views}
+              value={formData.social_views || ""}
               onChange={handleChange}
             />
           </label>
-          <label>
-            Audience Start:{" "}
-            <input
-              type="number"
-              name="audience_start"
-              value={formData.audience_start}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Audience End:{" "}
-            <input
-              type="number"
-              name="audience_end"
-              value={formData.audience_end}
-              onChange={handleChange}
-            />
-          </label>
-        </>
-      )}
-
-      {formData.platform === "Instagram" && (
-        <>
-          <h4>Instagram Data</h4>
-          <label>
-            Views:{" "}
-            <input
-              type="number"
-              name="instagram_views"
-              value={formData.instagram_views}
-              onChange={handleChange}
-            />
-          </label>
-        </>
-      )}
-
-      {formData.platform === "TikTok" && (
-        <>
-          <h4>TikTok Data</h4>
-          <label>
-            Views:{" "}
-            <input
-              type="number"
-              name="tiktok_views"
-              value={formData.tiktok_views}
-              onChange={handleChange}
-            />
-          </label>
+          {formData.platform === "Facebook" && (
+            <>
+              <label>
+                Audience Start:
+                <input
+                  type="number"
+                  name="audience_start"
+                  value={formData.audience_start || ""}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                Audience End:
+                <input
+                  type="number"
+                  name="audience_end"
+                  value={formData.audience_end || ""}
+                  onChange={handleChange}
+                />
+              </label>
+            </>
+          )}
         </>
       )}
 
@@ -250,62 +214,62 @@ export default function MediaForm({ editRecord, setEditRecord }) {
         <>
           <h4>Newsletter Data</h4>
           <label>
-            Total Sent:{" "}
+            Total Sent:
             <input
               type="number"
               name="total_sent"
-              value={formData.total_sent}
+              value={formData.total_sent || ""}
               onChange={handleChange}
             />
           </label>
           <label>
-            Total Opens:{" "}
+            Total Opens:
             <input
               type="number"
               name="total_opens"
-              value={formData.total_opens}
+              value={formData.total_opens || ""}
               onChange={handleChange}
             />
           </label>
           <label>
-            Open Rate (%):{" "}
+            Open Rate (%):
             <input
               type="number"
               step="0.01"
               name="open_rate"
-              value={formData.open_rate}
+              value={formData.open_rate || ""}
               onChange={handleChange}
             />
           </label>
           <label>
-            Total Clicks:{" "}
+            Total Clicks:
             <input
               type="number"
               name="total_clicks"
-              value={formData.total_clicks}
+              value={formData.total_clicks || ""}
               onChange={handleChange}
             />
           </label>
           <label>
-            Click Rate (%):{" "}
+            Click Rate (%):
             <input
               type="number"
               step="0.01"
               name="click_rate"
-              value={formData.click_rate}
+              value={formData.click_rate || ""}
               onChange={handleChange}
             />
           </label>
         </>
       )}
-
-      {/* Notes */}
       <label>
-        Notes:{" "}
-        <textarea name="notes" value={formData.notes} onChange={handleChange} />
+        Notes:
+        <textarea
+          name="notes"
+          value={formData.notes || ""}
+          onChange={handleChange}
+        />
       </label>
-
-      {/* Buttons */}
       <div className="form-buttons">
         <button type="submit" disabled={loadingMedia}>
           {editRecord ? "Update" : "Add"}

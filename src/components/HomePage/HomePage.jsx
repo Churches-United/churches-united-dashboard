@@ -16,6 +16,7 @@ function HomePage() {
     { path: "/kitchen", label: "Kitchen", description: "Weekly kitchen reporting" },
     { path: "/media", label: "Media", description: "Website, social, newsletter metrics" },
     { path: "/pantry", label: "Pantry", description: "Weekly pantry reporting" },
+    { path: "/reporting", label: "Reporting Hub", description: "One stop shop for all your reporting needs." },
 
   ]
 

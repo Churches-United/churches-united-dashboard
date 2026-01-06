@@ -72,3 +72,7 @@ Once you've attained that, you'll have the opportunity to:
 
 
 # nuno
+
+
+## Styles
+npm install react-bootstrap bootstrap
