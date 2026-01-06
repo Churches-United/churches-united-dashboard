@@ -46,6 +46,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const normalizedData = {
       ...formData,
       month_date:
@@ -85,6 +86,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
     } else {
       await addMediaRecord(normalizedData);
     }
+
     setFormData(emptyForm);
   };
 
@@ -107,6 +109,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             required
           />
         </label>
+
         <label>
           Platform:
           <select
@@ -129,8 +132,9 @@ export default function MediaForm({ editRecord, setEditRecord }) {
       {/* Dynamic Fields */}
       {formData.platform === "Website" && (
         <>
+          <h4>Website Data</h4>
           <label>
-            Total Visits:{" "}
+            Total Visits:
             <input
               type="number"
               name="total_visits"
@@ -139,7 +143,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             />
           </label>
           <label>
-            Unique Visits:{" "}
+            Unique Visits:
             <input
               type="number"
               name="unique_visits"
@@ -148,7 +152,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             />
           </label>
           <label>
-            Pageviews:{" "}
+            Pageviews:
             <input
               type="number"
               name="pageviews"
@@ -157,7 +161,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             />
           </label>
           <label>
-            Bounce Rate (%):{" "}
+            Bounce Rate (%):
             <input
               type="number"
               step="0.01"
@@ -171,8 +175,9 @@ export default function MediaForm({ editRecord, setEditRecord }) {
 
       {["Facebook", "Instagram", "TikTok"].includes(formData.platform) && (
         <>
+          <h4>{formData.platform} Data</h4>
           <label>
-            Views:{" "}
+            Views:
             <input
               type="number"
               name="social_views"
@@ -183,7 +188,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
           {formData.platform === "Facebook" && (
             <>
               <label>
-                Audience Start:{" "}
+                Audience Start:
                 <input
                   type="number"
                   name="audience_start"
@@ -192,7 +197,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
                 />
               </label>
               <label>
-                Audience End:{" "}
+                Audience End:
                 <input
                   type="number"
                   name="audience_end"
@@ -207,8 +212,9 @@ export default function MediaForm({ editRecord, setEditRecord }) {
 
       {formData.platform === "Newsletter" && (
         <>
+          <h4>Newsletter Data</h4>
           <label>
-            Total Sent:{" "}
+            Total Sent:
             <input
               type="number"
               name="total_sent"
@@ -217,7 +223,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             />
           </label>
           <label>
-            Total Opens:{" "}
+            Total Opens:
             <input
               type="number"
               name="total_opens"
@@ -226,7 +232,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             />
           </label>
           <label>
-            Open Rate (%):{" "}
+            Open Rate (%):
             <input
               type="number"
               step="0.01"
@@ -236,7 +242,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             />
           </label>
           <label>
-            Total Clicks:{" "}
+            Total Clicks:
             <input
               type="number"
               name="total_clicks"
@@ -245,7 +251,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             />
           </label>
           <label>
-            Click Rate (%):{" "}
+            Click Rate (%):
             <input
               type="number"
               step="0.01"
@@ -256,16 +262,14 @@ export default function MediaForm({ editRecord, setEditRecord }) {
           </label>
         </>
       )}
-
       <label>
-        Notes:{" "}
+        Notes:
         <textarea
           name="notes"
           value={formData.notes || ""}
           onChange={handleChange}
         />
       </label>
-
       <div className="form-buttons">
         <button type="submit" disabled={loadingMedia}>
           {editRecord ? "Update" : "Add"}
