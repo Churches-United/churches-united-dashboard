@@ -145,31 +145,46 @@ export default function EventsPage() {
       {events.length === 0 ? (
         <p>No events found.</p>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Date / Time</th>
-              <th>Venue</th>
-              <th>Type</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((event) => (
-              <tr key={event.id}>
-                <td>{event.name}</td>
-                <td>{new Date(event.datetime).toLocaleString()}</td>
-                <td>{event.venue}</td>
-                <td>{event.type}</td>
-                <td>
-                  <button onClick={() => handleEdit(event)}>Edit</button>
-                  <button onClick={() => handleDelete(event.id)}>Delete</button>
-                </td>
+        <div className="table-container" style={{ maxWidth: "1400px" }}>
+          <table className="table-app table-hover table-striped">
+            {" "}
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date / Time</th>
+                <th>Venue</th>
+                <th>Type</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {events.map((event) => (
+                <tr key={event.id}>
+                  <td>{event.name}</td>
+                  <td>{new Date(event.datetime).toLocaleString()}</td>
+                  <td>{event.venue}</td>
+                  <td>{event.type}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        className="btn btn-sm btn-table-edit"
+                        onClick={() => handleEdit(donor)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-table-delete"
+                        onClick={() => handleDelete(donor.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

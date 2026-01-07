@@ -13,8 +13,8 @@ export default function DonationWeeklyReport() {
   if (loadingDonationReports) return <p>Loading weekly reports...</p>;
 
   return (
-    <table className="table">
-      <thead>
+    <div className="table-container" style={{ maxWidth: "1200px" }}>
+      <table className="table-app table-hover table-striped">      <thead>
         <tr>
           <th>Week</th>
           <th>Total Donations</th>
@@ -35,5 +35,6 @@ export default function DonationWeeklyReport() {
         ))}
       </tbody>
     </table>
+    </div>
   );
 }

@@ -27,7 +27,7 @@ export default function HousingTable({ onEdit }) {
 
   return (
     <div className="table-container" style={{ maxWidth: "1400px" }}>
-      <table className="table-app">
+      <table className="table-app table-hover table-striped">
         <thead>
           <tr>
             <th>Building</th>
