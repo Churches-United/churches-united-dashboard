@@ -12,8 +12,8 @@ export default function UpcomingEventsReport() {
   if (loadingEventsReports) return <p>Loading upcoming events...</p>;
 
   return (
-    <table className="table">
-      <thead>
+    <div className="table-container" style={{ maxWidth: "1400px" }}>
+      <table className="table-app table-hover table-striped">      <thead>
         <tr>
           <th>Event Name</th>
           <th>Date & Time</th>
@@ -34,5 +34,6 @@ export default function UpcomingEventsReport() {
         ))}
       </tbody>
     </table>
+    </div>
   );
 }

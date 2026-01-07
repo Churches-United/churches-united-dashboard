@@ -22,8 +22,9 @@ export default function VolunteerWeeklyReport() {
     <div>
       <h2>Weekly Community Outreach Report</h2>
 
-      <table className="table">
-        <thead>
+    <div className="table-container" style={{ maxWidth: "1000px" }}>
+      <table className="table-app table-hover table-striped">
+                <thead>
           <tr>
             <th>Week</th>
             <th>Total Volunteers</th>
@@ -42,6 +43,7 @@ export default function VolunteerWeeklyReport() {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }

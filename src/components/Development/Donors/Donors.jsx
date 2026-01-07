@@ -89,27 +89,42 @@ export default function DonorsPage() {
       {donors.length === 0 ? (
         <p>No donors found.</p>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {donors.map((donor) => (
-              <tr key={donor.id}>
-                <td>{donor.name}</td>
-                <td>{donor.type}</td>
-                <td>
-                  <button onClick={() => handleEdit(donor)}>Edit</button>
-                  <button onClick={() => handleDelete(donor.id)}>Delete</button>
-                </td>
+        <div className="table-container" style={{ maxWidth: "800px" }}>
+          <table className="table-app table-hover table-striped">
+            {" "}
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {donors.map((donor) => (
+                <tr key={donor.id}>
+                  <td>{donor.name}</td>
+                  <td>{donor.type}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        className="btn btn-sm btn-table-edit"
+                        onClick={() => handleEdit(donor)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-table-delete"
+                        onClick={() => handleDelete(donor.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

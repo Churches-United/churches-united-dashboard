@@ -1,0 +1,78 @@
+/* ------ Brand Variables ------  */
+/* colors from CU logo 
+#A60A33 #1C71A6 #04B2D9 #03A696 */
+
+
+:root {
+  /* Primary brand */
+  --brand-primary: #03a696;
+  --brand-primary-hover: #028f7f;
+  --brand-primary-soft: rgba(3, 166, 150, 0.12);
+
+  /* Secondary / accent */
+  --brand-secondary: #1c71a6;
+  --brand-accent: #04b2d9;
+
+  /* Status */
+  --danger: #a60a33;
+}
+
+/* ------ Bootstrap Button Overrides ------  */
+
+/* Primary */
+.btn-primary {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--brand-primary-hover);
+  border-color: var(--brand-primary-hover);
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.25rem var(--brand-primary-soft);
+}
+
+/* Secondary */
+.btn-secondary {
+  background-color: var(--brand-secondary);
+  border-color: var(--brand-secondary);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  opacity: 0.9;
+}
+
+/* Danger */
+.btn-danger {
+  background-color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* ------ Links & Accents ------  */
+
+a {
+  color: var(--brand-secondary);
+}
+
+a:hover {
+  color: var(--brand-accent);
+}
+
+/* ------ Forms ------  */
+
+.form-control:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.2rem var(--brand-primary-soft);
+}
+
+/* ------ Alerts ------  */
+
+.alert-danger {
+  background-color: #ffebee;
+  color: var(--danger);
+  border-left: 4px solid var(--danger);
+}

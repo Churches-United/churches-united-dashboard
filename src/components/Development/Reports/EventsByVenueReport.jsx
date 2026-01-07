@@ -13,8 +13,8 @@ export default function EventsByVenueReport() {
   if (loadingEventsReports) return <p>Loading events by venue...</p>;
 
   return (
-    <table className="table table--compact">
-      <thead>
+    <div className="table-container" style={{ maxWidth: "800px" }}>
+      <table className="table-app table-hover table-striped">      <thead>
         <tr>
           <th>Venue</th>
           <th>Number of Events</th>
@@ -29,5 +29,6 @@ export default function EventsByVenueReport() {
         ))}
       </tbody>
     </table>
+    </div>
   );
 }

@@ -1,26 +1,15 @@
-/* ------ Table Wrapper ------  */
-
-table {
-  font-size: 0.875rem;
-}
-
+/* ------ Table Wrapper ------ */
 .table-container {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   overflow-x: auto;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-/* todo -  contained width variant */
-.table-contained {
-  max-width: 1200px;
   margin: 0 auto;
+  padding: 0;
+  max-width: 1200px; /* optional, can override inline */
 }
 
-/* ------ Table Base ------  */
-
+/* ------ Table Base ------ */
 .table-app {
   width: 100%;
   border-collapse: collapse;
@@ -28,26 +17,28 @@ table {
   font-size: 0.875rem;
 }
 
+/* Header */
 .table-app thead {
   background-color: var(--brand-primary);
   color: #fff;
 }
 
 .table-app th {
-  padding: 16px;
+  padding: 12px;
   text-align: left;
-  font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
+  vertical-align: middle;
 }
 
+/* Body */
 .table-app td {
   padding: 12px;
   border-bottom: 1px solid #e0e0e0;
   vertical-align: middle;
 }
 
-/* Zebra striping for better readability */
+/* Hover and striped rows */
 .table-app tbody tr:nth-child(even) {
   background-color: #fafafa;
 }
@@ -56,24 +47,27 @@ table {
   background-color: var(--brand-primary-soft);
 }
 
-/* ------ Table Actions / Buttons ------  */
+/* Sticky header (optional) */
+.table-sticky thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
 
+/* ------ Table Actions / Buttons ------ */
 .table-actions {
   display: flex;
   gap: 6px;
-  justify-content: left;
-  align-items: center;
 }
 
 .btn-table-edit {
   background-color: var(--brand-secondary);
   color: #fff;
   border: none;
-  padding: 4px 8px;
-  font-size: 0.75rem;
   border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: opacity 0.3s;
 }
 
 .btn-table-edit:hover {
@@ -84,19 +78,17 @@ table {
   background-color: var(--danger);
   color: #fff;
   border: none;
-  padding: 4px 8px;
-  font-size: 0.75rem;
   border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: opacity 0.3s;
 }
 
 .btn-table-delete:hover {
   opacity: 0.85;
 }
 
-/* ------ Empty / Loading / Error States ------  */
-
+/* ------ Empty / Loading / Error States ------ */
 .table-empty,
 .table-loading {
   text-align: center;
@@ -111,14 +103,4 @@ table {
   padding: 20px;
   border-radius: 4px;
   border-left: 4px solid var(--danger);
-  text-align: center;
-}
-
-/* ------  Sticky Header Variant (todo - ask team) ------  */
-
-.table-sticky thead th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background-color: var(--brand-primary);
 }

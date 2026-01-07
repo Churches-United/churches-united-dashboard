@@ -33,38 +33,48 @@ export default function VolunteerEngagementPage() {
       {engagements.length === 0 ? (
         <p>No engagements logged.</p>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Volunteer</th>
-              <th>Event Date</th>
-              <th>Location</th>
-              <th>Number of Volunteers</th>
-              <th>Software Signups</th>
-              <th>Actions</th> 
-            </tr>
-          </thead>
-          <tbody>
-            {engagements.map((e) => (
-              <tr key={e.id}>
-                <td>{e.volunteer_name}</td>
-                <td>{new Date(e.event_date).toLocaleDateString()}</td>
-                <td>{e.location}</td>
-                <td>{e.number_volunteers}</td>
-                <td>{e.software_signups || 0}</td>
-                <td>
-                  <button onClick={() => setEditId(e.id)}>Edit</button>
-                  <button
-                    onClick={() => handleDelete(e.id)}
-                    style={{ marginLeft: "0.5rem" }}
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="table-container" style={{ maxWidth: "1200px" }}>
+          <table className="table-app table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Volunteer</th>
+                <th>Event Date</th>
+                <th>Location</th>
+                <th>Number of Volunteers</th>
+                <th>Software Signups</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {engagements.map((e) => (
+                <tr key={e.id}>
+                  <td>{e.volunteer_name}</td>
+                  <td>{new Date(e.event_date).toLocaleDateString()}</td>
+                  <td>{e.location}</td>
+                  <td>{e.number_volunteers}</td>
+                  <td>{e.software_signups || 0}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        className="btn btn-sm btn-table-edit"
+                        onClick={() => setEditId(e.id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-table-delete"s
+                        onClick={() => handleDelete(e.id)}
+                        style={{ marginLeft: "0.5rem" }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

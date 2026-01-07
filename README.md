@@ -71,8 +71,56 @@ Once you've attained that, you'll have the opportunity to:
 ------
 
 
-# nuno
+# Shared UI Components
 
+This project contains optional, shared UI styles and components used to keep the application visually consistent.
+- DataTable.jsx
+
+These abstractions are **opt-in** and are not required to use existing or MVP-level implementations. 
+For example... Tables can be styled normally using Bootstrap and the custom theme will pick this up. 
+
+---
+
+## Global Styles
 
 ## Styles
 npm install react-bootstrap bootstrap
+
+### `theme.css`
+Defines brand colors and design tokens using CSS variables.  
+This file controls the overall look and feel of the app.
+
+### `tables.css`
+Provides consistent styling for tables across the application.
+
+- Can be used with any `<table>`
+- Does not require the `DataTable` component
+- Ensures consistent colors, spacing, and hover states
+
+---
+
+## DataTable Component (Optional)
+
+`DataTable` is a reusable table wrapper that standardizes table structure and common behaviors.
+
+It may include:
+- Consistent table markup
+- Empty / loading state handling
+- Shared action button styling
+
+Usage is optional. Existing tables do **not** need to be refactored.
+
+Example usage: See [`HousingTables.jsx`](src/components/Housing/HousingTable.jsx) for columns variable example.
+
+```jsx
+<DataTable
+  columns={columns}
+  data={rows}
+  renderActions={(row) => (
+    <>
+      <button className="btn btn-sm btn-table-edit">Edit</button>
+      <button className="btn btn-sm btn-table-delete">Delete</button>
+    </>
+  )}
+/>
+
