@@ -6,6 +6,9 @@
     "node": ">=18.x"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.6",
     "@vitest/mocker": "^3.0.6",
     "axios": "^1.6.8",
     "bcryptjs": "^3.0.2",
