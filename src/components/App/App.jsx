@@ -85,10 +85,12 @@ function App() {
             }
           />
           <Route exact path="/about" element={<AboutPage />} />
-          <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
+          {/* <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
             <Route index element={<HousingHome />} />
             <Route path="reports" element={<HousingReports />} />
-          </Route>
+          </Route> */}
+          <Route path="/housing" element={<HousingHome />} />
+          <Route path="/housing/reports" element={<HousingReports />} />
           <Route path="/media" element={<DepartmentLayout title="Media" />}>
             <Route index element={<MediaPage />} />
             <Route path="reports" element={<MediaReports />} />

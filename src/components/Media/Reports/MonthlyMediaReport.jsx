@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useStore from "../../../zustand/store";
-import TableToolbar from "../../TableToolBar/TableToolBar";
+import TableToolBar from "../../DesignComponents/TableToolBar/TableToolBar";
+
 
 export default function MonthlyMediaReport() {
   const { monthlyReport, fetchMonthlyMediaReport, loadingMediaReports } =
@@ -36,7 +37,7 @@ export default function MonthlyMediaReport() {
         style={{ maxWidth: "1000px" }}
         >
         <h3>Monthly Media Report</h3>
-        <TableToolbar
+        <TableToolBar
           filters={{
             year: {
               label: "Year",

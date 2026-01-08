@@ -3,7 +3,8 @@ import useStore from "../../../zustand/store";
 import MonthlyMediaReport from "./MonthlyMediaReport";
 import NewsletterReport from "./NewsletterReport";
 import AudienceGrowthReport from "./AudienceGrowthReport";
-import TableToolbar from "../../TableToolBar/TableToolBar";
+import TableToolBar from "../../DesignComponents/TableToolBar/TableToolBar";
+
 
 export default function MediaReports() {
   const fetchMonthlyMediaReport = useStore(
