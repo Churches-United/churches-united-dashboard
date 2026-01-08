@@ -30,3 +30,14 @@
   border-bottom: 2px solid var(--brand-primary);
 }
 
+/* Hub container for department pages */
+.hub-container {
+  max-width: 1400px; 
+  margin: 0 auto;          
+  padding: 20px 16px;      
+  display: flex;
+  flex-direction: column;
+  gap: 24px;            
+  /* background-color: #f7f7f7;  */
+  border-radius: 8px;
+}

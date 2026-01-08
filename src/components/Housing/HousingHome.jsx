@@ -18,7 +18,7 @@ export default function HousingHome() {
   // Extract unique years and buildings for the dropdowns
   const yearOptions = Array.from(
     new Set(housingRecords.map((r) => new Date(r.month_date).getFullYear()))
-  ).sort((a, b) => b - a); // descending
+  ).sort((a, b) => b - a);
 
   const buildingOptions = Array.from(
     new Set(housingRecords.map((r) => r.building_name))
@@ -36,7 +36,12 @@ export default function HousingHome() {
             >
               Data Entry
             </NavLink>
-            <NavLink to="/housing/reports">Reports</NavLink>
+            <NavLink
+              to="/housing/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
           </>
         }
       />
