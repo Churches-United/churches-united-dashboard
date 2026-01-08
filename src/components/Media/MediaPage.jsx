@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import useStore from "../../zustand/store";
 import MediaForm from "./MediaForm";
 import MediaTable from "./MediaTable";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 
 export default function MediaPage() {
   const [editRecord, setEditRecord] = useState(null);
@@ -17,8 +19,28 @@ export default function MediaPage() {
   );
 
   return (
-    <div className="media-page">
-      <h2>Media Records</h2>
+    <div className="hub-container">
+      <DepartmentHeader
+        title="Media Records"
+        actions={
+          <>
+            <NavLink
+              to="/media"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Data Entry
+            </NavLink>
+            <NavLink
+              to="/media/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
+
       <MediaForm editRecord={editRecord} setEditRecord={setEditRecord} />
       <MediaTable records={sortedRecords} setEditRecord={setEditRecord} />
     </div>

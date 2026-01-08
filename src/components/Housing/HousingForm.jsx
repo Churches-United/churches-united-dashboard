@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import useStore from "../../zustand/store";
+import './housingForm.css';
+
 
 export default function HousingForm({ editingRecord, setEditingRecord }) {
   const housingBuildings = useStore((state) => state.housingBuildings);
@@ -43,7 +45,6 @@ export default function HousingForm({ editingRecord, setEditingRecord }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const payload = {
       ...formData,
       housing_building_id: parseInt(formData.housing_building_id, 10),
@@ -51,11 +52,7 @@ export default function HousingForm({ editingRecord, setEditingRecord }) {
     };
 
     if (formData.id) {
-      await updateHousingRecord(
-        payload.housing_building_id,
-        payload.month_date,
-        payload
-      );
+      await updateHousingRecord(payload.housing_building_id, payload.month_date, payload);
     } else {
       await addHousingRecord(payload);
     }
@@ -78,112 +75,154 @@ export default function HousingForm({ editingRecord, setEditingRecord }) {
     setEditingRecord(null);
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h3>{formData.id ? "Edit Housing Record" : "Add Housing Record"}</h3>
+   return (
+  <form className="housing-form" onSubmit={handleSubmit}>
+  <div className="form-header">
+    <h3>{formData.id ? "Edit Housing Record" : "Add Housing Record"}</h3>
+  </div>
 
-      <label>
-        Building:
-        <select
-          name="housing_building_id"
-          value={formData.housing_building_id}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select a building</option>
-          {housingBuildings.map((b) => (
-            <option key={b.id} value={b.id.toString()}>
-              {b.name}
-            </option>
-          ))}
-        </select>
-      </label>
+  {/* Top row: Building & Month */}
+  <div className="form-row">
+    <label>
+      Building:
+      <select
+        name="housing_building_id"
+        value={formData.housing_building_id}
+        onChange={handleChange}
+        required
+      >
+        <option value="">Select a building</option>
+        {housingBuildings.map((b) => (
+          <option key={b.id} value={b.id.toString()}>
+            {b.name}
+          </option>
+        ))}
+      </select>
+    </label>
 
-      <label>
-        Month:
-        <input
-          type="month"
-          name="month_date"
-          value={formData.month_date}
-          onChange={handleChange}
-          required
-        />
-      </label>
+    <label>
+      Month:
+      <input
+        type="month"
+        name="month_date"
+        value={formData.month_date}
+        onChange={handleChange}
+        required
+      />
+    </label>
+  </div>
 
-      <label>
-        Occupancy %:
-        <input
-          type="number"
-          name="occupancy_percent"
-          value={formData.occupancy_percent}
-          onChange={handleChange}
-          min="0"
-          max="100"
-          step="0.01"
-          required
-        />
-      </label>
+  {/* Numeric Grid Row 1 */}
+  <div className="form-row">
+    <label>
+      Occupancy %:
+      <input
+        type="number"
+        name="occupancy_percent"
+        value={formData.occupancy_percent}
+        onChange={handleChange}
+        min="0"
+        max="100"
+        step="0.01"
+        required
+      />
+    </label>
 
-      <label>
-        Operational Reserves ($):
-        <input
-          type="number"
-          name="operational_reserves"
-          value={formData.operational_reserves}
-          onChange={handleChange}
-          step="0.01"
-        />
-      </label>
+    <label>
+      Operational Reserves ($):
+      <input
+        type="number"
+        name="operational_reserves"
+        value={formData.operational_reserves}
+        onChange={handleChange}
+        step="0.01"
+      />
+    </label>
 
-      <label>
-        Replacement Reserves ($):
-        <input
-          type="number"
-          name="replacement_reserves"
-          value={formData.replacement_reserves}
-          onChange={handleChange}
-          step="0.01"
-        />
-      </label>
+    <label>
+      Replacement Reserves ($):
+      <input
+        type="number"
+        name="replacement_reserves"
+        value={formData.replacement_reserves}
+        onChange={handleChange}
+        step="0.01"
+      />
+    </label>
+  </div>
 
-      <label>
-        Current Vacancies:
-        <input
-          type="number"
-          name="current_vacancies"
-          value={formData.current_vacancies}
-          onChange={handleChange}
-        />
-      </label>
+  {/* Numeric Grid Row 2 */}
+  <div className="form-row">
+    <label>
+      Current Vacancies:
+      <input
+        type="number"
+        name="current_vacancies"
+        value={formData.current_vacancies}
+        onChange={handleChange}
+      />
+    </label>
 
-      <label>
-        Upcoming Vacancies:
-        <input
-          type="number"
-          name="upcoming_vacancies"
-          value={formData.upcoming_vacancies}
-          onChange={handleChange}
-        />
-      </label>
+    <label>
+      Upcoming Vacancies:
+      <input
+        type="number"
+        name="upcoming_vacancies"
+        value={formData.upcoming_vacancies}
+        onChange={handleChange}
+      />
+    </label>
 
-      <label>
-        Upcoming New Leases:
-        <input
-          type="number"
-          name="upcoming_new_leases"
-          value={formData.upcoming_new_leases}
-          onChange={handleChange}
-        />
-      </label>
+    <label>
+      Upcoming New Leases:
+      <input
+        type="number"
+        name="upcoming_new_leases"
+        value={formData.upcoming_new_leases}
+        onChange={handleChange}
+      />
+    </label>
+  </div>
 
-      <label>
-        Notes:
-        <textarea name="notes" value={formData.notes} onChange={handleChange} />
-      </label>
+  {/* Notes (full width?) */}
+  <div className="form-row notes-row">
+    <label>
+      Notes:
+      <textarea
+        name="notes"
+        value={formData.notes}
+        onChange={handleChange}
+        rows="2"
+      />
+    </label>
+  </div>
 
-      <button type="submit">
-        {formData.id ? "Update Record" : "Add Record"}
+  {/* Buttons */}
+  <div className="form-actions">
+    <button type="submit">{formData.id ? "Update Record" : "Add Record"}</button>
+    {formData.id && (
+      <button
+        type="button"
+        className="cancel-btn"
+        onClick={() =>
+          setFormData({
+            id: null,
+            housing_building_id: "",
+            month_date: "",
+            occupancy_percent: "",
+            operational_reserves: "",
+            replacement_reserves: "",
+            current_vacancies: "",
+            upcoming_vacancies: "",
+            upcoming_new_leases: "",
+            notes: "",
+          }) || setEditingRecord(null)
+        }
+      >
+        Cancel
       </button>
-    </form>
-  );
+    )}
+  </div>
+</form>
+);
 }

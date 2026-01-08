@@ -5,6 +5,69 @@ const {
 } = require("../modules/authentication-middleware");
 
 const router = express.Router();
+// Reporting
+// GET /api/housing/reports/monthly
+router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      DATE_TRUNC('month', h.month_date)::date AS month_start,
+      b.name AS building_name,
+      h.occupancy_percent,
+      h.operational_reserves,
+      h.replacement_reserves,
+      h.current_vacancies,
+      h.upcoming_vacancies,
+      h.upcoming_new_leases,
+      h.notes
+    FROM housing h
+    JOIN housing_buildings b
+      ON b.id = h.housing_building_id
+    ORDER BY month_start DESC, building_name;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/housing/reports/monthly error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET /api/housing/reports/monthly-summary
+// Combined summary across all buildings
+router.get(
+  "/reports/monthly-summary",
+  rejectUnauthenticated,
+  async (req, res) => {
+    const sqlText = `
+      SELECT
+        DATE_TRUNC('month', month_date)::date AS month_start,
+        ROUND(AVG(occupancy_percent), 2) AS avg_occupancy_percent,
+        SUM(operational_reserves) AS total_operational_reserves,
+        SUM(replacement_reserves) AS total_replacement_reserves,
+        SUM(current_vacancies) AS total_current_vacancies,
+        SUM(upcoming_vacancies) AS total_upcoming_vacancies,
+        SUM(upcoming_new_leases) AS total_upcoming_new_leases
+      FROM housing
+      GROUP BY DATE_TRUNC('month', month_date)
+      ORDER BY month_start DESC;
+    `;
+
+    try {
+      const result = await pool.query(sqlText);
+      res.json(result.rows);
+    } catch (err) {
+      console.error(
+        "GET /api/housing/reports/monthly-summary error:",
+        err
+      );
+      res.sendStatus(500);
+    }
+  }
+);
+
+
 // GET /api/housing/buildings
 // Returns all buildings
 router.get("/buildings", rejectUnauthenticated, async (req, res) => {
@@ -208,66 +271,6 @@ router.delete(
   }
 );
 
-// Reporting
-// GET /api/housing/reports/monthly
-router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
-  const sqlText = `
-    SELECT
-      DATE_TRUNC('month', h.month_date)::date AS month_start,
-      b.name AS building_name,
-      h.occupancy_percent,
-      h.operational_reserves,
-      h.replacement_reserves,
-      h.current_vacancies,
-      h.upcoming_vacancies,
-      h.upcoming_new_leases,
-      h.notes
-    FROM housing h
-    JOIN housing_buildings b
-      ON b.id = h.housing_building_id
-    ORDER BY month_start DESC, building_name;
-  `;
 
-  try {
-    const result = await pool.query(sqlText);
-    res.json(result.rows);
-  } catch (err) {
-    console.error("GET /api/housing/reports/monthly error:", err);
-    res.sendStatus(500);
-  }
-});
-
-// GET /api/housing/reports/monthly-summary
-// Combined summary across all buildings
-router.get(
-  "/reports/monthly-summary",
-  rejectUnauthenticated,
-  async (req, res) => {
-    const sqlText = `
-      SELECT
-        DATE_TRUNC('month', month_date)::date AS month_start,
-        ROUND(AVG(occupancy_percent), 2) AS avg_occupancy_percent,
-        SUM(operational_reserves) AS total_operational_reserves,
-        SUM(replacement_reserves) AS total_replacement_reserves,
-        SUM(current_vacancies) AS total_current_vacancies,
-        SUM(upcoming_vacancies) AS total_upcoming_vacancies,
-        SUM(upcoming_new_leases) AS total_upcoming_new_leases
-      FROM housing
-      GROUP BY DATE_TRUNC('month', month_date)
-      ORDER BY month_start DESC;
-    `;
-
-    try {
-      const result = await pool.query(sqlText);
-      res.json(result.rows);
-    } catch (err) {
-      console.error(
-        "GET /api/housing/reports/monthly-summary error:",
-        err
-      );
-      res.sendStatus(500);
-    }
-  }
-);
 
 module.exports = router;

@@ -6,6 +6,10 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import "./styles/theme.css";
 import "./styles/tables.css";
+import "./styles/department.css";
+import "./styles/form.css";
+
+
 import './index.css';
 
 import App from './components/App/App';

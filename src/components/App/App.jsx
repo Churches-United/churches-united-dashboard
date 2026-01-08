@@ -37,6 +37,7 @@ import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEng
 import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
 import MediaPage from "../Media/MediaPage";
 import ReportsDashboard from "../ReportingHub/ReportsDashboard";
+import MediaReports from "../Media/Reports/MediaReports";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -88,14 +89,14 @@ function App() {
             }
           />
           <Route exact path="/about" element={<AboutPage />} />
-          <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
+          {/* <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
             <Route index element={<HousingHome />} />
             <Route path="reports" element={<HousingReports />} />
-          </Route>
-          <Route path="/media" element={<DepartmentLayout title="Media" />}>
-            <Route index element={<MediaPage />} />
-            {/* <Route path="reports" element={<HousingReports />} /> */}
-          </Route>
+          </Route> */}
+          <Route path="/housing" element={<HousingHome />} />
+          <Route path="/housing/reports" element={<HousingReports />} />
+          <Route path="/media" element={<MediaPage />} />
+          <Route path="/media/reports" element={<MediaReports />} />
           <Route
             path="/development"
             element={<DepartmentLayout title="Development Dashboard" />}
