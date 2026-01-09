@@ -1,0 +1,12 @@
+.hero-banner {
+  height: 250px;
+  background-color: rgba(3, 166, 150, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.hero-logo {
+  max-height: 150px;
+}

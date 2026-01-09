@@ -1,0 +1,86 @@
+/* Make the whole card clickable without underline */
+.card-link-wrapper {
+  text-decoration: none;
+  display: block;
+}
+
+/* Card container */
+.dashboard-card {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  background-color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+/* Image wrapper */
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 160px;  
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* Image styles */
+.card-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   
+  display: block;      
+  filter: brightness(0.85); 
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Hover zoom & brighten effect */
+.dashboard-card:hover img {
+  transform: scale(1.05);
+  filter: brightness(1);
+}
+
+/* Gradient overlay for readability & branding */
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(3,166,150,0.25), rgba(0,0,0,0.3));
+  transition: background 0.3s ease;
+  pointer-events: none; 
+}
+
+/* Optional hover overlay adjustment for effect */
+.dashboard-card:hover .card-overlay {
+  background: linear-gradient(to bottom, rgba(3,166,150,0.15), rgba(0,0,0,0.15));
+}
+
+/* Text content below image */
+.card-text {
+  padding: 10px;
+}
+
+.card-text h5 {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.card-description {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0.25rem 0 0;
+  word-wrap: break-word;  
+  white-space: normal;    
+}
