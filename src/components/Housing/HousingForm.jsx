@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import useStore from "../../zustand/store";
 import "./Housing.css";
 
@@ -16,15 +15,11 @@ const initialState = {
   notes: "",
 };
 
-export default function HousingForm() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const editingRecord = location.state?.record || null;
+export default function HousingForm({ record, onClose }) {
+  const editingRecord = record || null;
 
   const housingBuildings = useStore((state) => state.housingBuildings);
-  const fetchHousingBuildings = useStore(
-    (state) => state.fetchHousingBuildings
-  );
+  const fetchHousingBuildings = useStore((state) => state.fetchHousingBuildings);
   const addHousingRecord = useStore((state) => state.addHousingRecord);
   const updateHousingRecord = useStore((state) => state.updateHousingRecord);
   const fetchHousingRecords = useStore((state) => state.fetchHousingRecords);
@@ -61,30 +56,23 @@ export default function HousingForm() {
     };
 
     if (formData.id) {
-      await updateHousingRecord(
-        payload.housing_building_id,
-        payload.month_date,
-        payload
-      );
+      await updateHousingRecord(payload.housing_building_id, payload.month_date, payload);
     } else {
       await addHousingRecord(payload);
     }
 
     await fetchHousingRecords();
 
-    // Reset form and navigate back to table page
     setFormData(initialState);
-    navigate("/housing");
+    onClose(); // close modal
   };
 
   return (
     <form className="housing-form-container" onSubmit={handleSubmit}>
-      {/* Header */}
       <div className="form-header">
         <h3>{formData.id ? "Edit Housing Record" : "Add Housing Record"}</h3>
       </div>
 
-      {/* Top Row */}
       <div className="top-row">
         <label>
           Building:
@@ -115,7 +103,6 @@ export default function HousingForm() {
         </label>
       </div>
 
-      {/* Numeric Grid */}
       <div className="form-grid">
         <label>
           Occupancy %:
@@ -184,7 +171,6 @@ export default function HousingForm() {
         </label>
       </div>
 
-      {/* Notes + Buttons */}
       <div className="notes-actions-row">
         <label className="notes-label">
           Notes:
@@ -205,7 +191,7 @@ export default function HousingForm() {
             className="secondary"
             onClick={() => {
               setFormData(initialState);
-              navigate("/housing");
+              onClose();
             }}
           >
             Cancel
