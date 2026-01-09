@@ -97,7 +97,7 @@ button.primary:hover {
 }
 
 button.secondary {
-  background-color: #757575;
+  background-color: var(--brand-secondary);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -107,7 +107,7 @@ button.secondary {
 }
 
 button.secondary:hover {
-  background-color: #616161;
+  background-color: var(--brand-accent);
 }
 
 /* ---------- Toolbar (Unified for Home & Reports) ---------- */
@@ -242,4 +242,56 @@ button.secondary:hover {
 
 .metric-value {
   font-weight: 600;
+}
+
+/* ---------- Table Actions  ---------- */
+
+/* Table Actions Container */
+.table-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Icon Buttons */
+.table-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border: 1px solid transparent; /* change to accent color for outline style */
+  border-radius: 4px;
+  background: none; /* no fill by default */
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+/* Edit Icon */
+.table-actions .btn-table-edit {
+  color: var(--brand-accent);
+  border-color: var(--brand-accent); /* optional outline */
+}
+
+.table-actions .btn-table-edit:hover {
+  background-color: var(--brand-accent);
+  color: #fff;
+}
+
+/* Delete Icon */
+.table-actions .btn-table-delete {
+  color: #d32f2f; /* or your --brand-danger */
+  border-color: #d32f2f;
+}
+
+.table-actions .btn-table-delete:hover {
+  background-color: #d32f2f;
+  color: #fff;
+}
+
+/* Icon size (optional, overrides react-icons default) */
+.table-actions svg {
+  width: 16px;
+  height: 16px;
 }

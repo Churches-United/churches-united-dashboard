@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useStore from "../../zustand/store";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import {
   currencyFormatter,
   numberFormatter,
@@ -130,19 +131,16 @@ export default function HousingTable({ onEdit, year, building, search }) {
 
               <td className="col-actions">
                 <div className="table-actions">
-                  <button
-                    className="btn btn-sm btn-table-edit"
-                    onClick={() => onEdit(r)}
-                  >
-                    Edit
+                  <button className="btn-table-edit" onClick={() => onEdit(r)}>
+                    <FaEdit />
                   </button>
                   <button
-                    className="btn btn-sm btn-table-delete"
+                    className="btn-table-delete"
                     onClick={() =>
                       handleDelete(r.housing_building_id, r.month_date)
                     }
                   >
-                    Delete
+                    <FaTrash />
                   </button>
                 </div>
               </td>
