@@ -1,26 +1,38 @@
 import React from "react";
+import {
+  currencyFormatter,
+  numberFormatter,
+  formatPercent,
+} from "../../styles/formatters";
 
 export default function HousingMonthlyTable({ records }) {
   if (!records || records.length === 0)
     return <p>No records match the current filters.</p>;
 
   return (
-    <div
-      className="table-container"
-      style={{ maxWidth: "1400px", margin: "0 auto" }}
-    >
-      <table className="table-app table-hover table-striped">
+    <div className="table-container" style={{ maxWidth: "1400px", margin: "0 auto" }}>
+      <table className="table-app table-hover table-striped housing-table">
         <thead>
           <tr>
-            <th>Month</th>
-            <th>Building</th>
-            <th>Occupancy %</th>
-            <th>Operational Reserves</th>
-            <th>Replacement Reserves</th>
-            <th>Current Vacancies</th>
-            <th>Upcoming Vacancies</th>
-            <th>New Leases</th>
-            <th>Notes</th>
+            <th className="col-month">Month</th>
+            <th className="col-building">Building</th>
+            <th className="col-number">Occupancy</th>
+            <th className="col-number">
+              Operational<br />Reserves
+            </th>
+            <th className="col-number">
+              Replacement<br />Reserves
+            </th>
+            <th className="col-number">
+              Current<br />Vacancies
+            </th>
+            <th className="col-number">
+              Upcoming<br />Vacancies
+            </th>
+            <th className="col-number">
+              Upcoming<br />Leases
+            </th>
+            <th className="col-notes">Notes</th>
           </tr>
         </thead>
         <tbody>
@@ -33,7 +45,7 @@ export default function HousingMonthlyTable({ records }) {
 
             return (
               <tr key={i}>
-                <td>
+                <td className="col-month">
                   {monthDate
                     ? monthDate.toLocaleDateString("en-US", {
                         month: "short",
@@ -41,14 +53,46 @@ export default function HousingMonthlyTable({ records }) {
                       })
                     : "-"}
                 </td>
-                <td>{r.building_name ?? "-"}</td>
-                <td>{r.occupancy_percent ?? "-"}%</td>
-                <td>${r.operational_reserves ?? 0}</td>
-                <td>${r.replacement_reserves ?? 0}</td>
-                <td>{r.current_vacancies ?? 0}</td>
-                <td>{r.upcoming_vacancies ?? 0}</td>
-                <td>{r.upcoming_new_leases ?? 0}</td>
-                <td>{r.notes ?? "-"}</td>
+
+                <td className="col-building">{r.building_name ?? "-"}</td>
+
+                <td className="col-number">
+                  {r.occupancy_percent != null
+                    ? formatPercent(r.occupancy_percent)
+                    : "-"}
+                </td>
+
+                <td className="col-number">
+                  {r.operational_reserves != null
+                    ? currencyFormatter.format(r.operational_reserves)
+                    : "-"}
+                </td>
+
+                <td className="col-number">
+                  {r.replacement_reserves != null
+                    ? currencyFormatter.format(r.replacement_reserves)
+                    : "-"}
+                </td>
+
+                <td className="col-number">
+                  {r.current_vacancies != null
+                    ? numberFormatter.format(r.current_vacancies)
+                    : "-"}
+                </td>
+
+                <td className="col-number">
+                  {r.upcoming_vacancies != null
+                    ? numberFormatter.format(r.upcoming_vacancies)
+                    : "-"}
+                </td>
+
+                <td className="col-number">
+                  {r.upcoming_new_leases != null
+                    ? numberFormatter.format(r.upcoming_new_leases)
+                    : "-"}
+                </td>
+
+                <td className="col-notes">{r.notes ?? "-"}</td>
               </tr>
             );
           })}

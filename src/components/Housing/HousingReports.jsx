@@ -83,8 +83,6 @@ export default function HousingReports() {
           { label: "Summary", onClick: () => setActiveTab("summary") },
         ]}
       />
-
-      {/* Content */}
       <div style={{ marginTop: "1rem" }}>
         {loadingHousingReports ? (
           <p>Loading report…</p>

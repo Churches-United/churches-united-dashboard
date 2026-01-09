@@ -16,8 +16,11 @@ const initialState = {
   notes: "",
 };
 
-export default function HousingForm({ editingRecord }) {
+export default function HousingForm() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const editingRecord = location.state?.record || null;
+
   const housingBuildings = useStore((state) => state.housingBuildings);
   const fetchHousingBuildings = useStore(
     (state) => state.fetchHousingBuildings
