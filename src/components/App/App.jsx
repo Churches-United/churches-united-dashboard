@@ -16,29 +16,34 @@ import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
 import KitchenPage from "../kitchen/kitchenPage";
 import HousingHome from "../Housing/HousingHome";
 import HousingReports from "../Housing/HousingReports";
-import HousingForm from "../Housing/HousingForm";
 import ShelterWeeklyList from "../shelter/ShelterWeeklyList";
 import ShelterWeeklyForm from "../shelter/ShelterWeeklyForm";
 import ShelterReporting from "../shelter/ShelterReporting";
 import DepartmentLayout from "../DepartmentLayout/DepartmentLayout";
 import DevelopmentHome from "../Development/DevelopmentHome";
 import DevelopmentReports from "../Development/DevelopmentReports";
-import PantryPage from "../pantry/PantryPage";
+
 import DonationsPage from "../Development/Donors/DonationsPage";
 import FinanceWeeklyList from "../Finance/FinanceWeeklyList";
 import FinanceWeeklyForm from "../Finance/FinanceWeeklyForm";
 import FinanceReporting from "../Finance/FinanceReporting";
 import VolunteerPage from "../CommunityOutreach/Volunteer/VolunteerPage";
-import HRHome from "../HR/HRHome";
-import HRWeeklyList from "../HR/HRWeeklyList";
-import HRWeeklyForm from "../HR/HRWeeklyForm";
-import HRReports from "../HR/HRReports";
+
 import OutreachHome from "../CommunityOutreach/OutreachHome";
 import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEngagementPage";
 import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
 import MediaPage from "../Media/MediaPage";
 import ReportsDashboard from "../ReportingHub/ReportsDashboard";
-import MediaReports from "../Media/Reports/MediaReports";
+
+import HRHome from "../HR/HRHome"
+import HRWeeklyList from "../HR/HRWeeklyList";
+import HRWeeklyForm from "../HR/HRWeeklyForm";
+import HRReports from "../HR/HRReports";
+
+ import PantryHome from '../pantry/PantryHome';
+import PantryWeeklyList from '../pantry/PantryWeeklyList';
+import PantryWeeklyForm from '../pantry/PantryWeeklyForm';
+import PantryReports from '../pantry/PantryReports';
 
 function App() {
   const user = useStore((state) => state.user);
@@ -90,16 +95,14 @@ function App() {
             }
           />
           <Route exact path="/about" element={<AboutPage />} />
-          {/* <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
+          <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
             <Route index element={<HousingHome />} />
             <Route path="reports" element={<HousingReports />} />
-          </Route> */}
-          <Route path="/housing" element={<HousingHome />} />
-          <Route path="/housing/form" element={<HousingForm />} />
-          <Route path="/housing/reports" element={<HousingReports />} />
-
-          <Route path="/media" element={<MediaPage />} />
-          <Route path="/media/reports" element={<MediaReports />} />
+          </Route>
+          <Route path="/media" element={<DepartmentLayout title="Media" />}>
+            <Route index element={<MediaPage />} />
+            {/* <Route path="reports" element={<HousingReports />} /> */}
+          </Route>
           <Route
             path="/development"
             element={<DepartmentLayout title="Development Dashboard" />}
@@ -150,18 +153,23 @@ function App() {
           />
           <Route path="/finance/reports" element={<FinanceReporting />} />
 
-          <Route path="/pantry" element={<PantryPage />} />
+
           <Route path="/reporting" element={<ReportsDashboard />} />
-          <Route
-            path="/hr"
-            element={<DepartmentLayout title="Human Resources" />}
-          >
-            <Route index element={<HRHome />} />
-            <Route path="weekly" element={<HRWeeklyList />} />
-            <Route path="weekly/new" element={<HRWeeklyForm />} />
-            <Route path="weekly/edit/:id" element={<HRWeeklyForm />} />
-            <Route path="reports" element={<HRReports />} />
-          </Route>
+          <Route path="/hr" element={<DepartmentLayout title="Human Resources" />}>
+  <Route index element={<HRHome />} />
+  <Route path="weekly" element={<HRWeeklyList />} />
+  <Route path="weekly/new" element={<HRWeeklyForm />} />
+  <Route path="weekly/edit/:id" element={<HRWeeklyForm />} />
+  <Route path="reports" element={<HRReports />} />
+</Route>
+
+<Route path="/pantry" element={<DepartmentLayout title="Pantry Distribution" />}>
+  <Route index element={<PantryHome />} />
+  <Route path="weekly" element={<PantryWeeklyList />} />
+  <Route path="weekly/new" element={<PantryWeeklyForm />} />
+  <Route path="weekly/edit/:id" element={<PantryWeeklyForm />} />
+  <Route path="reports" element={<PantryReports />} />
+</Route>
         </Routes>
       </main>
       <footer>
