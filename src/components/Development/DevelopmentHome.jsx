@@ -1,9 +1,23 @@
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 
 export default function DevelopmentHome() {
   return (
-    <div>
-      <h2>Development</h2>
+    <div className="hub-container">
+      <DepartmentHeader
+        title="Development"
+        actions={
+          <>
+            <NavLink to="/development" className={({ isActive }) => isActive ? "active" : ""}>
+              Data Entry
+            </NavLink>
+            <NavLink to="/development/reports" className={({ isActive }) => isActive ? "active" : ""}>
+              Reports
+            </NavLink>
+          </>
+        }
+      />
       <nav>
         <ul>
           <li>

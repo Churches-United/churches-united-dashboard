@@ -1,9 +1,23 @@
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 
 export default function OutreachHome() {
   return (
-    <div>
-      <h2>Volunteer Information</h2>
+    <div className="hub-container">
+      <DepartmentHeader
+        title="Community Outreach"
+        actions={
+          <>
+            <NavLink to="/outreach" className={({ isActive }) => isActive ? "active" : ""}>
+              Data Entry
+            </NavLink>
+            <NavLink to="/outreach/reports" className={({ isActive }) => isActive ? "active" : ""}>
+              Reports
+            </NavLink>
+          </>
+        }
+      />
       <nav>
         <ul>
           <li>
