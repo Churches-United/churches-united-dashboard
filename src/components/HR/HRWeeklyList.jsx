@@ -26,75 +26,78 @@ export default function HRWeeklyList() {
 
   if (hrLoading) {
     return (
-      <div className="container mt-4">
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
+      <div className="hub-container">
+        <div className="table-loading">Loading HR records...</div>
       </div>
     );
   }
 
   if (hrError) {
     return (
-      <div className="container mt-4">
-        <div className="alert alert-danger" role="alert">
-          Error: {hrError}
-        </div>
+      <div className="hub-container">
+        <div className="table-error">Error: {hrError}</div>
       </div>
     );
   }
 
   return (
-    <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Human Resources - Weekly Records</h1>
-        <Link to="/hr/weekly/new" className="btn btn-success">
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Human Resources - Weekly Records</h2>
+        <div className="department-actions">
+          <Link to="/hr/weekly" className="active">Data Entry</Link>
+          <Link to="/hr/reports">Reports</Link>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+        <Link to="/hr/weekly/new" className="btn btn-primary">
           Add New Record
         </Link>
       </div>
 
       {hrRecords.length === 0 ? (
-        <div className="alert alert-info">
+        <div className="table-empty">
           No HR records found. Click "Add New Record" to create one.
         </div>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-striped table-hover">
+        <div className="table-container">
+          <table className="table-app">
             <thead>
               <tr>
                 <th>Week Date</th>
-                <th>Total Positions</th>
-                <th>Open Positions</th>
-                <th>New Hires</th>
-                <th>Turnover</th>
-                <th>Evaluations Due</th>
-                <th className="text-center">Actions</th>
+                <th className="col-number">Total Positions</th>
+                <th className="col-number">Open Positions</th>
+                <th className="col-number">New Hires</th>
+                <th className="col-number">Turnover</th>
+                <th className="col-number">Evaluations Due</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {hrRecords.map((record) => (
                 <tr key={record.id}>
                   <td>{new Date(record.week_date).toLocaleDateString()}</td>
-                  <td>{record.total_positions}</td>
-                  <td>{record.open_positions}</td>
-                  <td>{record.new_hires_this_week}</td>
-                  <td>{record.employee_turnover}</td>
-                  <td>{record.evaluations_due}</td>
-                  <td className="text-center">
-                    <button
-                      onClick={() => handleEdit(record.id)}
-                      className="btn btn-sm btn-warning me-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(record.id)}
-                      className="btn btn-sm btn-danger"
-                    >
-                      Delete
-                    </button>
+                  <td className="col-number">{record.total_positions}</td>
+                  <td className="col-number">{record.open_positions}</td>
+                  <td className="col-number">{record.new_hires_this_week}</td>
+                  <td className="col-number">{record.employee_turnover}</td>
+                  <td className="col-number">{record.evaluations_due}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        onClick={() => handleEdit(record.id)}
+                        className="btn-table-edit"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(record.id)}
+                        className="btn-table-delete"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

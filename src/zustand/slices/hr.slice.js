@@ -1,9 +1,11 @@
-// src/zustand/slices/hrSlice.js
+
 import axios from 'axios';
 
 const createHRSlice = (set) => ({
-  // get all the state 
+  // State
   hrRecords: [],
+  hrWeeklyReports: [],      
+  hrMonthlyReports: [],     
   hrLoading: false,
   hrError: null,
 
@@ -19,7 +21,7 @@ const createHRSlice = (set) => ({
     }
   },
 
-  // Add HR record to the dtabase
+  // Add HR record to the database
   addHRRecord: async (weekDate, totalPositions, openPositions, newHires, turnover, evaluations, notes) => {
     set({ hrLoading: true, hrError: null });
     try {
@@ -82,7 +84,34 @@ const createHRSlice = (set) => ({
       console.error('Error deleting HR record:', error);
       set({ hrError: error.message, hrLoading: false });
     }
-  }
+  },  
+
+  // Fetch weekly HR reports
+  fetchHRWeeklyReports: async () => {
+    set({ hrLoading: true, hrError: null });
+    try {
+      const res = await axios.get('/api/hr/reports/weekly');
+      set({ hrWeeklyReports: res.data, hrLoading: false });
+    } catch (err) {
+      console.error('fetchHRWeeklyReports error:', err);
+      set({ hrError: 'Failed to fetch weekly HR reports', hrLoading: false });
+    }
+  },
+
+  // Fetch monthly HR reports
+  fetchHRMonthlyReports: async () => {
+    set({ hrLoading: true, hrError: null });
+    try {
+      const res = await axios.get('/api/hr/reports/monthly');
+      set({ hrMonthlyReports: res.data, hrLoading: false });
+    } catch (err) {
+      console.error('fetchHRMonthlyReports error:', err);
+      set({ hrError: 'Failed to fetch monthly HR reports', hrLoading: false });
+    }
+  },
+
+  // Clear error
+  clearHRError: () => set({ hrError: null }),
 });
 
 export default createHRSlice;
