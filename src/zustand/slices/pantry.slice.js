@@ -110,7 +110,28 @@ const pantrySlice = (set, get) => ({
       set({ error: "Failed to fetch monthly pantry reports", loading: false });
     }
   },
+  fetchHRWeeklyReports: async () => {
+    set({ hrLoading: true, hrError: null });
+    try {
+      const res = await axios.get('/api/hr/reports/weekly');
+      set({ hrWeeklyReports: res.data, hrLoading: false });
+    } catch (err) {
+      console.error('fetchHRWeeklyReports error:', err);
+      set({ hrError: 'Failed to fetch weekly HR reports', hrLoading: false });
+    }
+  },
 
+  // ========== FETCH MONTHLY HR REPORTS ==========
+  fetchHRMonthlyReports: async () => {
+    set({ hrLoading: true, hrError: null });
+    try {
+      const res = await axios.get('/api/hr/reports/monthly');
+      set({ hrMonthlyReports: res.data, hrLoading: false });
+    } catch (err) {
+      console.error('fetchHRMonthlyReports error:', err);
+      set({ hrError: 'Failed to fetch monthly HR reports', hrLoading: false });
+    }
+  },
   // Clear error
   clearPantryError: () => set({ error: null }),
 });
