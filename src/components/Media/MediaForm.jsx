@@ -28,13 +28,19 @@ export default function MediaForm({ editRecord, setEditRecord }) {
 
   const [formData, setFormData] = useState(emptyForm);
 
+  // --- Safe useEffect for Add and Edit ---
   useEffect(() => {
-    if (editRecord) {
+    if (editRecord && editRecord.month_date) {
+      // Edit mode with a valid record
       setFormData({
         ...editRecord,
         month_date: editRecord.month_date.slice(0, 7),
       });
+    } else if (editRecord) {
+      // Add mode (editRecord exists but has no month_date)
+      setFormData(emptyForm);
     } else {
+      // Nothing selected, reset form
       setFormData(emptyForm);
     }
   }, [editRecord]);
@@ -76,7 +82,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
       notes: formData.notes || "",
     };
 
-    if (editRecord) {
+    if (editRecord && editRecord.month_date) {
       await updateMediaRecord(
         editRecord.platform,
         editRecord.month_date,
@@ -97,7 +103,8 @@ export default function MediaForm({ editRecord, setEditRecord }) {
 
   return (
     <form onSubmit={handleSubmit} className="media-form">
-      <h3>{editRecord ? "Edit Media Record" : "Add Media Record"}</h3>
+      {/* Title removed — modal handles it now */}
+
       <div className="form-section-inline">
         <label>
           Month:
@@ -116,7 +123,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             name="platform"
             value={formData.platform || ""}
             onChange={handleChange}
-            disabled={!!editRecord}
+            disabled={!!(editRecord && editRecord.month_date)} // disable platform in edit mode
             required
           >
             <option value="">Select Platform</option>
@@ -262,6 +269,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
           </label>
         </>
       )}
+
       <label>
         Notes:
         <textarea
@@ -270,15 +278,23 @@ export default function MediaForm({ editRecord, setEditRecord }) {
           onChange={handleChange}
         />
       </label>
+
       <div className="form-buttons">
-        <button type="submit" disabled={loadingMedia}>
-          {editRecord ? "Update" : "Add"}
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={loadingMedia}
+        >
+          {editRecord && editRecord.month_date ? "Save Changes" : "Add Record"}
         </button>
-        {editRecord && (
-          <button type="button" onClick={handleCancel}>
-            Cancel
-          </button>
-        )}
+
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleCancel}
+        >
+          Cancel
+        </button>
       </div>
     </form>
   );

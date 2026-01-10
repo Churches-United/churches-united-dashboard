@@ -115,8 +115,6 @@ function App() {
             <Route path="engagements" element={<VolunteerEngagementPage />} />
             <Route path="reports" element={<VolunteerReportsPage />} />
           </Route>
-
-          <Route path="/media" element={<h2>Media</h2>} />
           <Route path="/kitchen" element={<KitchenPage />} />
 
           <Route path="/outreach" element={<h2>Volunteers</h2>} />

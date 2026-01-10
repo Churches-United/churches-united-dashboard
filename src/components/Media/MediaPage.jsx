@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import useStore from "../../zustand/store";
-import MediaForm from "./MediaForm";
-import MediaTable from "./MediaTable";
+
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+import MediaToolBar from "./MediaToolBar";
+import MediaTable from "./MediaTable";
+import MediaForm from "./MediaForm";
+import "./Media.css";
 
 export default function MediaPage() {
   const [editRecord, setEditRecord] = useState(null);
+
   const mediaRecords = useStore((state) => state.mediaRecords);
   const fetchMediaRecords = useStore((state) => state.fetchMediaRecords);
 
@@ -41,8 +45,37 @@ export default function MediaPage() {
         }
       />
 
-      <MediaForm editRecord={editRecord} setEditRecord={setEditRecord} />
+      {/* Feature Toolbar */}
+      <MediaToolBar onAdd={() => setEditRecord({})} />
+
+      {/* Primary Content */}
       <MediaTable records={sortedRecords} setEditRecord={setEditRecord} />
+
+      {/* Add / Edit Modal */}
+      {editRecord && (
+        <div className="modal-backdrop">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h2>
+                {editRecord.platform ? "Edit Media Record" : "Add Media Record"}
+              </h2>
+              <button
+                className="btn btn-icon"
+                onClick={() => setEditRecord(null)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <MediaForm
+                editRecord={editRecord}
+                setEditRecord={setEditRecord}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
