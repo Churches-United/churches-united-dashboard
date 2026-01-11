@@ -3,6 +3,7 @@ import VolunteerWeeklyReport from "./VolunteerWeeklyReport";
 import VolunteerMonthlyReport from "./VolunteerMonthlyReport";
 import VolunteerByLocationReport from "./VolunteerByLocationReport";
 import VolunteerMonthlyByLocationReport from "./VolunteerMonthlyByLocationReport";
+import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
 
 export default function VolunteerReportsPage() {
   const [activeTab, setActiveTab] = useState("weekly");
@@ -24,18 +25,33 @@ export default function VolunteerReportsPage() {
 
   return (
     <div>
-      <h2>Community Outreach Reports</h2>
+      <div className="hub-container">
+        <DepartmentHeader
+          title="Community Outreach"
+          actions={
+            <>
+              <a href="#/outreach" className="header-action">
+                Data Entry
+              </a>
+              <a href="#/outreach/reports" className="header-action">
+                Reports
+              </a>
+            </>
+          }
+        />
+        <div className="tabs">
+          <button onClick={() => setActiveTab("weekly")}>Weekly</button>
+          <button onClick={() => setActiveTab("monthly")}>Monthly</button>
+          <button onClick={() => setActiveTab("by-location")}>
+            By Location
+          </button>
+          <button onClick={() => setActiveTab("monthly-by-location")}>
+            Monthly by Location
+          </button>
+        </div>
 
-      <div className="tabs">
-        <button onClick={() => setActiveTab("weekly")}>Weekly</button>
-        <button onClick={() => setActiveTab("monthly")}>Monthly</button>
-        <button onClick={() => setActiveTab("by-location")}>By Location</button>
-        <button onClick={() => setActiveTab("monthly-by-location")}>
-          Monthly by Location
-        </button>
+        <div className="report-container">{renderReport()}</div>
       </div>
-
-      <div className="report-container">{renderReport()}</div>
     </div>
   );
 }

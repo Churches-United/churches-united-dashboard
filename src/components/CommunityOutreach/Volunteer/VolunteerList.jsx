@@ -1,11 +1,19 @@
 import useStore from "../../../zustand/store";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
-export default function VolunteerList({ onEdit }) {
+export default function VolunteerList({ onEdit, filters }) {
   const volunteers = useStore((state) => state.volunteers);
-  const deleteVolunteer = useStore((state) => state.deleteVolunteer);
 
-  if (!volunteers.length)
-    return <p className="table-empty">No volunteers found.</p>;
+  const filtered = volunteers.filter((v) => {
+    const matchesVolunteer =
+      !filters.volunteerId || v.id.toString() === filters.volunteerId;
+    const matchesSearch =
+      !filters.search ||
+      v.name.toLowerCase().includes(filters.search.toLowerCase());
+    return matchesVolunteer && matchesSearch;
+  });
+
+  if (filtered.length === 0) return <p>No volunteers found.</p>;
 
   return (
     <div className="table-container table-contained">
@@ -25,7 +33,7 @@ export default function VolunteerList({ onEdit }) {
               <td>
                 <div className="table-actions">
                   <button className="btn-table-edit" onClick={() => onEdit(v)}>
-                    Edit
+                    <FaEdit />
                   </button>
                   <button
                     className="btn-table-delete"
@@ -34,7 +42,7 @@ export default function VolunteerList({ onEdit }) {
                         deleteVolunteer(v.id);
                     }}
                   >
-                    Delete
+                    <FaTrash />
                   </button>
                 </div>
               </td>
