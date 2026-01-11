@@ -35,44 +35,70 @@ export default function VolunteerForm({ volunteerToEdit, onFinish }) {
       return;
     }
 
-    if (volunteerToEdit) {
-      await editVolunteer(volunteerToEdit.id, name, type);
-    } else {
-      await addVolunteer(name, type);
+    const payload = {
+      name: name.trim(),
+      type,
+    };
+
+    try {
+      if (volunteerToEdit) {
+        console.log("Editing volunteer", {
+          id: volunteerToEdit.id,
+          ...payload,
+        });
+        await editVolunteer(volunteerToEdit.id, payload);
+      } else {
+        console.log("Adding volunteer", payload);
+        await addVolunteer(payload);
+      }
+
+      // reset form
+      setName("");
+      setType("Individual");
+      if (onFinish) onFinish();
+    } catch (err) {
+      console.error("VolunteerForm handleSubmit error:", err);
     }
-
-    setName("");
-    setType("Individual");
-
-    if (onFinish) onFinish();
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p className="table-loading">Loading...</p>;
+  if (error) return <p className="table-error">Error: {error}</p>;
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="Individual">Individual</option>
-        <option value="Group">Group</option>
-      </select>
-      <button type="submit">{volunteerToEdit ? "Update" : "Add"}</button>
-      {volunteerToEdit && (
-        <button
-          type="button"
-          onClick={onFinish}
-          style={{ marginLeft: "0.5rem" }}
-        >
-          Cancel
-        </button>
-      )}
-    </form>
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="grid-form">
+        <h3>{volunteerToEdit ? "Edit Volunteer" : "Add Volunteer"}</h3>
+
+        <label>
+          Name
+          <input
+            type="text"
+            placeholder="Volunteer Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </label>
+
+        <label>
+          Type
+          <select value={type} onChange={(e) => setType(e.target.value)}>
+            <option value="Individual">Individual</option>
+            <option value="Group">Group</option>
+          </select>
+        </label>
+
+        <div className="form-actions">
+          <button type="submit" className="primary">
+            {volunteerToEdit ? "Update" : "Add"}
+          </button>
+          {volunteerToEdit && (
+            <button type="button" className="secondary" onClick={onFinish}>
+              Cancel
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
   );
 }

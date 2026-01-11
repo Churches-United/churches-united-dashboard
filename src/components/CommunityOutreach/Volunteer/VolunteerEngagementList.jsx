@@ -2,30 +2,20 @@ import useStore from "../../../zustand/store";
 
 export default function VolunteerEngagementList({ onEdit }) {
   const engagements = useStore((state) => state.engagements);
-  const loadingEngagements = useStore((state) => state.loadingEngagements);
-  const errorEngagements = useStore((state) => state.errorEngagements);
   const deleteEngagement = useStore((state) => state.deleteEngagement);
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this engagement?")) {
-      await deleteEngagement(id);
-    }
-  };
-
-  if (loadingEngagements) return <p>Loading engagements...</p>;
-  if (errorEngagements) return <p>Error: {errorEngagements}</p>;
-
-  if (!engagements.length) return <p>No engagements logged.</p>;
+  if (!engagements.length)
+    return <p className="table-empty">No engagements logged.</p>;
 
   return (
-    <div className="table-container" style={{ maxWidth: "1200px", marginTop: "2rem" }}>
+    <div className="table-container table-contained">
       <table className="table-app table-hover table-striped">
         <thead>
           <tr>
             <th>Volunteer</th>
             <th>Event Date</th>
             <th>Location</th>
-            <th>Number of Volunteers</th>
+            <th>Volunteers</th>
             <th>Software Signups</th>
             <th>Actions</th>
           </tr>
@@ -41,15 +31,17 @@ export default function VolunteerEngagementList({ onEdit }) {
               <td>
                 <div className="table-actions">
                   <button
-                    className="btn btn-sm btn-table-edit"
+                    className="btn-table-edit"
                     onClick={() => onEdit(e.id)}
                   >
                     Edit
                   </button>
                   <button
-                    className="btn btn-sm btn-table-delete"
-                    style={{ marginLeft: "0.5rem" }}
-                    onClick={() => handleDelete(e.id)}
+                    className="btn-table-delete"
+                    onClick={() => {
+                      if (window.confirm("Delete this engagement?"))
+                        deleteEngagement(e.id);
+                    }}
                   >
                     Delete
                   </button>

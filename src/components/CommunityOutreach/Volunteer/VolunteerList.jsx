@@ -4,17 +4,17 @@ export default function VolunteerList({ onEdit }) {
   const volunteers = useStore((state) => state.volunteers);
   const deleteVolunteer = useStore((state) => state.deleteVolunteer);
 
-  if (!volunteers.length) return <p>No volunteers found.</p>;
+  if (!volunteers.length)
+    return <p className="table-empty">No volunteers found.</p>;
 
   return (
-    <div className="table-container" style={{ maxWidth: "800px" }}>
+    <div className="table-container table-contained">
       <table className="table-app table-hover table-striped">
-        {" "}
         <thead>
           <tr>
-            <th align="left">Name</th>
-            <th align="left">Type</th>
-            <th align="left">Actions</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -24,24 +24,15 @@ export default function VolunteerList({ onEdit }) {
               <td>{v.type}</td>
               <td>
                 <div className="table-actions">
-                  <button
-                    className="btn btn-sm btn-table-edit"
-                    onClick={() => onEdit(v)}
-                  >
+                  <button className="btn-table-edit" onClick={() => onEdit(v)}>
                     Edit
                   </button>
                   <button
-                    className="btn btn-sm btn-table-delete"
+                    className="btn-table-delete"
                     onClick={() => {
-                      if (
-                        window.confirm(
-                          `Are you sure you want to delete ${v.name}?`
-                        )
-                      ) {
+                      if (window.confirm(`Delete ${v.name}?`))
                         deleteVolunteer(v.id);
-                      }
                     }}
-                    style={{ marginLeft: "0.5rem" }}
                   >
                     Delete
                   </button>
