@@ -56,7 +56,7 @@ export default function HRReports() {
               <div className="card text-center">
                 <div className="card-body">
                   <h5 className="card-title">Total Hires</h5>
-                  <p className="display-4">{numberFormatter.format(stats.totalHires)}</p>
+                 <p className="display-4">{stats.totalHires}</p>
                 </div>
               </div>
             </div>
@@ -65,7 +65,7 @@ export default function HRReports() {
               <div className="card text-center">
                 <div className="card-body">
                   <h5 className="card-title">Total Turnover</h5>
-                  <p className="display-4">{numberFormatter.format(stats.totalTurnover)}</p>
+                <p className="display-4">{stats.totalTurnover}</p>
                 </div>
               </div>
             </div>
