@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../zustand/store';
+import './Finance.css';
 
 function FinanceWeeklyList() {
   const navigate = useNavigate();
@@ -35,61 +36,63 @@ function FinanceWeeklyList() {
     }
   };
   
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
+  if (loading) return <div className="loading-state">Loading...</div>;
+  if (error) return <div className="error-state">Error: {error}</div>;
   
   return (
-    <div>
+    <div className="weekly-reports-container">
       <h2>Finance Weekly Reports</h2>
       
-      {/* Year Selector */}
-      <div style={{ marginBottom: '20px' }}>
-        <label>View Year: </label>
-        <select 
-          value={year} 
-          onChange={(e) => setYear(parseInt(e.target.value))}
-          style={{ marginLeft: '10px', padding: '5px' }}
-        >
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-          <option value="2026">2026</option>
-          <option value="2027">2027</option>
-        </select>
-      </div>
-      
-      {/* Navigation Buttons */}
-      <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
-        <button 
-          className="btn btn-sm btn-primary"
-          onClick={() => navigate('/finance/weekly/new')}
-        >
-          ➕ Enter Finance Weekly Data
-        </button>
+      <div className="weekly-reports-toolbar">
+        <div className="toolbar-left">
+          <div className="filter-group">
+            <label>View Year:</label>
+            <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+            </select>
+          </div>
+        </div>
         
-        <button 
-          className="btn btn-sm btn-info"
-          onClick={() => navigate('/finance/reports')}
-        >
-          📊 Finance Reports
-        </button>
+        <div className="toolbar-right">
+          <button 
+            className="btn btn-sm btn-primary"
+            onClick={() => navigate('/finance/weekly/new')}
+          >
+            ➕ New Report
+          </button>
+          
+          <button 
+            className="btn btn-sm btn-info"
+            onClick={() => navigate('/finance/reports')}
+            style={{ marginLeft: '8px' }}
+          >
+            📊 View Reports
+          </button>
+        </div>
       </div>
       
-      {/* Table */}
       {records.length === 0 ? (
-        <p>No records found for {year}. Click "New Report" to create one.</p>
+        <div className="empty-state">
+          <div className="empty-state-icon">💰</div>
+          <p>No records found for {year}.</p>
+          <p>Click "New Report" to create one.</p>
+        </div>
       ) : (
-        <div className="table-container" style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <table className="table-app table-hover table-striped">
+        <div className="table-container">
+          <table className="table-app table-hover table-striped weekly-reports-table">
             <thead>
               <tr>
                 <th>Week Of</th>
-                <th>Total Assets</th>
-                <th>Operating Balance</th>
-                <th>Revenue</th>
-                <th>Bills Paid</th>
-                <th>Payroll</th>
-                <th>Net Change</th>
+                <th className="col-number">Total Assets</th>
+                <th className="col-number">Operating Balance</th>
+                <th className="col-number">Revenue</th>
+                <th className="col-number">Bills Paid</th>
+                <th className="col-number">Payroll</th>
+                <th className="col-number">Net Change</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -97,12 +100,12 @@ function FinanceWeeklyList() {
               {records.map((r) => (
                 <tr key={r.id}>
                   <td>{formatDate(r.date)}</td>
-                  <td>{formatCurrency(r.total_assets)}</td>
-                  <td>{formatCurrency(r.operating_account_balance)}</td>
-                  <td style={{ color: 'green' }}>{formatCurrency(r.revenue_received)}</td>
-                  <td style={{ color: 'red' }}>{formatCurrency(r.bills_paid)}</td>
-                  <td style={{ color: 'red' }}>{formatCurrency(r.payroll_paid)}</td>
-                  <td style={{ color: r.net_change >= 0 ? 'green' : 'red' }}>
+                  <td className="col-number">{formatCurrency(r.total_assets)}</td>
+                  <td className="col-number">{formatCurrency(r.operating_account_balance)}</td>
+                  <td className="col-number" style={{ color: 'green' }}>{formatCurrency(r.revenue_received)}</td>
+                  <td className="col-number" style={{ color: 'red' }}>{formatCurrency(r.bills_paid)}</td>
+                  <td className="col-number" style={{ color: 'red' }}>{formatCurrency(r.payroll_paid)}</td>
+                  <td className="col-number" style={{ color: r.net_change >= 0 ? 'green' : 'red' }}>
                     {formatCurrency(r.net_change)}
                   </td>
                   <td>

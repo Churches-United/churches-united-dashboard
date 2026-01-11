@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../../zustand/store';
-import '../Finance/Finance.css';
+import './Finance.css';
 
 function FinanceWeeklyForm() {
   const navigate = useNavigate();
@@ -94,134 +93,136 @@ function FinanceWeeklyForm() {
   if (error && isEditMode) return <div className="error-state">Error: {error}</div>;
   
   return (
-    <div className="weekly-form-container">
-      <h2>{isEditMode ? 'Edit' : 'New'} Finance Weekly Report</h2>
-      
-      <button className="back-button" onClick={() => navigate('/finance')}>
-        ← Back to List
-      </button>
-      
-      <form onSubmit={handleSubmit}>
+    <div className="weekly-reports-container">
+      <div className="weekly-reports-form">
+        <h2>{isEditMode ? 'Edit' : 'New'} Finance Weekly Report</h2>
         
-        <fieldset>
-          <legend>Report Date</legend>
-          <div className="form-group">
-            <label>Week Date: *</label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              required
-            />
-            <p className="form-helper-text">Select any day in the week (will be converted to Monday)</p>
-          </div>
-        </fieldset>
+        <button className="back-button" onClick={() => navigate('/finance')}>
+          ← Back to List
+        </button>
         
-        <fieldset>
-          <legend>Financial Position</legend>
-          <div className="form-group">
-            <label>Total Assets ($):</label>
-            <input
-              type="number"
-              step="0.01"
-              name="total_assets"
-              value={formData.total_assets}
-              onChange={handleChange}
-              placeholder="0.00"
-            />
-          </div>
+        <form onSubmit={handleSubmit}>
           
-          <div className="form-group">
-            <label>Operating Account Balance ($):</label>
-            <input
-              type="number"
-              step="0.01"
-              name="operating_account_balance"
-              value={formData.operating_account_balance}
-              onChange={handleChange}
-              placeholder="0.00"
-            />
-          </div>
-        </fieldset>
-        
-        <fieldset>
-          <legend>Weekly Activity</legend>
-          <div className="form-group">
-            <label>Revenue Received ($):</label>
-            <input
-              type="number"
-              step="0.01"
-              name="revenue_received"
-              value={formData.revenue_received}
-              onChange={handleChange}
-              placeholder="0.00"
-            />
-          </div>
+          <fieldset>
+            <legend>Report Date</legend>
+            <label>
+              Week Date: *
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                required
+              />
+              <span className="form-helper-text">Select any day in the week (will be converted to Monday)</span>
+            </label>
+          </fieldset>
           
-          <div className="form-group">
-            <label>Bills Paid ($):</label>
-            <input
-              type="number"
-              step="0.01"
-              name="bills_paid"
-              value={formData.bills_paid}
-              onChange={handleChange}
-              placeholder="0.00"
-            />
-          </div>
+          <fieldset>
+            <legend>Financial Position</legend>
+            <label>
+              Total Assets ($):
+              <input
+                type="number"
+                step="0.01"
+                name="total_assets"
+                value={formData.total_assets}
+                onChange={handleChange}
+                placeholder="0.00"
+              />
+            </label>
+            
+            <label>
+              Operating Account Balance ($):
+              <input
+                type="number"
+                step="0.01"
+                name="operating_account_balance"
+                value={formData.operating_account_balance}
+                onChange={handleChange}
+                placeholder="0.00"
+              />
+            </label>
+          </fieldset>
           
-          <div className="form-group">
-            <label>Payroll Paid ($):</label>
-            <input
-              type="number"
-              step="0.01"
-              name="payroll_paid"
-              value={formData.payroll_paid}
-              onChange={handleChange}
-              placeholder="0.00"
-            />
-          </div>
-        </fieldset>
-        
-        <fieldset>
-          <legend>Additional Information</legend>
-          <div className="form-group">
-            <label>Major Expenses:</label>
-            <textarea
-              name="major_expenses"
-              value={formData.major_expenses}
-              onChange={handleChange}
-              rows="3"
-              placeholder="e.g., New HVAC system - $5000"
-            />
-          </div>
+          <fieldset>
+            <legend>Weekly Activity</legend>
+            <label>
+              Revenue Received ($):
+              <input
+                type="number"
+                step="0.01"
+                name="revenue_received"
+                value={formData.revenue_received}
+                onChange={handleChange}
+                placeholder="0.00"
+              />
+            </label>
+            
+            <label>
+              Bills Paid ($):
+              <input
+                type="number"
+                step="0.01"
+                name="bills_paid"
+                value={formData.bills_paid}
+                onChange={handleChange}
+                placeholder="0.00"
+              />
+            </label>
+            
+            <label>
+              Payroll Paid ($):
+              <input
+                type="number"
+                step="0.01"
+                name="payroll_paid"
+                value={formData.payroll_paid}
+                onChange={handleChange}
+                placeholder="0.00"
+              />
+            </label>
+          </fieldset>
           
-          <div className="form-group">
-            <label>Notes:</label>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows="4"
-            />
-          </div>
-        </fieldset>
-        
-        <div className="form-actions">
-          <button type="submit" className="btn btn-primary">
-            {isEditMode ? 'Update' : 'Create'} Report
-          </button>
+          <fieldset>
+            <legend>Additional Information</legend>
+            <label>
+              Major Expenses:
+              <textarea
+                name="major_expenses"
+                value={formData.major_expenses}
+                onChange={handleChange}
+                rows="3"
+                placeholder="e.g., New HVAC system - $5000"
+              />
+            </label>
+            
+            <label>
+              Notes:
+              <textarea
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                rows="4"
+              />
+            </label>
+          </fieldset>
           
-          <button 
-            type="button" 
-            onClick={() => navigate('/finance')}
-            className="btn btn-secondary"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+          <div className="form-buttons">
+            <button type="submit" className="btn btn-primary">
+              {isEditMode ? 'Update' : 'Create'} Report
+            </button>
+            
+            <button 
+              type="button" 
+              onClick={() => navigate('/finance')}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

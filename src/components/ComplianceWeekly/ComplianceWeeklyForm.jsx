@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../../zustand/store';
-import '../ComplianceWeekly/ComplianceWeekly.css';
+import './ComplianceWeekly.css';
 
 function ComplianceWeeklyForm() {
   const navigate = useNavigate();
@@ -74,7 +74,6 @@ function ComplianceWeeklyForm() {
     }
   }, [currentRecord, isEditMode]);
   
-  // Calculate totals for validation
   const calculateTotals = () => {
     const totalAge = formData.adults + formData.children + formData.seniors_55_plus;
     const totalGender = formData.female + formData.male + formData.other_gender;
@@ -85,6 +84,7 @@ function ComplianceWeeklyForm() {
   };
 
   const totals = calculateTotals();
+  const allMatch = totals.totalAge === totals.totalGender && totals.totalAge === totals.totalRace;
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,14 +102,12 @@ function ComplianceWeeklyForm() {
       }));
     }
     
-    // Clear validation error when user makes changes
     setValidationError('');
   };
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validate totals match
     const { totalAge, totalGender, totalRace } = calculateTotals();
     
     if (totalAge !== totalGender || totalAge !== totalRace || totalGender !== totalRace) {
@@ -141,351 +139,298 @@ function ComplianceWeeklyForm() {
   if (error && isEditMode) return <div className="error-state">Error: {error}</div>;
   
   return (
-    <div className="weekly-form-container">
-      <h2>{isEditMode ? 'Edit' : 'New'} Compliance Weekly Report</h2>
-      
-      <button className="back-button" onClick={() => navigate('/compliance')}>
-        ← Back to List
-      </button>
+    <div className="weekly-reports-container">
+      <div className="weekly-reports-form">
+        <h2>{isEditMode ? 'Edit' : 'New'} Compliance Weekly Report</h2>
+        
+        <button className="back-button" onClick={() => navigate('/compliance')}>
+          ← Back to List
+        </button>
 
-      {/* Validation Summary Box */}
-      <div style={{
-        padding: '15px',
-        marginBottom: '20px',
-        border: '2px solid #007bff',
-        borderRadius: '4px',
-        backgroundColor: '#e7f3ff'
-      }}>
-        <h3 style={{ margin: '0 0 10px 0', fontSize: '16px', color: '#333' }}>
-          Demographics Totals (Must Match)
-        </h3>
-        <div style={{ display: 'flex', gap: '20px', fontSize: '14px' }}>
-          <div>
-            <strong>Age Total:</strong> 
-            <span style={{ 
-              marginLeft: '8px',
-              color: totals.totalAge === totals.totalGender && totals.totalAge === totals.totalRace ? 'green' : 'red',
-              fontWeight: 'bold'
-            }}>
-              {totals.totalAge}
-            </span>
+        {/* Validation Summary */}
+        <div className="validation-summary">
+          <h3>Demographics Totals (Must Match)</h3>
+          <div className="totals-row">
+            <div className="total-item">
+              <strong>Age Total:</strong>
+              <span className={`total-value ${allMatch ? 'valid' : 'invalid'}`}>
+                {totals.totalAge}
+              </span>
+            </div>
+            <div className="total-item">
+              <strong>Gender Total:</strong>
+              <span className={`total-value ${allMatch ? 'valid' : 'invalid'}`}>
+                {totals.totalGender}
+              </span>
+            </div>
+            <div className="total-item">
+              <strong>Race Total:</strong>
+              <span className={`total-value ${allMatch ? 'valid' : 'invalid'}`}>
+                {totals.totalRace}
+              </span>
+            </div>
           </div>
-          <div>
-            <strong>Gender Total:</strong> 
-            <span style={{ 
-              marginLeft: '8px',
-              color: totals.totalGender === totals.totalAge && totals.totalGender === totals.totalRace ? 'green' : 'red',
-              fontWeight: 'bold'
-            }}>
-              {totals.totalGender}
-            </span>
-          </div>
-          <div>
-            <strong>Race Total:</strong> 
-            <span style={{ 
-              marginLeft: '8px',
-              color: totals.totalRace === totals.totalAge && totals.totalRace === totals.totalGender ? 'green' : 'red',
-              fontWeight: 'bold'
-            }}>
-              {totals.totalRace}
-            </span>
-          </div>
+          {!allMatch && totals.totalAge > 0 && (
+            <p className="message error">
+              ⚠️ Totals do not match! Please adjust your numbers before submitting.
+            </p>
+          )}
+          {allMatch && totals.totalAge > 0 && (
+            <p className="message success">
+              ✅ All totals match!
+            </p>
+          )}
         </div>
-        {totals.totalAge !== totals.totalGender || totals.totalAge !== totals.totalRace ? (
-          <p style={{ margin: '10px 0 0 0', color: 'red', fontSize: '13px' }}>
-            ⚠️ Totals do not match! Please adjust your numbers before submitting.
-          </p>
-        ) : totals.totalAge > 0 ? (
-          <p style={{ margin: '10px 0 0 0', color: 'green', fontSize: '13px' }}>
-            ✅ All totals match!
-          </p>
-        ) : null}
+
+        {validationError && (
+          <div className="error-state" style={{ marginBottom: '16px' }}>
+            {validationError}
+          </div>
+        )}
+        
+        <form onSubmit={handleSubmit}>
+          
+          <fieldset>
+            <legend>Report Date</legend>
+            <label>
+              Week Date: *
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                required
+              />
+              <span className="form-helper-text">Select any day in the week (will be converted to Monday)</span>
+            </label>
+          </fieldset>
+          
+          <fieldset>
+            <legend>Households</legend>
+            <label>
+              Households without Children:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="hh_without_children"
+                value={formData.hh_without_children}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Households with Children:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="hh_with_children"
+                value={formData.hh_with_children}
+                onChange={handleChange}
+              />
+            </label>
+          </fieldset>
+          
+          <fieldset>
+            <legend>Age Demographics</legend>
+            <div className="section-total">Total: {totals.totalAge}</div>
+            
+            <label>
+              Adults:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="adults"
+                value={formData.adults}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Children:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="children"
+                value={formData.children}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Seniors (55+):
+              <input
+                type="text"
+                inputMode="numeric"
+                name="seniors_55_plus"
+                value={formData.seniors_55_plus}
+                onChange={handleChange}
+              />
+            </label>
+          </fieldset>
+          
+          <fieldset>
+            <legend>Gender Demographics</legend>
+            <div className="section-total">Total: {totals.totalGender}</div>
+            
+            <label>
+              Female:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="female"
+                value={formData.female}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Male:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="male"
+                value={formData.male}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Other Gender:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="other_gender"
+                value={formData.other_gender}
+                onChange={handleChange}
+              />
+            </label>
+          </fieldset>
+          
+          <fieldset>
+            <legend>Race Demographics</legend>
+            <div className="section-total">Total: {totals.totalRace}</div>
+            
+            <label>
+              White:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="white"
+                value={formData.white}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Black/African American:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="black_african_american"
+                value={formData.black_african_american}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Native American:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="native_american"
+                value={formData.native_american}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Other Race:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="other_race"
+                value={formData.other_race}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Multi-Racial:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="multi_racial"
+                value={formData.multi_racial}
+                onChange={handleChange}
+              />
+            </label>
+          </fieldset>
+          
+          <fieldset>
+            <legend>Health Conditions</legend>
+            <label>
+              One Condition:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="one_condition"
+                value={formData.one_condition}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Two Conditions:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="two_conditions"
+                value={formData.two_conditions}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Three+ Conditions:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="three_plus_conditions"
+                value={formData.three_plus_conditions}
+                onChange={handleChange}
+              />
+            </label>
+          </fieldset>
+          
+          <fieldset>
+            <legend>Other Metrics</legend>
+            <label>
+              Total Exits:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="total_exits"
+                value={formData.total_exits}
+                onChange={handleChange}
+              />
+            </label>
+          </fieldset>
+          
+          <div className="form-buttons">
+            <button type="submit" className="btn btn-primary">
+              {isEditMode ? 'Update' : 'Create'} Report
+            </button>
+            
+            <button 
+              type="button" 
+              onClick={() => navigate('/compliance')}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
-
-      {validationError && (
-        <div style={{
-          padding: '15px',
-          marginBottom: '20px',
-          border: '2px solid #dc3545',
-          borderRadius: '4px',
-          backgroundColor: '#f8d7da',
-          color: '#721c24',
-          whiteSpace: 'pre-line'
-        }}>
-          <strong>Validation Error:</strong><br />
-          {validationError}
-        </div>
-      )}
-      
-      <form onSubmit={handleSubmit}>
-        
-        <fieldset>
-          <legend>Report Date</legend>
-          <div className="form-group">
-            <label>Week Date: *</label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              required
-            />
-            <p className="form-helper-text">Select any day in the week (will be converted to Monday)</p>
-          </div>
-        </fieldset>
-        
-        <fieldset>
-          <legend>Households</legend>
-          <div className="form-group">
-            <label>Households without Children:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="hh_without_children"
-              value={formData.hh_without_children}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Households with Children:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="hh_with_children"
-              value={formData.hh_with_children}
-              onChange={handleChange}
-            />
-          </div>
-        </fieldset>
-        
-        <fieldset>
-          <legend>Age Demographics</legend>
-          <div style={{ 
-            padding: '10px', 
-            marginBottom: '15px', 
-            backgroundColor: '#f8f9fa', 
-            borderRadius: '4px',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            Total: {totals.totalAge}
-          </div>
-          
-          <div className="form-group">
-            <label>Adults:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="adults"
-              value={formData.adults}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Children:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="children"
-              value={formData.children}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Seniors (55+):</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="seniors_55_plus"
-              value={formData.seniors_55_plus}
-              onChange={handleChange}
-            />
-          </div>
-        </fieldset>
-        
-        <fieldset>
-          <legend>Gender Demographics</legend>
-          <div style={{ 
-            padding: '10px', 
-            marginBottom: '15px', 
-            backgroundColor: '#f8f9fa', 
-            borderRadius: '4px',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            Total: {totals.totalGender}
-          </div>
-          
-          <div className="form-group">
-            <label>Female:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="female"
-              value={formData.female}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Male:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="male"
-              value={formData.male}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Other Gender:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="other_gender"
-              value={formData.other_gender}
-              onChange={handleChange}
-            />
-          </div>
-        </fieldset>
-        
-        <fieldset>
-          <legend>Race Demographics</legend>
-          <div style={{ 
-            padding: '10px', 
-            marginBottom: '15px', 
-            backgroundColor: '#f8f9fa', 
-            borderRadius: '4px',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            Total: {totals.totalRace}
-          </div>
-          
-          <div className="form-group">
-            <label>White:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="white"
-              value={formData.white}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Black/African American:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="black_african_american"
-              value={formData.black_african_american}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Native American:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="native_american"
-              value={formData.native_american}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Other Race:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="other_race"
-              value={formData.other_race}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Multi-Racial:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="multi_racial"
-              value={formData.multi_racial}
-              onChange={handleChange}
-            />
-          </div>
-        </fieldset>
-        
-        <fieldset>
-          <legend>Health Conditions</legend>
-          <div className="form-group">
-            <label>One Condition:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="one_condition"
-              value={formData.one_condition}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Two Conditions:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="two_conditions"
-              value={formData.two_conditions}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Three+ Conditions:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="three_plus_conditions"
-              value={formData.three_plus_conditions}
-              onChange={handleChange}
-            />
-          </div>
-        </fieldset>
-        
-        <fieldset>
-          <legend>Other Metrics</legend>
-          <div className="form-group">
-            <label>Total Exits:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="total_exits"
-              value={formData.total_exits}
-              onChange={handleChange}
-            />
-          </div>
-        </fieldset>
-        
-        <div className="form-actions">
-          <button type="submit" className="btn btn-primary">
-            {isEditMode ? 'Update' : 'Create'} Report
-          </button>
-          
-          <button 
-            type="button" 
-            onClick={() => navigate('/compliance')}
-            className="btn btn-secondary"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
     </div>
   );
 }

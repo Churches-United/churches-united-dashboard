@@ -1,163 +1,273 @@
-/* Weekly Reports Common Styles */
-
+/* ------ Weekly Reports Table Wrapper ------ */
 .weekly-reports-container {
-  max-width: 1400px;
+  max-width: 1400px; 
   margin: 0 auto;
-  padding: 20px;
 }
 
-.weekly-reports-header {
+/* ------ Weekly Reports Toolbar ------ */
+.weekly-reports-toolbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #e0e0e0;
+  align-items: flex-end;
+  margin-bottom: 12px;
+  padding: 0;    
+  width: 100%;   
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.weekly-reports-title {
-  font-size: 28px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-}
-
-.year-selector-container {
+.toolbar-left {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  flex: 1;
 }
 
-.year-selector-container label {
+.toolbar-right {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 16px; 
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  font-size: 0.875rem;
+  margin-bottom: 4px;
   font-weight: 500;
-  color: #555;
 }
 
-.year-selector-container select {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
+.filter-group select {
+  padding: 6px 10px;
   border-radius: 4px;
-  font-size: 14px;
-  background: white;
-  cursor: pointer;
+  border: 1px solid #ccc;
+  font-size: 0.875rem;
 }
 
-.weekly-reports-actions {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.back-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  text-decoration: none;
-  margin-bottom: 20px;
-}
-
-.back-button:hover {
-  background: #5a6268;
-}
-
-/* Form Styles */
-.weekly-form-container {
-  max-width: 800px;
+/* ------ Weekly Reports Form ------ */
+.weekly-reports-form {
+  max-width: 700px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px;
+  background-color: rgba(3, 166, 150, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.weekly-form-container h2 {
-  font-size: 28px;
-  font-weight: 600;
+.weekly-reports-form h2 {
+  margin: 0 0 16px 0;
+  font-size: 1.5rem;
   color: #333;
-  margin-bottom: 20px;
 }
 
-.weekly-form-container fieldset {
+.weekly-reports-form fieldset {
   border: 1px solid #ddd;
   border-radius: 4px;
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
-.weekly-form-container legend {
-  font-size: 18px;
+.weekly-reports-form legend {
+  font-size: 1rem;
   font-weight: 600;
+  padding: 0 8px;
   color: #333;
-  padding: 0 10px;
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
+.weekly-reports-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+  margin-bottom: 12px;
   font-weight: 500;
-  color: #555;
-  margin-bottom: 5px;
 }
 
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group input[type="number"],
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
+.weekly-reports-form input,
+.weekly-reports-form select,
+.weekly-reports-form textarea {
+  padding: 6px 10px;
   border-radius: 4px;
-  font-size: 14px;
+  border: 1px solid #ccc;
+  font-size: 0.875rem;
+  margin-top: 4px;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-}
-
-.form-group textarea {
+.weekly-reports-form textarea {
+  min-height: 60px;
   resize: vertical;
   font-family: inherit;
 }
 
 .form-helper-text {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #666;
-  margin-top: 5px;
+  margin-top: 4px;
   font-style: italic;
 }
 
-.form-actions {
+/* Form Buttons */
+.form-buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #e0e0e0;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.weekly-reports-form .btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  padding: 6px 12px;
+  transition: opacity 0.3s;
+}
+
+.weekly-reports-form .btn-primary {
+  background-color: var(--brand-accent);
+  color: #fff;
+}
+
+.weekly-reports-form .btn-primary:hover {
+  opacity: 0.85;
+}
+
+.weekly-reports-form .btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.weekly-reports-form .btn-secondary:hover {
+  opacity: 0.85;
+}
+
+.back-button {
+  padding: 6px 12px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  background-color: #6c757d;
+  color: #fff;
+  transition: opacity 0.3s;
+  margin-bottom: 16px;
+}
+
+.back-button:hover {
+  opacity: 0.85;
+}
+
+/* ------ Validation Summary Box ------ */
+.validation-summary {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  background-color: #e7f3ff;
+}
+
+.validation-summary h3 {
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.validation-summary .totals-row {
+  display: flex;
+  gap: 20px;
+  font-size: 0.875rem;
+}
+
+.validation-summary .total-item {
+  display: flex;
+  gap: 8px;
+}
+
+.validation-summary .total-value {
+  font-weight: bold;
+}
+
+.validation-summary .total-value.valid {
+  color: green;
+}
+
+.validation-summary .total-value.invalid {
+  color: red;
+}
+
+.validation-summary .message {
+  margin: 10px 0 0 0;
+  font-size: 0.875rem;
+}
+
+.validation-summary .message.success {
+  color: green;
+}
+
+.validation-summary .message.error {
+  color: red;
+}
+
+.section-total {
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+/* ------ Weekly Reports Table ------ */
+.weekly-reports-table {
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.weekly-reports-table th,
+.weekly-reports-table td {
+  padding: 12px 8px;
+  vertical-align: middle;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.weekly-reports-table thead {
+  background-color: var(--brand-primary);
+  color: #fff;
+}
+
+.weekly-reports-table .col-number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.weekly-reports-table tbody tr:hover {
+  background-color: var(--brand-primary-soft);
+}
+
+.weekly-reports-table .table-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 /* Empty State */
 .empty-state {
   text-align: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   color: #666;
-  font-size: 16px;
 }
 
 .empty-state-icon {
-  font-size: 48px;
-  margin-bottom: 15px;
+  font-size: 3rem;
+  margin-bottom: 12px;
   opacity: 0.5;
 }
 
@@ -166,7 +276,7 @@
 .error-state {
   text-align: center;
   padding: 40px;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .error-state {
@@ -174,8 +284,4 @@
   background: #f8d7da;
   border: 1px solid #f5c6cb;
   border-radius: 4px;
-}
-
-.loading-state {
-  color: #666;
 }

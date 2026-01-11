@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../../zustand/store';
-import '../Shelter/Shelter.css';
+import './Shelter.css';
 
 function ShelterWeeklyForm() {
   const navigate = useNavigate();
@@ -92,202 +92,168 @@ function ShelterWeeklyForm() {
     }
   };
   
-  if (loading && isEditMode) return <div>Loading...</div>;
-  if (error && isEditMode) return <div style={{ color: 'red' }}>Error: {error}</div>;
+  if (loading && isEditMode) return <div className="loading-state">Loading...</div>;
+  if (error && isEditMode) return <div className="error-state">Error: {error}</div>;
   
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <h2>{isEditMode ? 'Edit' : 'New'} Shelter Weekly Report</h2>
-      
-      <form onSubmit={handleSubmit}>
+    <div className="weekly-reports-container">
+      <div className="weekly-reports-form">
+        <h2>{isEditMode ? 'Edit' : 'New'} Shelter Weekly Report</h2>
         
-        {/* Week Information */}
-        <fieldset style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
-          <legend style={{ fontWeight: 'bold', fontSize: '16px' }}>Week Information</legend>
+        <button className="back-button" onClick={() => navigate('/shelter')}>
+          ← Back to List
+        </button>
+        
+        <form onSubmit={handleSubmit}>
           
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>
-              Week Of (Monday):
+          <fieldset>
+            <legend>Report Date</legend>
+            <label>
+              Week Date: *
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                required
+              />
+              <span className="form-helper-text">Select any day in the week (will be converted to Monday)</span>
             </label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              required
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
-        </fieldset>
-        
-        {/* Guest Categories */}
-        <fieldset style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
-          <legend style={{ fontWeight: 'bold', fontSize: '16px' }}>Guest Categories</legend>
+          </fieldset>
           
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Single Men:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="single_men"
-              value={formData.single_men}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
+          <fieldset>
+            <legend>Guest Categories</legend>
+            <label>
+              Single Men:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="single_men"
+                value={formData.single_men}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Housing Men:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="housing_men"
+                value={formData.housing_men}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Single Women:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="single_women"
+                value={formData.single_women}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Housing Women:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="housing_women"
+                value={formData.housing_women}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Families:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="families"
+                value={formData.families}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Hybrid/VA Holdover:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="hybrid_va_holdover"
+                value={formData.hybrid_va_holdover}
+                onChange={handleChange}
+              />
+            </label>
+          </fieldset>
           
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Housing Men:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="housing_men"
-              value={formData.housing_men}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
+          <fieldset>
+            <legend>Operations & Outreach</legend>
+            <label>
+              Incident Reports:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="incident_reports"
+                value={formData.incident_reports}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Community Members Served:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="community_members_served"
+                value={formData.community_members_served}
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label>
+              Nights Found Sleeping Outside:
+              <input
+                type="text"
+                inputMode="numeric"
+                name="nights_found_sleeping_outside"
+                value={formData.nights_found_sleeping_outside}
+                onChange={handleChange}
+              />
+            </label>
+          </fieldset>
           
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Single Women:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="single_women"
-              value={formData.single_women}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
+          <fieldset>
+            <legend>Notes</legend>
+            <label>
+              Additional Notes:
+              <textarea
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                rows="4"
+              />
+            </label>
+          </fieldset>
           
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Housing Women:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="housing_women"
-              value={formData.housing_women}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
+          <div className="form-buttons">
+            <button type="submit" className="btn btn-primary">
+              {isEditMode ? 'Update' : 'Create'} Report
+            </button>
+            
+            <button 
+              type="button" 
+              onClick={() => navigate('/shelter')}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
           </div>
-          
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Families:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="families"
-              value={formData.families}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
-          
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Hybrid/VA Holdover:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="hybrid_va_holdover"
-              value={formData.hybrid_va_holdover}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
-        </fieldset>
-        
-        {/* Operations & Outreach */}
-        <fieldset style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
-          <legend style={{ fontWeight: 'bold', fontSize: '16px' }}>Operations & Outreach</legend>
-          
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Incident Reports:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="incident_reports"
-              value={formData.incident_reports}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
-          
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Community Members Served:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="community_members_served"
-              value={formData.community_members_served}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
-          
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Nights Found Sleeping Outside:</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="nights_found_sleeping_outside"
-              value={formData.nights_found_sleeping_outside}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
-        </fieldset>
-        
-        {/* Notes */}
-        <fieldset style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
-          <legend style={{ fontWeight: 'bold', fontSize: '16px' }}>Notes</legend>
-          
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Additional Notes:</label>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows="4"
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px', fontFamily: 'inherit' }}
-            />
-          </div>
-        </fieldset>
-        
-        {/* Buttons */}
-        <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-          <button 
-            type="submit" 
-            style={{ 
-              padding: '10px 20px', 
-              background: '#28a745', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '4px', 
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
-          >
-            {isEditMode ? 'Update' : 'Create'} Report
-          </button>
-          
-          <button 
-            type="button" 
-            onClick={() => navigate('/shelter')}
-            style={{ 
-              padding: '10px 20px', 
-              background: '#6c757d', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '4px', 
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

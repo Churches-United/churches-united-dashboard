@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../zustand/store';
-import '../Shelter/Shelter.css';
+import './Shelter.css';
 
 function ShelterWeeklyList() {
   const navigate = useNavigate();
@@ -33,35 +33,38 @@ function ShelterWeeklyList() {
   
   return (
     <div className="weekly-reports-container">
-      <div className="weekly-reports-header">
-        <h2 className="weekly-reports-title">Shelter Weekly Reports</h2>
-      </div>
+      <h2>Shelter Weekly Reports</h2>
       
-      <div className="year-selector-container">
-        <label>View Year:</label>
-        <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-          <option value="2026">2026</option>
-          <option value="2027">2027</option>
-        </select>
-      </div>
-      
-      <div className="weekly-reports-actions">
-        <button 
-          className="btn btn-sm btn-primary"
-          onClick={() => navigate('/shelter/weekly/new')}
-        >
-          ➕ Enter Shelter Weekly Data
-        </button>
+      <div className="weekly-reports-toolbar">
+        <div className="toolbar-left">
+          <div className="filter-group">
+            <label>View Year:</label>
+            <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+            </select>
+          </div>
+        </div>
         
-        <button 
-          className="btn btn-sm btn-info"
-          onClick={() => navigate('/shelter/reports')}
-        >
-          📊 Shelter Reports
-        </button>
+        <div className="toolbar-right">
+          <button 
+            className="btn btn-sm btn-primary"
+            onClick={() => navigate('/shelter/weekly/new')}
+          >
+            ➕ New Report
+          </button>
+          
+          <button 
+            className="btn btn-sm btn-info"
+            onClick={() => navigate('/shelter/reports')}
+            style={{ marginLeft: '8px' }}
+          >
+            📊 View Reports
+          </button>
+        </div>
       </div>
       
       {records.length === 0 ? (
@@ -72,15 +75,15 @@ function ShelterWeeklyList() {
         </div>
       ) : (
         <div className="table-container">
-          <table className="table-app table-hover table-striped">
+          <table className="table-app table-hover table-striped weekly-reports-table">
             <thead>
               <tr>
                 <th>Week Of</th>
-                <th>Total Guests</th>
-                <th>Single Men</th>
-                <th>Single Women</th>
-                <th>Families</th>
-                <th>Incidents</th>
+                <th className="col-number">Total Guests</th>
+                <th className="col-number">Single Men</th>
+                <th className="col-number">Single Women</th>
+                <th className="col-number">Families</th>
+                <th className="col-number">Incidents</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -88,11 +91,11 @@ function ShelterWeeklyList() {
               {records.map((r) => (
                 <tr key={r.id}>
                   <td>{formatDate(r.date)}</td>
-                  <td>{r.total_guests}</td>
-                  <td>{r.single_men}</td>
-                  <td>{r.single_women}</td>
-                  <td>{r.families}</td>
-                  <td>{r.incident_reports}</td>
+                  <td className="col-number">{r.total_guests}</td>
+                  <td className="col-number">{r.single_men}</td>
+                  <td className="col-number">{r.single_women}</td>
+                  <td className="col-number">{r.families}</td>
+                  <td className="col-number">{r.incident_reports}</td>
                   <td>
                     <div className="table-actions">
                       <button

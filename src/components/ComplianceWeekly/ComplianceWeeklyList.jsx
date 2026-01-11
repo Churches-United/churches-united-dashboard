@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../zustand/store';
-import "../ComplianceWeekly/ComplianceWeekly.css";
+import './ComplianceWeekly.css';
 
 function ComplianceWeeklyList() {
   const navigate = useNavigate();
@@ -33,35 +33,38 @@ function ComplianceWeeklyList() {
   
   return (
     <div className="weekly-reports-container">
-      <div className="weekly-reports-header">
-        <h2 className="weekly-reports-title">Compliance Weekly Reports</h2>
-      </div>
+      <h2>Compliance Weekly Reports</h2>
       
-      <div className="year-selector-container">
-        <label>View Year:</label>
-        <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-          <option value="2026">2026</option>
-          <option value="2027">2027</option>
-        </select>
-      </div>
-      
-      <div className="weekly-reports-actions">
-        <button 
-          className="btn btn-sm btn-primary"
-          onClick={() => navigate('/compliance/weekly/new')}
-        >
-          ➕ Enter Compliance Weekly Data
-        </button>
+      <div className="weekly-reports-toolbar">
+        <div className="toolbar-left">
+          <div className="filter-group">
+            <label>View Year:</label>
+            <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+            </select>
+          </div>
+        </div>
         
-        <button 
-          className="btn btn-sm btn-info"
-          onClick={() => navigate('/compliance/reports')}
-        >
-          📊 Compliance Reports
-        </button>
+        <div className="toolbar-right">
+          <button 
+            className="btn btn-sm btn-primary"
+            onClick={() => navigate('/compliance/weekly/new')}
+          >
+            ➕ New Report
+          </button>
+          
+          <button 
+            className="btn btn-sm btn-info"
+            onClick={() => navigate('/compliance/reports')}
+            style={{ marginLeft: '8px' }}
+          >
+            📊 View Reports
+          </button>
+        </div>
       </div>
       
       {records.length === 0 ? (
@@ -72,13 +75,13 @@ function ComplianceWeeklyList() {
         </div>
       ) : (
         <div className="table-container">
-          <table className="table-app table-hover table-striped">
+          <table className="table-app table-hover table-striped weekly-reports-table">
             <thead>
               <tr>
                 <th>Week Of</th>
-                <th>Households</th>
-                <th>Individuals</th>
-                <th>Exits</th>
+                <th className="col-number">Households</th>
+                <th className="col-number">Individuals</th>
+                <th className="col-number">Exits</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -86,9 +89,9 @@ function ComplianceWeeklyList() {
               {records.map((r) => (
                 <tr key={r.id}>
                   <td>{formatDate(r.date)}</td>
-                  <td>{r.total_households}</td>
-                  <td>{r.total_individuals}</td>
-                  <td>{r.total_exits}</td>
+                  <td className="col-number">{r.total_households}</td>
+                  <td className="col-number">{r.total_individuals}</td>
+                  <td className="col-number">{r.total_exits}</td>
                   <td>
                     <div className="table-actions">
                       <button
