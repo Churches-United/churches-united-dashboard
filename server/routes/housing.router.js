@@ -58,15 +58,11 @@ router.get(
       const result = await pool.query(sqlText);
       res.json(result.rows);
     } catch (err) {
-      console.error(
-        "GET /api/housing/reports/monthly-summary error:",
-        err
-      );
+      console.error("GET /api/housing/reports/monthly-summary error:", err);
       res.sendStatus(500);
     }
   }
 );
-
 
 // GET /api/housing/buildings
 // Returns all buildings
@@ -93,6 +89,7 @@ router.get("/", rejectUnauthenticated, async (req, res) => {
     SELECT
       h.id,
       h.month_date,
+      DATE_TRUNC('month', h.month_date)::date AS month_start,
       b.id AS housing_building_id,
       b.name AS building_name,
       h.occupancy_percent,
@@ -106,7 +103,7 @@ router.get("/", rejectUnauthenticated, async (req, res) => {
     FROM housing h
     JOIN housing_buildings b
       ON b.id = h.housing_building_id
-    ORDER BY h.month_date DESC, b.name;
+    ORDER BY month_start DESC, b.name;
   `;
 
   try {
@@ -270,7 +267,5 @@ router.delete(
     }
   }
 );
-
-
 
 module.exports = router;

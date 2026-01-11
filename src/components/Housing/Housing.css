@@ -149,7 +149,7 @@ button.secondary:hover {
 }
 
 .toolbar-left input[type="text"] {
-  min-width: 150px;
+  min-width: 300px;
 }
 
 /* Adjust buttons inside toolbar */
