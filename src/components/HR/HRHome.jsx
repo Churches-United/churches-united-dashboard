@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function PantryHome() {
+export default function HRHome() {
   return (
     <div className="hub-container">
       <div className="department-header">
-        <h2>Pantry Distribution</h2>
+        <h2>Human Resources</h2>
         <div className="department-actions">
-          <Link to="/pantry/weekly" className="active">Data Entry</Link>
-          <Link to="/pantry/reports">Reports</Link>
+          <Link to="/hr/weekly" className="active">Data Entry</Link>
+          <Link to="/hr/reports">Reports</Link>
         </div>
       </div>
 
@@ -16,11 +16,11 @@ export default function PantryHome() {
         <div className="col-md-6">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h5 className="card-title"> Weekly Records</h5>
+              <h5 className="card-title">📊 Weekly HR Management</h5>
               <p className="card-text">
-                Track weekly food distribution and total pounds distributed.
+                Track staffing levels, new hires, employee turnover, and performance evaluations on a weekly basis.
               </p>
-              <Link to="/pantry/weekly" className="btn btn-primary">
+              <Link to="/hr/weekly" className="btn btn-primary">
                 View Weekly Records
               </Link>
             </div>
@@ -30,14 +30,13 @@ export default function PantryHome() {
         <div className="col-md-6">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h5 className="card-title"> Reports & Analytics</h5>
+              <h5 className="card-title">📈 HR Reports & Analytics</h5>
               <p className="card-text">
-                View comprehensive pantry distribution data and trends.
+                View comprehensive reports on hiring trends and staff stats
               </p>
-              <Link to="/pantry/reports" className="btn btn-primary">
+              <Link to="/hr/reports" className="btn btn-primary">
                 View Reports
               </Link>
-
             </div>
           </div>
         </div>

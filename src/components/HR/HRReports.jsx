@@ -2,43 +2,39 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
 
-export default function PantryReports() {
-  const pantryRecords = useStore((state) => state.pantryRecords);
-  const loading = useStore((state) => state.loading);
-  const fetchPantryRecords = useStore((state) => state.fetchPantryRecords);
+
+export default function HRReports() {
+  const hrRecords = useStore((state) => state.hrRecords);
+  const hrLoading = useStore((state) => state.hrLoading);
+  const fetchHRRecords = useStore((state) => state.fetchHRRecords);
 
   useEffect(() => {
-    fetchPantryRecords();
-  }, [fetchPantryRecords]);
+    fetchHRRecords();
+  }, [fetchHRRecords]);
 
   const calculateStats = () => {
-    if (pantryRecords.length === 0) return null;
+    if (hrRecords.length === 0) return null;
 
-    const totalFirstTime = pantryRecords.reduce((sum, r) => sum + (r.first_time_households || 0), 0);
-    const totalReturning = pantryRecords.reduce((sum, r) => sum + (r.returning_households || 0), 0);
-    const totalPounds = pantryRecords.reduce((sum, r) => sum + (r.total_pounds_distributed || 0), 0);
-    const avgAdults = pantryRecords.reduce((sum, r) => sum + (r.total_adults || 0), 0) / pantryRecords.length;
-    const avgChildren = pantryRecords.reduce((sum, r) => sum + (r.total_children || 0), 0) / pantryRecords.length;
-    const avgSeniors = pantryRecords.reduce((sum, r) => sum + (r.total_seniors || 0), 0) / pantryRecords.length;
+    const totalHires = hrRecords.reduce((sum, r) => sum + (r.new_hires_this_week || 0), 0);
+    const totalTurnover = hrRecords.reduce((sum, r) => sum + (r.employee_turnover || 0), 0);
+    const avgOpenPositions = hrRecords.reduce((sum, r) => sum + (r.open_positions || 0), 0) / hrRecords.length;
+    const avgTotalPositions = hrRecords.reduce((sum, r) => sum + (r.total_positions || 0), 0) / hrRecords.length;
 
     return {
-      totalFirstTime,
-      totalReturning,
-      totalHouseholds: totalFirstTime + totalReturning,
-      totalPounds: totalPounds.toFixed(2),
-      avgAdults: avgAdults.toFixed(1),
-      avgChildren: avgChildren.toFixed(1),
-      avgSeniors: avgSeniors.toFixed(1),
-      totalRecords: pantryRecords.length
+      totalHires,
+      totalTurnover,
+      avgOpenPositions: avgOpenPositions.toFixed(1),
+      avgTotalPositions: avgTotalPositions.toFixed(1),
+      totalRecords: hrRecords.length
     };
   };
 
   const stats = calculateStats();
 
-  if (loading) {
+  if (hrLoading) {
     return (
       <div className="hub-container">
-        <div className="table-loading">Loading pantry reports...</div>
+        <div className="table-loading">Loading HR reports...</div>
       </div>
     );
   }
@@ -46,10 +42,10 @@ export default function PantryReports() {
   return (
     <div className="hub-container">
       <div className="department-header">
-        <h2>Pantry Distribution - view Reports </h2>
+        <h2>Human Resources - Reports & Analytics</h2>
         <div className="department-actions">
-          <Link to="/pantry/weekly">Data Entry</Link>
-          <Link to="/pantry/reports" className="active">Reports</Link>
+          <Link to="/hr/weekly">Data Entry</Link>
+          <Link to="/hr/reports" className="active">Reports</Link>
         </div>
       </div>
 
@@ -59,8 +55,8 @@ export default function PantryReports() {
             <div className="col-md-3">
               <div className="card text-center">
                 <div className="card-body">
-                  <h5 className="card-title">Total Households</h5>
-                  <p className="display-4">{stats.totalHouseholds}</p>
+                  <h5 className="card-title">Total Hires</h5>
+                 <p className="display-4">{stats.totalHires}</p>
                 </div>
               </div>
             </div>
@@ -68,8 +64,8 @@ export default function PantryReports() {
             <div className="col-md-3">
               <div className="card text-center">
                 <div className="card-body">
-                  <h5 className="card-title">First-Time</h5>
-                  <p className="display-4">{stats.totalFirstTime}</p>
+                  <h5 className="card-title">Total Turnover</h5>
+                <p className="display-4">{stats.totalTurnover}</p>
                 </div>
               </div>
             </div>
@@ -77,8 +73,8 @@ export default function PantryReports() {
             <div className="col-md-3">
               <div className="card text-center">
                 <div className="card-body">
-                  <h5 className="card-title">Returning</h5>
-                  <p className="display-4">{stats.totalReturning}</p>
+                  <h5 className="card-title">Avg Open Positions</h5>
+                  <p className="display-4">{stats.avgOpenPositions}</p>
                 </div>
               </div>
             </div>
@@ -86,37 +82,8 @@ export default function PantryReports() {
             <div className="col-md-3">
               <div className="card text-center">
                 <div className="card-body">
-                  <h5 className="card-title">Total Pounds</h5>
-                  <p className="display-4">{stats.totalPounds}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row g-4 mb-4">
-            <div className="col-md-4">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h5 className="card-title">Avg Adults/Week</h5>
-                  <p className="display-4">{stats.avgAdults}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h5 className="card-title">Avg Children/Week</h5>
-                  <p className="display-4">{stats.avgChildren}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h5 className="card-title">Avg Seniors/Week</h5>
-                  <p className="display-4">{stats.avgSeniors}</p>
+                  <h5 className="card-title">Avg Total Positions</h5>
+                  <p className="display-4">{stats.avgTotalPositions}</p>
                 </div>
               </div>
             </div>
@@ -127,24 +94,22 @@ export default function PantryReports() {
               <thead>
                 <tr>
                   <th>Week Date</th>
-                  <th className="col-number">First-Time</th>
-                  <th className="col-number">Returning</th>
-                  <th className="col-number">Adults</th>
-                  <th className="col-number">Children</th>
-                  <th className="col-number">Seniors</th>
-                  <th className="col-number">Pounds</th>
+                  <th className="col-number">Total Positions</th>
+                  <th className="col-number">Open Positions</th>
+                  <th className="col-number">New Hires</th>
+                  <th className="col-number">Turnover</th>
+                  <th className="col-number">Evaluations Due</th>
                 </tr>
               </thead>
               <tbody>
-                {pantryRecords.map((record) => (
+                {hrRecords.map((record) => (
                   <tr key={record.id}>
                     <td>{new Date(record.week_date).toLocaleDateString()}</td>
-                    <td className="col-number">{record.first_time_households}</td>
-                    <td className="col-number">{record.returning_households}</td>
-                    <td className="col-number">{record.total_adults}</td>
-                    <td className="col-number">{record.total_children}</td>
-                    <td className="col-number">{record.total_seniors}</td>
-                    <td className="col-number">{record.total_pounds_distributed}</td>
+                    <td className="col-number">{record.total_positions}</td>
+                    <td className="col-number">{record.open_positions}</td>
+                    <td className="col-number">{record.new_hires_this_week}</td>
+                    <td className="col-number">{record.employee_turnover}</td>
+                    <td className="col-number">{record.evaluations_due}</td>
                   </tr>
                 ))}
               </tbody>
@@ -153,7 +118,7 @@ export default function PantryReports() {
         </>
       ) : (
         <div className="table-empty">
-          No pantry records available. Add some records to see reports.
+          No HR records available. Add some records to see reports.
         </div>
       )}
     </div>
