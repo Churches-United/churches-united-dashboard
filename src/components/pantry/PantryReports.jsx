@@ -18,10 +18,10 @@ const pantryError = useStore((state) => state.pantryError);
 
     const totalFirstTime = pantryRecords.reduce((sum, r) => sum + (r.first_time_households || 0), 0);
     const totalReturning = pantryRecords.reduce((sum, r) => sum + (r.returning_households || 0), 0);
-    const totalPounds = pantryRecords.reduce((sum, r) => sum + (r.total_pounds_distributed || 0), 0);
-    const avgAdults = pantryRecords.reduce((sum, r) => sum + (r.total_adults || 0), 0) / pantryRecords.length;
-    const avgChildren = pantryRecords.reduce((sum, r) => sum + (r.total_children || 0), 0) / pantryRecords.length;
-    const avgSeniors = pantryRecords.reduce((sum, r) => sum + (r.total_seniors || 0), 0) / pantryRecords.length;
+   const totalPounds = pantryRecords.reduce((sum, r) => sum + (parseFloat(r.total_pounds_distributed) || 0), 0);
+const avgAdults = pantryRecords.reduce((sum, r) => sum + (parseInt(r.total_adults) || 0), 0) / pantryRecords.length;
+const avgChildren = pantryRecords.reduce((sum, r) => sum + (parseInt(r.total_children) || 0), 0) / pantryRecords.length;
+const avgSeniors = pantryRecords.reduce((sum, r) => sum + (parseInt(r.total_seniors) || 0), 0) / pantryRecords.length;
 
     return {
       totalFirstTime,
