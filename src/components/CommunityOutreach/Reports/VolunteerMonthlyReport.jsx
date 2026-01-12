@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useStore from "../../../zustand/store";
 
-export default function VolunteerMonthlyReport() {
+export default function VolunteerMonthlyReport({ year, location, search }) {
   const fetchVolunteerMonthlyReports = useStore(
     (state) => state.fetchVolunteerMonthlyReports
   );
@@ -14,19 +14,37 @@ export default function VolunteerMonthlyReport() {
   }, [fetchVolunteerMonthlyReports]);
 
   if (loading) return <p>Loading monthly volunteer reports...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (error) return <p className="table-error">{error}</p>;
 
   if (!reports || reports.length === 0) {
-    return <p>No monthly volunteer data available.</p>;
+    return <p className="table-empty">No monthly volunteer data available.</p>;
+  }
+
+  const filteredReports = reports.filter((row) => {
+    const matchesYear = year ? row.year === parseInt(year, 10) : true;
+    const matchesLocation =
+      location && location !== "All" ? row.location === location : true;
+    const matchesSearch = search
+      ? row.volunteer_name?.toLowerCase().includes(search.toLowerCase())
+      : true;
+
+    return matchesYear && matchesLocation && matchesSearch;
+  });
+
+  if (filteredReports.length === 0) {
+    return (
+      <p className="table-empty">
+        No monthly volunteer data matches your filters.
+      </p>
+    );
   }
 
   return (
-    <div>
+    <div className="report-section">
       <h2>Monthly Community Outreach Report</h2>
 
-      <div className="table-container" style={{ maxWidth: "1000px" }}>
-        <table className="table-app table-hover table-striped">
-          {" "}
+      <div className="table-container table-contained">
+        <table className="table-app">
           <thead>
             <tr>
               <th>Month</th>
@@ -36,7 +54,7 @@ export default function VolunteerMonthlyReport() {
             </tr>
           </thead>
           <tbody>
-            {reports.map((row) => (
+            {filteredReports.map((row) => (
               <tr key={row.month_start}>
                 <td>{row.month_label}</td>
                 <td>{row.total_volunteers}</td>

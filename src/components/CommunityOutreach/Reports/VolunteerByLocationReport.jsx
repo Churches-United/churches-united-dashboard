@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useStore from "../../../zustand/store";
 
-export default function VolunteerByLocationReport() {
+export default function VolunteerByLocationReport({ year, location, search }) {
   const fetchVolunteerByLocationReports = useStore(
     (state) => state.fetchVolunteerByLocationReports
   );
@@ -14,18 +14,37 @@ export default function VolunteerByLocationReport() {
   }, [fetchVolunteerByLocationReports]);
 
   if (loading) return <p>Loading volunteer reports by location...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (error) return <p className="table-error">{error}</p>;
 
   if (!reports || reports.length === 0) {
-    return <p>No volunteer data by location available.</p>;
+    return (
+      <p className="table-empty">No volunteer data by location available.</p>
+    );
+  }
+
+  const filteredReports = reports.filter((row) => {
+    const matchesYear = year ? row.year === parseInt(year, 10) : true;
+    const matchesLocation =
+      location && location !== "All" ? row.location === location : true;
+    const matchesSearch = search
+      ? row.location.toLowerCase().includes(search.toLowerCase())
+      : true;
+
+    return matchesYear && matchesLocation && matchesSearch;
+  });
+
+  if (filteredReports.length === 0) {
+    return (
+      <p className="table-empty">No volunteer data matches your filters.</p>
+    );
   }
 
   return (
-    <div>
+    <div className="report-section">
       <h2>Volunteer Engagement by Location</h2>
 
-      <div className="table-container" style={{ maxWidth: "1000px" }}>
-        <table className="table-app table-hover table-striped">
+      <div className="table-container table-contained">
+        <table className="table-app">
           <thead>
             <tr>
               <th>Location</th>
@@ -35,7 +54,7 @@ export default function VolunteerByLocationReport() {
             </tr>
           </thead>
           <tbody>
-            {reports.map((row) => (
+            {filteredReports.map((row) => (
               <tr key={row.location}>
                 <td>{row.location}</td>
                 <td>{row.total_volunteers}</td>
