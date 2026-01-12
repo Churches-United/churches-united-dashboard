@@ -34,7 +34,7 @@ import FinanceReporting from "../Finance/FinanceReporting";
 
 import VolunteerPage from "../CommunityOutreach/Volunteer/VolunteerPage";
 import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEngagementPage";
-import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
+import CommunityOutreachReportsPage from "../CommunityOutreach/Reports/CommunityOutreachReportsPage";
 import CommunityOutreachPage from "../CommunityOutreach/CommunityOutreachPage";
 
 
@@ -102,9 +102,9 @@ function App() {
 
           {/* Outreach */}
           <Route path="/outreach" element={<CommunityOutreachPage />} />
-          {/* <Route path="/outreach/volunteers" element={<VolunteerPage />} />
-          <Route path="/outreach/engagements" element={<VolunteerEngagementPage />}/> */}
-          <Route path="/outreach/reports" element={<VolunteerReportsPage />}/>
+          <Route path="/outreach/volunteers" element={<VolunteerPage />} />
+          <Route path="/outreach/engagements" element={<VolunteerEngagementPage />}/>
+          <Route path="/outreach/reports" element={<CommunityOutreachReportsPage />}/>
 
           {/* Kitchen */}
           <Route path="/kitchen" element={<KitchenPage />} />

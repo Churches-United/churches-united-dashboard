@@ -2,7 +2,7 @@ import React from "react";
 import Accordion from "react-bootstrap/Accordion";
 
 // Original Components
-import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
+import CommunityOutreachReportsPage from "../CommunityOutreach/Reports/CommunityOutreachReportsPage";
 import DevelopmentReports from "../Development/DevelopmentReports";
 import HousingReports from "../Housing/HousingReports";
 import MediaReports from "../Media/Reports/MediaReports";
@@ -30,7 +30,7 @@ export default function ReportsHub() {
     {
       id: "volunteer",
       title: "Community Outreach Reports",
-      Component: VolunteerReportsPage,
+      Component: CommunityOutreachReportsPage,
     },
     {
       id: "development",
@@ -73,7 +73,7 @@ export default function ReportsHub() {
   );
 }
 
-// import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
+// import CommunityOutreachReportsPage from "../CommunityOutreach/Reports/CommunityOutreachReportsPage";
 // import DevelopmentReports from "../Development/DevelopmentReports";
 // import HousingReports from "../Housing/HousingReports";
 
@@ -82,7 +82,7 @@ export default function ReportsHub() {
 //     <>
 //       <h1>Reporting Hub</h1>
 //       <p>work in progress...</p>
-//       <VolunteerReportsPage />
+//       <CommunityOutreachReportsPage />
 //       <DevelopmentReports />
 //       <HousingReports />
 //     </>
