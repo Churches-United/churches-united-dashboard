@@ -4,8 +4,8 @@ import useStore from '../../zustand/store';
 
 export default function PantryWeeklyList() {
   const pantryRecords = useStore((state) => state.pantryRecords);
-  const loading = useStore((state) => state.loading);
-  const error = useStore((state) => state.error);
+ const pantryLoading = useStore((state) => state.pantryLoading);
+const pantryError = useStore((state) => state.pantryError);
   const fetchPantryRecords = useStore((state) => state.fetchPantryRecords);
   const deletePantryRecord = useStore((state) => state.deletePantryRecord);
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function PantryWeeklyList() {
     navigate(`/pantry/weekly/edit/${id}`);
   };
 
-  if (loading) {
+  if (pantryLoading) {
     return (
       <div className="hub-container">
         <div className="table-loading">Loading pantry records...</div>
@@ -32,10 +32,10 @@ export default function PantryWeeklyList() {
     );
   }
 
-  if (error) {
+  if (pantryError) {
     return (
       <div className="hub-container">
-        <div className="table-error">Error: {error}</div>
+        <div className="table-error">Error: {pantryError}</div>
       </div>
     );
   }

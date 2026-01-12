@@ -4,8 +4,10 @@ import useStore from '../../zustand/store';
 
 export default function PantryReports() {
   const pantryRecords = useStore((state) => state.pantryRecords);
-  const loading = useStore((state) => state.loading);
+ 
   const fetchPantryRecords = useStore((state) => state.fetchPantryRecords);
+  const pantryLoading = useStore((state) => state.pantryLoading);
+const pantryError = useStore((state) => state.pantryError);
 
   useEffect(() => {
     fetchPantryRecords();
@@ -35,7 +37,7 @@ export default function PantryReports() {
 
   const stats = calculateStats();
 
-  if (loading) {
+  if (pantryLoading) {
     return (
       <div className="hub-container">
         <div className="table-loading">Loading pantry reports...</div>
