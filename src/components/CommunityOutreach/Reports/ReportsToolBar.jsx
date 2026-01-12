@@ -63,3 +63,6 @@ export default function ReportsToolbar({
     </div>
   );
 }
+
+
+// todo - conditional render or grey out dropdowns if they do not work with that report. 

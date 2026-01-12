@@ -58,3 +58,173 @@
   font-size: 0.875rem;
 }
 
+
+/* ---------- Tables ---------- */
+
+.table-container.table-contained {
+  max-width: 1200px;
+  margin: 0 auto 1rem auto;
+}
+
+.volunteer-table + .engagement-table {
+  margin-top: 2rem;
+}
+
+/* ---------- Accordion (Volunteer List) ---------- */
+
+.accordion {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.accordion:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  background-color: rgba(42, 87, 84);
+  color: #fff;
+
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.accordion-header:hover {
+  background-color: var(--brand-primary);
+  color: #fff;
+}
+
+.accordion-header svg {
+  margin-left: 8px;
+}
+
+.accordion-content {
+  padding: 16px;
+  background-color: #fff;
+}
+
+/* ---------- Modals ---------- */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  position: relative;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90%;
+  overflow-y: auto;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--brand-primary);
+  transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: var(--danger);
+}
+
+/* ---------- Form  ---------- */
+
+.form-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: rgba(3, 166, 150, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.engagement-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+.engagement-form-grid .full-width {
+  grid-column: 1 / -1;
+}
+
+.engagement-form-grid label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.engagement-form-grid input,
+.engagement-form-grid select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 4px;
+  font-size: 0.95rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  margin-top: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .outreach-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .toolbar-left,
+  .toolbar-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .toolbar-right button {
+    width: 100%;
+    justify-content: center;
+  }
+}
