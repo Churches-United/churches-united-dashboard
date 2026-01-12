@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
 
 export default function PantryReports() {
   const pantryRecords = useStore((state) => state.pantryRecords);
-  const loading = useStore((state) => state.loading);
+ 
   const fetchPantryRecords = useStore((state) => state.fetchPantryRecords);
+  const pantryLoading = useStore((state) => state.pantryLoading);
+const pantryError = useStore((state) => state.pantryError);
 
   useEffect(() => {
     fetchPantryRecords();
@@ -15,10 +18,10 @@ export default function PantryReports() {
 
     const totalFirstTime = pantryRecords.reduce((sum, r) => sum + (r.first_time_households || 0), 0);
     const totalReturning = pantryRecords.reduce((sum, r) => sum + (r.returning_households || 0), 0);
-    const totalPounds = pantryRecords.reduce((sum, r) => sum + (r.total_pounds_distributed || 0), 0);
-    const avgAdults = pantryRecords.reduce((sum, r) => sum + (r.total_adults || 0), 0) / pantryRecords.length;
-    const avgChildren = pantryRecords.reduce((sum, r) => sum + (r.total_children || 0), 0) / pantryRecords.length;
-    const avgSeniors = pantryRecords.reduce((sum, r) => sum + (r.total_seniors || 0), 0) / pantryRecords.length;
+   const totalPounds = pantryRecords.reduce((sum, r) => sum + (parseFloat(r.total_pounds_distributed) || 0), 0);
+const avgAdults = pantryRecords.reduce((sum, r) => sum + (parseInt(r.total_adults) || 0), 0) / pantryRecords.length;
+const avgChildren = pantryRecords.reduce((sum, r) => sum + (parseInt(r.total_children) || 0), 0) / pantryRecords.length;
+const avgSeniors = pantryRecords.reduce((sum, r) => sum + (parseInt(r.total_seniors) || 0), 0) / pantryRecords.length;
 
     return {
       totalFirstTime,
@@ -34,21 +37,23 @@ export default function PantryReports() {
 
   const stats = calculateStats();
 
-  if (loading) {
+  if (pantryLoading) {
     return (
-      <div className="container mt-4">
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
+      <div className="hub-container">
+        <div className="table-loading">Loading pantry reports...</div>
       </div>
     );
   }
 
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">Pantry Distribution Reports</h1>
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Pantry Distribution - Reports & Analytics</h2>
+        <div className="department-actions">
+          <Link to="/pantry/weekly">Data Entry</Link>
+          <Link to="/pantry/reports" className="active">Reports</Link>
+        </div>
+      </div>
 
       {stats ? (
         <>
@@ -119,44 +124,37 @@ export default function PantryReports() {
             </div>
           </div>
 
-          <div className="card">
-            <div className="card-header">
-              <h3>Weekly Pantry Data</h3>
-            </div>
-            <div className="card-body">
-              <div className="table-responsive">
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Week Date</th>
-                      <th>First-Time</th>
-                      <th>Returning</th>
-                      <th>Adults</th>
-                      <th>Children</th>
-                      <th>Seniors</th>
-                      <th>Pounds</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {pantryRecords.map((record) => (
-                      <tr key={record.id}>
-                        <td>{new Date(record.week_date).toLocaleDateString()}</td>
-                        <td>{record.first_time_households}</td>
-                        <td>{record.returning_households}</td>
-                        <td>{record.total_adults}</td>
-                        <td>{record.total_children}</td>
-                        <td>{record.total_seniors}</td>
-                        <td>{record.total_pounds_distributed}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+          <div className="table-container">
+            <table className="table-app">
+              <thead>
+                <tr>
+                  <th>Week Date</th>
+                  <th className="col-number">First-Time</th>
+                  <th className="col-number">Returning</th>
+                  <th className="col-number">Adults</th>
+                  <th className="col-number">Children</th>
+                  <th className="col-number">Seniors</th>
+                  <th className="col-number">Pounds</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pantryRecords.map((record) => (
+                  <tr key={record.id}>
+                    <td>{new Date(record.week_date).toLocaleDateString()}</td>
+                    <td className="col-number">{record.first_time_households}</td>
+                    <td className="col-number">{record.returning_households}</td>
+                    <td className="col-number">{record.total_adults}</td>
+                    <td className="col-number">{record.total_children}</td>
+                    <td className="col-number">{record.total_seniors}</td>
+                    <td className="col-number">{record.total_pounds_distributed}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </>
       ) : (
-        <div className="alert alert-info">
+        <div className="table-empty">
           No pantry records available. Add some records to see reports.
         </div>
       )}

@@ -4,8 +4,8 @@ import useStore from '../../zustand/store';
 
 export default function PantryWeeklyList() {
   const pantryRecords = useStore((state) => state.pantryRecords);
-  const loading = useStore((state) => state.loading);
-  const error = useStore((state) => state.error);
+ const pantryLoading = useStore((state) => state.pantryLoading);
+const pantryError = useStore((state) => state.pantryError);
   const fetchPantryRecords = useStore((state) => state.fetchPantryRecords);
   const deletePantryRecord = useStore((state) => state.deletePantryRecord);
   const navigate = useNavigate();
@@ -24,79 +24,82 @@ export default function PantryWeeklyList() {
     navigate(`/pantry/weekly/edit/${id}`);
   };
 
-  if (loading) {
+  if (pantryLoading) {
     return (
-      <div className="container mt-4">
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
+      <div className="hub-container">
+        <div className="table-loading">Loading pantry records...</div>
       </div>
     );
   }
 
-  if (error) {
+  if (pantryError) {
     return (
-      <div className="container mt-4">
-        <div className="alert alert-danger" role="alert">
-          Error: {error}
-        </div>
+      <div className="hub-container">
+        <div className="table-error">Error: {pantryError}</div>
       </div>
     );
   }
 
   return (
-    <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Pantry - Weekly pantry Records</h1>
-        <Link to="/pantry/weekly/new" className="btn btn-success">
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Pantry Distribution - Weekly Records</h2>
+        <div className="department-actions">
+          <Link to="/pantry/weekly" className="active">Data Entry</Link>
+          <Link to="/pantry/reports">Reports</Link>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+        <Link to="/pantry/weekly/new" className="btn btn-primary">
           Add New Record
         </Link>
       </div>
 
       {pantryRecords.length === 0 ? (
-        <div className="alert alert-info">
-          No pantry records found. Click "Add New Record" .
+        <div className="table-empty">
+          No pantry records found. Click "Add New Record" to create one.
         </div>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-striped table-hover">
+        <div className="table-container">
+          <table className="table-app">
             <thead>
               <tr>
                 <th>Week Date</th>
-                <th>First-Time Households</th>
-                <th>Returning Households</th>
-                <th>Adults</th>
-                <th>Children</th>
-                <th>Seniors</th>
-                <th>Total Pounds</th>
-                <th className="text-center">Actions</th>
+                <th className="col-number">First-Time</th>
+                <th className="col-number">Returning</th>
+                <th className="col-number">Adults</th>
+                <th className="col-number">Children</th>
+                <th className="col-number">Seniors</th>
+                <th className="col-number">Total Pounds</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {pantryRecords.map((record) => (
                 <tr key={record.id}>
                   <td>{new Date(record.week_date).toLocaleDateString()}</td>
-                  <td>{record.first_time_households}</td>
-                  <td>{record.returning_households}</td>
-                  <td>{record.total_adults}</td>
-                  <td>{record.total_children}</td>
-                  <td>{record.total_seniors}</td>
-                  <td>{record.total_pounds_distributed}</td>
-                  <td className="text-center">
-                    <button
-                      onClick={() => handleEdit(record.id)}
-                      className="btn btn-sm btn-warning me-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(record.id)}
-                      className="btn btn-sm btn-danger"
-                    >
-                      Delete
-                    </button>
+                  <td className="col-number">{record.first_time_households}</td>
+                  <td className="col-number">{record.returning_households}</td>
+                  <td className="col-number">{record.total_adults}</td>
+                  <td className="col-number">{record.total_children}</td>
+                  <td className="col-number">{record.total_seniors}</td>
+                  <td className="col-number">{record.total_pounds_distributed}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        onClick={() => handleEdit(record.id)}
+                        className="btn-table-edit"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(record.id)}
+                        className="btn-table-delete"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

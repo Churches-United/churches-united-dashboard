@@ -5,7 +5,66 @@ const {
 } = require("../modules/authentication-middleware");
 const router = require("express").Router();
 
-// get all pantry route
+// ========== SPECIFIC ROUTES FIRST ==========
+
+// Weekly report route
+router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      DATE_TRUNC('week', week_date)::date AS week_start,
+      TO_CHAR(DATE_TRUNC('week', week_date), 'YYYY-MM-DD') || ' - ' ||
+      TO_CHAR(DATE_TRUNC('week', week_date) + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
+      SUM(first_time_households) AS total_first_time,
+      SUM(returning_households) AS total_returning,
+      SUM(total_adults) AS total_adults,
+      SUM(total_children) AS total_children,
+      SUM(total_seniors) AS total_seniors,
+      SUM(total_pounds_distributed) AS total_pounds,
+      COUNT(*) AS record_count
+    FROM pantry
+    GROUP BY DATE_TRUNC('week', week_date)
+    ORDER BY week_start DESC;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/pantry/reports/weekly error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// Monthly report route
+router.get("/reports/monthly", rejectUnauthenticated, (req, res) => {
+  const sqlText = `
+    SELECT 
+      TO_CHAR(week_date, 'YYYY-MM') as month,
+      TO_CHAR(week_date, 'Month YYYY') as month_name,
+      SUM(first_time_households) as total_first_time,
+      SUM(returning_households) as total_returning,
+      SUM(total_adults) as total_adults,
+      SUM(total_children) as total_children,
+      SUM(total_seniors) as total_seniors,
+      SUM(total_pounds_distributed) as total_pounds,
+      COUNT(*) as total_weeks
+    FROM pantry
+    GROUP BY TO_CHAR(week_date, 'YYYY-MM'), TO_CHAR(week_date, 'Month YYYY')
+    ORDER BY month DESC;
+  `;
+
+  pool
+    .query(sqlText)
+    .then((result) => res.json(result.rows))
+    .catch((err) => {
+      console.error("GET /api/pantry/reports/monthly error:", err);
+      res.sendStatus(500);
+    });
+});
+
+// ========== BASE ROUTES ==========
+
+// Get all pantry records
 router.get("/", rejectUnauthenticated, (req, res) => {
   const sqlText = `SELECT * FROM pantry ORDER BY week_date DESC;`;
 
@@ -17,7 +76,8 @@ router.get("/", rejectUnauthenticated, (req, res) => {
       res.sendStatus(500);
     });
 });
-// post pantry route
+
+// Post pantry record
 router.post("/", rejectUnauthenticated, (req, res) => {
   const {
     week_date,
@@ -30,13 +90,12 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     notes,
   } = req.body;
   
-  // check for validations
   if (!week_date) {
     return res.status(400).json({
       message: "Week date required",
     });
   }
-  // check also 4 conditions if any entry is less than 0
+
   if (
     first_time_households < 0 ||
     returning_households < 0 ||
@@ -72,7 +131,6 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     .catch((error) => {
       console.error("POST /api/pantry error:", error);
 
-      // checking duplicate by postgress
       if (error.code === "23505") {
         res.status(409).json({
           message: `A record for ${week_date} already exists`,
@@ -83,69 +141,10 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
-// weekly report route
-
-router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
-  const sqlText = `
-    SELECT
-      DATE_TRUNC('week', week_date)::date AS week_start,
-      
-      TO_CHAR(DATE_TRUNC('week', week_date), 'YYYY-MM-DD') || ' - ' ||
-      TO_CHAR(DATE_TRUNC('week', week_date) + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
-      
-      SUM(first_time_households) AS total_first_time,
-      SUM(returning_households) AS total_returning,
-      SUM(total_adults) AS total_adults,
-      SUM(total_children) AS total_children,
-      SUM(total_seniors) AS total_seniors,
-      SUM(total_pounds_distributed) AS total_pounds,
-      
-      COUNT(*) AS record_count
-      
-    FROM pantry
-    GROUP BY DATE_TRUNC('week', week_date)
-    ORDER BY week_start DESC;
-  `;
-
-  try {
-    const result = await pool.query(sqlText);
-    res.json(result.rows);
-  } catch (err) {
-    console.error("GET /api/pantry/reports/weekly error:", err);
-    res.sendStatus(500);
-  }
-});
-
-// monthly report route
-router.get("/reports/monthly", rejectUnauthenticated, (req, res) => {
-  const sqlText = `
-    SELECT 
-      TO_CHAR(week_date, 'YYYY-MM') as month,
-      TO_CHAR(week_date, 'Month YYYY') as month_name,
-      SUM(first_time_households) as total_first_time,
-      SUM(returning_households) as total_returning,
-      SUM(total_adults) as total_adults,
-      SUM(total_children) as total_children,
-      SUM(total_seniors) as total_seniors,
-      SUM(total_pounds_distributed) as total_pounds,
-      COUNT(*) as total_weeks
-    FROM pantry
-    GROUP BY TO_CHAR(week_date, 'YYYY-MM'), TO_CHAR(week_date, 'Month YYYY')
-    ORDER BY month DESC;
-  `;
-
-  pool
-    .query(sqlText)
-    .then((result) => res.json(result.rows))
-    .catch((err) => {
-      console.error("GET /api/pantry/reports/monthly error:", err);
-      res.sendStatus(500);
-    });
-});
-// single selection route
+//routes with id comes lastt
+// Get single pantry record
 router.get("/:id", rejectUnauthenticated, (req, res) => {
   const pantryId = req.params.id;
-
   const sqlText = `SELECT * FROM pantry WHERE id = $1;`;
 
   pool
@@ -162,6 +161,7 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
     });
 });
 
+// Update pantry record
 router.put("/:id", rejectUnauthenticated, (req, res) => {
   const pantryId = req.params.id;
   const {
@@ -174,7 +174,6 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
     notes,
   } = req.body;
 
-  // Validation check
   if (
     first_time_households === undefined ||
     returning_households === undefined ||
@@ -239,10 +238,9 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
     });
 });
 
-// DELETE pantry record
+// Delete pantry record
 router.delete("/:id", rejectUnauthenticated, (req, res) => {
   const pantryId = req.params.id;
-
   const sqlText = `DELETE FROM pantry WHERE id = $1;`;
 
   pool

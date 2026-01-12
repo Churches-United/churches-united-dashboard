@@ -2,117 +2,126 @@ import axios from "axios";
 
 const pantrySlice = (set, get) => ({
   pantryRecords: [],
-  pantryWeeklyReports: [], // ← ADD THIS
+  pantryWeeklyReports: [],
   pantryMonthlyReports: [],
-  loading: false,
-  error: null,
-  // get all records
+  pantryLoading: false,
+  pantryError: null,
+
   fetchPantryRecords: async () => {
-    set({ loading: true, error: null });
+    set({ pantryLoading: true, pantryError: null });
     try {
       const res = await axios.get("/api/pantry");
-      set({ pantryRecords: res.data, loading: false });
+      set({ pantryRecords: res.data, pantryLoading: false });
     } catch (err) {
       console.error("fetchPantryRecords error:", err);
-      set({ error: "Failed to fetch pantry records", loading: false });
+      set({
+        pantryError: "Failed to fetch pantry records",
+        pantryLoading: false,
+      });
     }
   },
 
-  // Add pantry record
   addPantryRecord: async (recordData) => {
-    set({ loading: true, error: null });
+    set({ pantryLoading: true, pantryError: null });
     try {
       const response = await axios.post("/api/pantry", recordData);
       set((state) => ({
         pantryRecords: [response.data, ...state.pantryRecords],
-        loading: false,
+        pantryLoading: false,
       }));
     } catch (err) {
       console.error("addPantryRecord error:", err);
-
       if (err.response?.status === 409) {
         set({
-          error: `A record for ${recordData.week_date} already exists`,
-          loading: false,
+          pantryError: `A record for ${recordData.week_date} already exists`,
+          pantryLoading: false,
         });
       } else if (err.response?.status === 400) {
-        set({ error: err.response.data.message, loading: false });
+        set({ pantryError: err.response.data.message, pantryLoading: false });
       } else {
-        set({ error: "Failed to add pantry record", loading: false });
+        set({
+          pantryError: "Failed to add pantry record",
+          pantryLoading: false,
+        });
       }
     }
   },
 
-  // Edit pantry record
   editPantryRecord: async (id, recordData) => {
-    set({ loading: true, error: null });
+    set({ pantryLoading: true, pantryError: null });
     try {
       const response = await axios.put(`/api/pantry/${id}`, recordData);
       set((state) => ({
         pantryRecords: state.pantryRecords.map((record) =>
           record.id === id ? response.data : record
         ),
-        loading: false,
+        pantryLoading: false,
       }));
     } catch (err) {
       console.error("editPantryRecord error:", err);
-
       if (err.response?.status === 404) {
-        set({ error: "Record not found", loading: false });
+        set({ pantryError: "Record not found", pantryLoading: false });
       } else if (err.response?.status === 400) {
-        set({ error: err.response.data.message, loading: false });
+        set({ pantryError: err.response.data.message, pantryLoading: false });
       } else {
-        set({ error: "Failed to edit pantry record", loading: false });
+        set({
+          pantryError: "Failed to edit pantry record",
+          pantryLoading: false,
+        });
       }
     }
   },
 
-  // Delete pantry record
   deletePantryRecord: async (id) => {
-    set({ loading: true, error: null });
+    set({ pantryLoading: true, pantryError: null });
     try {
       await axios.delete(`/api/pantry/${id}`);
       set((state) => ({
         pantryRecords: state.pantryRecords.filter((record) => record.id !== id),
-        loading: false,
+        pantryLoading: false,
       }));
     } catch (err) {
       console.error("deletePantryRecord error:", err);
-
       if (err.response?.status === 404) {
-        set({ error: "Record not found", loading: false });
+        set({ pantryError: "Record not found", pantryLoading: false });
       } else {
-        set({ error: "Failed to delete pantry record", loading: false });
+        set({
+          pantryError: "Failed to delete pantry record",
+          pantryLoading: false,
+        });
       }
     }
   },
 
-  // Fetch weekly pantry reports
   fetchPantryWeeklyReports: async () => {
-    set({ loading: true, error: null });
+    set({ pantryLoading: true, pantryError: null });
     try {
       const res = await axios.get("/api/pantry/reports/weekly");
-      set({ pantryWeeklyReports: res.data, loading: false });
+      set({ pantryWeeklyReports: res.data, pantryLoading: false });
     } catch (err) {
       console.error("fetchPantryWeeklyReports error:", err);
-      set({ error: "Failed to fetch weekly pantry reports", loading: false });
+      set({
+        pantryError: "Failed to fetch weekly pantry reports",
+        pantryLoading: false,
+      });
     }
   },
 
-  // Fetch monthly pantry reports
   fetchPantryMonthlyReports: async () => {
-    set({ loading: true, error: null });
+    set({ pantryLoading: true, pantryError: null });
     try {
       const res = await axios.get("/api/pantry/reports/monthly");
-      set({ pantryMonthlyReports: res.data, loading: false });
+      set({ pantryMonthlyReports: res.data, pantryLoading: false });
     } catch (err) {
       console.error("fetchPantryMonthlyReports error:", err);
-      set({ error: "Failed to fetch monthly pantry reports", loading: false });
+      set({
+        pantryError: "Failed to fetch monthly pantry reports",
+        pantryLoading: false,
+      });
     }
   },
 
-  // Clear error
-  clearPantryError: () => set({ error: null }),
+  clearPantryError: () => set({ pantryError: null }),
 });
 
 export default pantrySlice;
