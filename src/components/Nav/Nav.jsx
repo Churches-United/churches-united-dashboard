@@ -8,31 +8,30 @@ function Nav() {
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     await logOut();
     navigate("/login");
   };
 
   return (
-    <header className="nav-header">
-      {/* LEFT: Logo + Title */}
-      <div className="nav-left">
-        <Link to="/" className="nav-logo">
-          <img
-            src="/img/cu-heart.png"
-            alt="Churches United Logo"
-            className="nav-logo-img"
-          />
-        </Link>
-        <h2>Churches United Dashboard</h2>
-      </div>
+    <div className="header-container">
+      <header className="nav-header">
+        {/* LEFT: Logo + Title */}
+        <div className="nav-left">
+          <Link to="/" className="nav-logo">
+            <img
+              src="/img/cu-heart.png"
+              alt="Churches United Logo"
+              className="nav-logo-img"
+            />
+          </Link>
+          <h4 className="nav-title">Churches United Dashboard</h4>
+        </div>
 
-      {/* RIGHT: Navigation Links */}
-      <nav className="nav-right">
-        <ul>
-          {
-            // User is not logged in, render these links:
-            !user.id && (
+        {/* RIGHT: Navigation Links */}
+        <nav className="nav-right">
+          <ul>
+            {!user.id && (
               <>
                 <li>
                   <NavLink to="/login">Login</NavLink>
@@ -41,32 +40,28 @@ function Nav() {
                   <NavLink to="/registration">Register</NavLink>
                 </li>
               </>
-            )
-          }
+            )}
 
-          {
-            // User is logged in, render these links:
-            user.id && (
+            {user.id && (
               <>
                 <li>
                   <NavLink to="/">Home</NavLink>
                 </li>
                 <li>
-                  <NavLink to="#" onClick={handleLogout}>
+                  <button onClick={handleLogout} className="logout-btn">
                     Logout
-                  </NavLink>
+                  </button>
                 </li>
               </>
-            )
-          }
+            )}
 
-          {/* Show these links regardless of auth status: */}
-          <li>
-            <NavLink to="/about">About</NavLink>
-          </li>
-        </ul>
-      </nav>
-    </header>
+            <li>
+              <NavLink to="/about">About</NavLink>
+            </li>
+          </ul>
+        </nav>
+      </header>
+    </div>
   );
 }
 

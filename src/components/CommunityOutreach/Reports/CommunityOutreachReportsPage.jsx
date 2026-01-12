@@ -85,7 +85,7 @@ export default function CommunityOutreachReportsPage() {
   return (
     <div className="hub-container">
       <DepartmentHeader
-        title="Community Outreach"
+        title="Community Outreach Reports"
         actions={
           <>
             <NavLink

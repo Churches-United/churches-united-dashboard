@@ -87,10 +87,11 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
 
   return (
     <div className="form-container">
-      <form onSubmit={handleSubmit} className="grid-form">
+      <form onSubmit={handleSubmit} className="engagement-form-grid">
         <h3>{editId ? "Edit Engagement" : "Log Volunteer Engagement"}</h3>
 
-        <label>
+        {/* Volunteer */}
+        <label className="full-width">
           Volunteer
           <select
             value={volunteerId}
@@ -106,6 +107,7 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
           </select>
         </label>
 
+        {/* Event Date | Location */}
         <label>
           Event Date
           <input
@@ -132,8 +134,9 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
           </select>
         </label>
 
+        {/* # Volunteers | Signups */}
         <label>
-          Number of Volunteers
+          # Volunteers
           <input
             type="number"
             min="1"
@@ -144,7 +147,7 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
         </label>
 
         <label>
-          Software Signups (optional)
+          Software Signups
           <input
             type="number"
             min="0"
@@ -153,7 +156,8 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
           />
         </label>
 
-        <div className="form-actions">
+        {/* Buttons */}
+        <div className="form-actions full-width">
           <button type="submit" className="primary">
             {editId ? "Update Engagement" : "Submit Engagement"}
           </button>
