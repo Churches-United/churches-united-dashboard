@@ -49,7 +49,7 @@ export default function HousingReports() {
   return (
     <div className="hub-container">
       <DepartmentHeader
-        title="North Campus Housing"
+        title="North Campus Housing Reports"
         actions={
           <>
             <NavLink

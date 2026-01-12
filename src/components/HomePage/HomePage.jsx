@@ -6,11 +6,12 @@ function HomePage() {
   const user = useStore((state) => state.user);
   const logOut = useStore((state) => state.logOut);
 
+  // todo - polish descriptions 
   const sections = [
     {
       path: "/reporting",
       label: "Reporting Hub",
-      description: "One stop shop for all your reporting needs.",
+      description: "View all department reports",
       image: "/img/departments/reporting.jpg",
     },
     {
