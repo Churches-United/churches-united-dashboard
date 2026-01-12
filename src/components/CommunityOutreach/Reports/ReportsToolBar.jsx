@@ -20,10 +20,34 @@ export default function ReportsToolbar({
     { value: "monthly-by-location", label: "Monthly by Location" },
   ];
 
+  // Handler to reset all filters
+  const handleClearFilters = () => {
+    setYear("");
+    setLocation("");
+    setSearch("");
+    setActiveReport("weekly"); // default report
+  };
+
   return (
-    <div className="outreach-toolbar">
+    <div className="toolbar-container">
+      {/* Left side filters including Report */}
       <div className="toolbar-left">
-        {/* Year filter */}
+        {/* Report Type */}
+        <div className="filter-group">
+          <label>Report:</label>
+          <select
+            value={activeReport}
+            onChange={(e) => setActiveReport(e.target.value)}
+          >
+            {reportOptions.map((r) => (
+              <option key={r.value} value={r.value}>
+                {r.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Year Filter */}
         <div className="filter-group">
           <label>Year:</label>
           <select value={year} onChange={(e) => setYear(e.target.value)}>
@@ -36,7 +60,7 @@ export default function ReportsToolbar({
           </select>
         </div>
 
-        {/* Location filter */}
+        {/* Location Filter */}
         <div className="filter-group">
           <label>Location:</label>
           <select
@@ -52,7 +76,7 @@ export default function ReportsToolbar({
           </select>
         </div>
 
-        {/* Search */}
+        {/* Search Filter */}
         <div className="filter-group">
           <label>Search:</label>
           <input
@@ -63,22 +87,13 @@ export default function ReportsToolbar({
           />
         </div>
       </div>
+
+      {/* Right side: Clear Filters button */}
       <div className="toolbar-right">
-        <label>Report:</label>
-        <select
-          value={activeReport}
-          onChange={(e) => setActiveReport(e.target.value)}
-        >
-          {reportOptions.map((r) => (
-            <option key={r.value} value={r.value}>
-              {r.label}
-            </option>
-          ))}
-        </select>
+        <button className="secondary clear-button" onClick={handleClearFilters}>
+          Clear Filters
+        </button>
       </div>
     </div>
   );
 }
-
-// todo - decided how to handle toolbar look
-// todo - add clear button to toolbar

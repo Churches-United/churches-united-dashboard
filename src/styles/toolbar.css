@@ -1,0 +1,118 @@
+/* --- Toolbar Container --- */
+.toolbar-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+  background-color: rgba(0,0,0,0.05); /* subtle pop */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+}
+
+/* --- Left Side Filters --- */
+.toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: #333;
+}
+
+.filter-group select,
+.filter-group input {
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 120px;
+  background-color: #fff;
+}
+
+/* --- Right Side: Clear Button --- */
+.toolbar-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* aligns bottom with filters */
+}
+
+.toolbar-right button,
+.clear-button {
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid var(--brand-primary);
+  border-radius: 4px;
+  background-color: transparent;
+  color: var(--brand-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toolbar-right button:hover,
+.clear-button:hover {
+  background-color: var(--brand-primary);
+  color: white;
+}
+
+/* --- Top Action Buttons (Add Volunteer/Engagement) --- */
+.toolbar-actions-top {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.toolbar-actions-top button {
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid var(--brand-primary);
+  border-radius: 4px;
+  background-color: transparent;
+  color: var(--brand-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toolbar-actions-top button:hover {
+  background-color: var(--brand-primary);
+  color: white;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .toolbar-container {
+    flex-direction: column;
+  }
+
+  .toolbar-left {
+    width: 100%;
+  }
+
+  .toolbar-right {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .toolbar-actions-top {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}

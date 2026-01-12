@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useStore from "../../zustand/store";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
-import OutreachToolbar from "./OutreachToolbar";
+import OutreachToolbar from "./OutreachToolBar";
 import { NavLink } from "react-router-dom";
 
 import VolunteerList from "./Volunteer/VolunteerList";
@@ -31,6 +31,8 @@ export default function CommunityOutreachPage() {
   // Accordion states
   const [volunteerOpen, setVolunteerOpen] = useState(false); // closed by default
   const [engagementOpen, setEngagementOpen] = useState(true); // open by default
+
+  // Toolbar filters
   const [filters, setFilters] = useState({
     volunteerId: "",
     location: "",
@@ -74,6 +76,7 @@ export default function CommunityOutreachPage() {
 
   return (
     <div className="hub-container">
+      {/* Header with nav links */}
       <DepartmentHeader
         title="Community Outreach"
         actions={
@@ -94,13 +97,18 @@ export default function CommunityOutreachPage() {
         }
       />
 
-      {/* Toolbar */}
-      <OutreachToolbar
-        filters={filters}
-        onFilterChange={setFilters}
-        onAddVolunteer={handleAddVolunteer}
-        onAddEngagement={handleAddEngagement}
-      />
+      {/* Action buttons above the toolbar */}
+      <div className="toolbar-actions-top">
+        <button className="primary-outline" onClick={handleAddVolunteer}>
+          Add Volunteer
+        </button>
+        <button className="primary-outline" onClick={handleAddEngagement}>
+          Add Engagement
+        </button>
+      </div>
+
+      {/* Toolbar with filters */}
+      <OutreachToolbar filters={filters} onFilterChange={setFilters} />
 
       {/* Volunteer Accordion */}
       <div className="accordion">
@@ -118,7 +126,7 @@ export default function CommunityOutreachPage() {
         )}
       </div>
 
-      {/* Volunteer Form Modal */}
+      {/* Volunteer Modal */}
       {showVolunteerModal && (
         <div className="modal-overlay" onClick={closeVolunteerModal}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
@@ -152,7 +160,7 @@ export default function CommunityOutreachPage() {
         )}
       </div>
 
-      {/* Volunteer Engagement Form Modal */}
+      {/* Engagement Modal */}
       {showEngagementModal && (
         <div className="modal-overlay" onClick={closeEngagementModal}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
