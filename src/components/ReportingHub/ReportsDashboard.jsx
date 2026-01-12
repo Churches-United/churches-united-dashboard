@@ -1,12 +1,20 @@
 import React from "react";
 import Accordion from "react-bootstrap/Accordion";
+
+// Original Components
 import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
 import DevelopmentReports from "../Development/DevelopmentReports";
 import HousingReports from "../Housing/HousingReports";
 import MediaReports from "../Media/Reports/MediaReports";
+
+// Your New Components
+import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
+import ShelterReporting from "../Shelter/ShelterReporting";
+import FinanceReporting from "../Finance/FinanceReporting";
+
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 
-export default function ReportsDashboard() {
+export default function ReportsHub() {
   // Dynamic array of report sections
   const reportSections = [
     {
@@ -28,6 +36,21 @@ export default function ReportsDashboard() {
       id: "development",
       title: "Development Reports",
       Component: DevelopmentReports,
+    },
+    {
+      id: "compliance",
+      title: "Compliance Weekly Reports",
+      Component: ComplianceReporting,
+    },
+    {
+      id: "shelter",
+      title: "Shelter Weekly Reports",
+      Component: ShelterReporting,
+    },
+    {
+      id: "finance",
+      title: "Finance Weekly Reports",
+      Component: FinanceReporting,
     },
   ];
 
