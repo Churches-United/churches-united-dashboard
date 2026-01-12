@@ -1,25 +1,29 @@
-/* --- Toolbar Container --- */
+/* -------------------------------
+   General Toolbar Container
+--------------------------------- */
 .toolbar-container {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   padding: 16px;
-  background-color: rgba(0,0,0,0.05); /* subtle pop */
+  background-color: rgba(0, 0, 0, 0.05); /* subtle background */
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
   color: #333;
 }
 
-/* --- Left Side Filters --- */
+/* -------------------------------
+   Left Side Filters
+--------------------------------- */
 .toolbar-left {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   flex: 1 1 auto;
-  align-items: stretch;
+  align-items: stretch; /* all filters same height */
 }
 
 .filter-group {
@@ -43,33 +47,36 @@
   background-color: #fff;
 }
 
-/* --- Right Side: Clear Button --- */
+/* -------------------------------
+   Right Side Clear Button
+--------------------------------- */
 .toolbar-right {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* aligns bottom with filters */
+  justify-content: flex-end; /* aligns button to bottom of filters */
 }
 
-.toolbar-right button,
 .clear-button {
   padding: 6px 14px;
   font-size: 0.875rem;
   font-weight: 600;
-  border: 2px solid var(--brand-primary);
+  border: 2px solid #999; /* subtle grey border */
   border-radius: 4px;
   background-color: transparent;
-  color: var(--brand-primary);
+  color: #555; /* slightly darker grey */
   cursor: pointer;
+  align-self: flex-end; /* aligns with bottom of filters */
   transition: all 0.2s;
 }
 
-.toolbar-right button:hover,
 .clear-button:hover {
-  background-color: var(--brand-primary);
+  background-color: #555; /* darker grey hover */
   color: white;
 }
 
-/* --- Top Action Buttons (Add Volunteer/Engagement) --- */
+/* -------------------------------
+   Top Action Buttons (Add Volunteer/Engagement)
+--------------------------------- */
 .toolbar-actions-top {
   display: flex;
   justify-content: flex-end;
@@ -94,7 +101,9 @@
   color: white;
 }
 
-/* --- Responsive --- */
+/* -------------------------------
+   Responsive
+--------------------------------- */
 @media (max-width: 768px) {
   .toolbar-container {
     flex-direction: column;

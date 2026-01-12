@@ -6,17 +6,16 @@ import { NavLink } from "react-router-dom";
 
 import VolunteerList from "./Volunteer/VolunteerList";
 import VolunteerForm from "./Volunteer/VolunteerForm";
-
 import VolunteerEngagementList from "./Volunteer/VolunteerEngagementList";
 import VolunteerEngagementForm from "./Volunteer/VolunteerEngagementForm";
 
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
+import "../../styles/toolbar.css";
 import "./CommunityOutreach.css";
 import "../../styles/modal.css";
 
 export default function CommunityOutreachPage() {
-  // Zustand actions
   const fetchVolunteers = useStore((state) => state.fetchVolunteers);
   const fetchEngagements = useStore((state) => state.fetchEngagements);
 
@@ -29,10 +28,10 @@ export default function CommunityOutreachPage() {
   const [editingEngagementId, setEditingEngagementId] = useState(null);
 
   // Accordion states
-  const [volunteerOpen, setVolunteerOpen] = useState(false); // closed by default
-  const [engagementOpen, setEngagementOpen] = useState(true); // open by default
+  const [volunteerOpen, setVolunteerOpen] = useState(false);
+  const [engagementOpen, setEngagementOpen] = useState(true);
 
-  // Toolbar filters
+  // Filters state
   const [filters, setFilters] = useState({
     volunteerId: "",
     location: "",
@@ -46,7 +45,7 @@ export default function CommunityOutreachPage() {
     fetchEngagements();
   }, [fetchVolunteers, fetchEngagements]);
 
-  // Handlers for opening modals
+  /** --- Handlers --- **/
   const handleAddVolunteer = () => {
     setEditingVolunteer(null);
     setShowVolunteerModal(true);
@@ -63,20 +62,21 @@ export default function CommunityOutreachPage() {
     setEditingEngagementId(id);
     setShowEngagementModal(true);
   };
+  const closeVolunteerModal = () => setShowVolunteerModal(false);
+  const closeEngagementModal = () => setShowEngagementModal(false);
 
-  // Handlers for closing modals
-  const closeVolunteerModal = () => {
-    setEditingVolunteer(null);
-    setShowVolunteerModal(false);
-  };
-  const closeEngagementModal = () => {
-    setEditingEngagementId(null);
-    setShowEngagementModal(false);
+  const handleClearFilters = () => {
+    setFilters({
+      volunteerId: "",
+      location: "",
+      year: "",
+      search: "",
+    });
   };
 
   return (
     <div className="hub-container">
-      {/* Header with nav links */}
+      {/* Department Header */}
       <DepartmentHeader
         title="Community Outreach"
         actions={
@@ -97,18 +97,18 @@ export default function CommunityOutreachPage() {
         }
       />
 
-      {/* Action buttons above the toolbar */}
+      {/* Top Action Buttons */}
       <div className="toolbar-actions-top">
-        <button className="primary-outline" onClick={handleAddVolunteer}>
-          Add Volunteer
-        </button>
-        <button className="primary-outline" onClick={handleAddEngagement}>
-          Add Engagement
-        </button>
+        <button onClick={handleAddVolunteer}>Add Volunteer</button>
+        <button onClick={handleAddEngagement}>Add Engagement</button>
       </div>
 
-      {/* Toolbar with filters */}
-      <OutreachToolbar filters={filters} onFilterChange={setFilters} />
+      {/* Filters Toolbar */}
+      <OutreachToolbar
+        filters={filters}
+        onFilterChange={setFilters}
+        onClear={handleClearFilters}
+      />
 
       {/* Volunteer Accordion */}
       <div className="accordion">
@@ -116,8 +116,7 @@ export default function CommunityOutreachPage() {
           className="accordion-header"
           onClick={() => setVolunteerOpen(!volunteerOpen)}
         >
-          Volunteers
-          {volunteerOpen ? <FaChevronUp /> : <FaChevronDown />}
+          Volunteers {volunteerOpen ? <FaChevronUp /> : <FaChevronDown />}
         </button>
         {volunteerOpen && (
           <div className="accordion-content">
@@ -147,7 +146,7 @@ export default function CommunityOutreachPage() {
           className="accordion-header"
           onClick={() => setEngagementOpen(!engagementOpen)}
         >
-          Volunteer Engagements
+          Volunteer Engagements{" "}
           {engagementOpen ? <FaChevronUp /> : <FaChevronDown />}
         </button>
         {engagementOpen && (

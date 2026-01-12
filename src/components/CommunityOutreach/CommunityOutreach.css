@@ -58,21 +58,3 @@
   font-size: 0.875rem;
 }
 
-/* Clear button styling */
-.clear-button {
-  margin-left: 12px;
-  padding: 6px 14px;
-  border: 2px solid var(--brand-primary);
-  border-radius: 4px;
-  background-color: transparent;
-  color: var(--brand-primary);
-  font-weight: 600;
-  cursor: pointer;
-  align-self: flex-end; /* aligns with bottom of other filters */
-  transition: all 0.2s;
-}
-
-.clear-button:hover {
-  background-color: var(--brand-primary);
-  color: white;
-}

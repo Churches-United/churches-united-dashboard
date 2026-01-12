@@ -63,6 +63,13 @@ export default function CommunityOutreachReportsPage() {
     }
   };
 
+  const handleClearFilters = () => {
+    setYear("");
+    setLocation("");
+    setSearch("");
+    setActiveReport("weekly"); 
+  };
+
   return (
     <div className="hub-container">
       <DepartmentHeader
@@ -88,6 +95,7 @@ export default function CommunityOutreachReportsPage() {
         setActiveReport={setActiveReport}
         YEAR_OPTIONS={YEAR_OPTIONS}
         LOCATION_OPTIONS={LOCATION_OPTIONS}
+        onClear={handleClearFilters}
       />
 
       <div className="report-container">{renderReport()}</div>
