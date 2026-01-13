@@ -3,11 +3,12 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 export default function DonationList({ donations, onEdit, onDelete }) {
   const formatDate = (date) => new Date(date).toLocaleDateString("en-US");
 
-  if (donations.length === 0) return <p>No donations found.</p>;
+  if (donations.length === 0)
+    return <p className="table-empty">No donations found.</p>;
 
   return (
-    <div className="table-container">
-      <table className="table-app table-hover table-striped">
+    <div className="table-container hub-container-donations">
+      <table className="table-app donation-table">
         <thead>
           <tr>
             <th>Date</th>
@@ -30,14 +31,11 @@ export default function DonationList({ donations, onEdit, onDelete }) {
               <td>{d.notes || "—"}</td>
               <td>
                 <div className="table-actions">
-                  <button
-                    className="btn btn-sm btn-table-edit"
-                    onClick={() => onEdit(d)}
-                  >
+                  <button className="btn-table-edit" onClick={() => onEdit(d)}>
                     <FaEdit />
                   </button>
                   <button
-                    className="btn btn-sm btn-table-delete"
+                    className="btn-table-delete"
                     onClick={() => onDelete(d.id)}
                   >
                     <FaTrash />

@@ -8,132 +8,100 @@
   max-width: 1200px;
 }
 
-/* ---------------- General Form Styles ---------------- */
-.form-container {
-  max-width: 600px; /* default, can adjust per form with container overrides if needed */
+
+/* ---------------- Development Forms - Scoped ---------------- */
+
+/* Donor Form - vertical */
+.hub-container.donors .form-container {
+  max-width: 400px;
   margin: 20px auto;
   padding: 24px;
-  background-color: rgba(28, 113, 166, 0.05); /* subtle Development blue */
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgba(28, 113, 166, 0.05);
   display: flex;
   flex-direction: column;
   gap: 16px;
-  font-family: "Inter", sans-serif;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.form-container label {
+/* Donation Form - grid with checkboxes */
+.hub-container.donations .form-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 24px;
+  background-color: rgba(28, 113, 166, 0.05);
   display: flex;
   flex-direction: column;
-  font-weight: 500;
-  font-size: 0.95rem;
+  gap: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.form-container input,
-.form-container select,
-.form-container textarea {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-top: 4px;
-  font-size: 0.95rem;
-  transition: border 0.2s, box-shadow 0.2s;
-}
-
-.form-container input:focus,
-.form-container select:focus,
-.form-container textarea:focus {
-  outline: none;
-  border-color: #1c71a6;
-  box-shadow: 0 0 0 2px rgba(28, 113, 166, 0.2);
-}
-
-/* ---------------- Grid Layouts for Multi-field Forms ---------------- */
-.grid-form,
-.donation-form-grid {
+.hub-container.donations .donation-form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px 24px;
 }
 
-.grid-form .full-width,
-.donation-form-grid .full-width {
+.hub-container.donations .donation-form-grid .full-width {
   grid-column: 1 / -1;
 }
 
-.checkbox-group {
+.hub-container.donations .checkbox-group {
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
-/* ---------------- Form Buttons ---------------- */
-.form-actions {
+/* Event Form - vertical with optional 2x2 grid for future expansion */
+.hub-container.events .form-container {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 24px;
+  background-color: rgba(28, 113, 166, 0.05);
   display: flex;
-  gap: 12px;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.form-actions.full-width {
+.hub-container.events .grid-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+.hub-container.events .grid-form .full-width {
   grid-column: 1 / -1;
 }
 
-.form-actions button {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
-.form-actions button[type="submit"] {
-  background-color: #1c71a6;
-  color: #fff;
-}
-
-.form-actions button[type="submit"]:hover {
-  background-color: #155a8c;
-}
-
-.form-actions button.secondary {
-  background-color: #f0f0f0;
-  color: #333;
-}
-
-.form-actions button.secondary:hover {
-  background-color: #e0e0e0;
-}
-
-
-
 /* ---------------- Responsive ---------------- */
 @media (max-width: 600px) {
-  .grid-form,
-  .donation-form-grid {
+  .hub-container.donations .donation-form-grid,
+  .hub-container.events .grid-form {
     grid-template-columns: 1fr;
   }
 
-  .checkbox-group {
+  .hub-container.donations .checkbox-group {
     flex-direction: column;
   }
 
-  .form-actions {
+  .hub-container .form-actions {
     flex-direction: column;
   }
 
-  .form-actions button {
+  .hub-container .form-actions button {
     width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  /* extra small screens */
-  .form-actions {
+  .hub-container .form-actions {
     flex-direction: column;
   }
 
-  .form-actions button {
+  .hub-container .form-actions button {
     width: 100%;
   }
 }

@@ -3,11 +3,12 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 export default function EventsList({ events, onEdit, onDelete }) {
   const formatDate = (date) => new Date(date).toLocaleString();
 
-  if (events.length === 0) return <p>No events found.</p>;
+  if (events.length === 0)
+    return <p className="table-empty">No events found.</p>;
 
   return (
-    <div className="table-container">
-      <table className="table-app table-hover table-striped">
+    <div className="table-container hub-container-events">
+      <table className="table-app events-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -19,24 +20,21 @@ export default function EventsList({ events, onEdit, onDelete }) {
           </tr>
         </thead>
         <tbody>
-          {events.map((event) => (
-            <tr key={event.id}>
-              <td>{event.name}</td>
-              <td>{formatDate(event.datetime)}</td>
-              <td>{event.venue}</td>
-              <td>{event.type}</td>
-              <td>{event.notes || "—"}</td>
+          {events.map((e) => (
+            <tr key={e.id}>
+              <td>{e.name}</td>
+              <td>{formatDate(e.datetime)}</td>
+              <td>{e.venue}</td>
+              <td>{e.type}</td>
+              <td>{e.notes || "—"}</td>
               <td>
                 <div className="table-actions">
-                  <button
-                    className="btn btn-sm btn-table-edit"
-                    onClick={() => onEdit(event)}
-                  >
+                  <button className="btn-table-edit" onClick={() => onEdit(e)}>
                     <FaEdit />
                   </button>
                   <button
-                    className="btn btn-sm btn-table-delete"
-                    onClick={() => onDelete(event.id)}
+                    className="btn-table-delete"
+                    onClick={() => onDelete(e.id)}
                   >
                     <FaTrash />
                   </button>

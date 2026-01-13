@@ -1,9 +1,15 @@
+/* ---------------- Housing Section ---------------- */
+.hub-container.housing {
+  /* optional container-wide settings if needed */
+  font-family: "Inter", sans-serif;
+}
+
 /* ---------- Form Container ---------- */
-.housing-form-container {
+.hub-container.housing .housing-form-container {
   max-width: 700px;
   margin: 40px auto;
   padding: 24px;
-  background-color: rgba(3, 166, 150, 0.05); /* 20% opacity */
+  background-color: rgba(3, 166, 150, 0.05);
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -11,43 +17,18 @@
   gap: 24px;
 }
 
-/* ---------- Form Header ---------- */
-.form-header h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--brand-primary);
-}
-
-/* ---------- Top Row (Building + Month) ---------- */
-.top-row {
-  display: flex;
-  gap: 16px;
-}
-
-.top-row label {
-  flex: 1;
-}
-
-/* ---------- Numeric Grid 3x3 ---------- */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-/* ---------- Labels ---------- */
-label {
+/* Form labels */
+.hub-container.housing .housing-form-container label {
   display: flex;
   flex-direction: column;
   font-weight: 500;
   font-size: 0.9rem;
 }
 
-/* ---------- Inputs & Selects ---------- */
-input,
-select,
-textarea {
+/* Inputs, selects, textarea */
+.hub-container.housing .housing-form-container input,
+.hub-container.housing .housing-form-container select,
+.hub-container.housing .housing-form-container textarea {
   margin-top: 4px;
   padding: 8px 10px;
   font-size: 0.9rem;
@@ -55,25 +36,59 @@ textarea {
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
-textarea {
+.hub-container.housing .housing-form-container input:focus,
+.hub-container.housing .housing-form-container select:focus,
+.hub-container.housing .housing-form-container textarea:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px rgba(3, 166, 150, 0.2);
+}
+
+.hub-container.housing .housing-form-container textarea {
   resize: vertical;
   min-height: 80px;
 }
 
-/* ---------- Notes + Buttons Row ---------- */
-.notes-actions-row {
-  display: flex;
-  gap: 16px;
-  align-items: flex-end; /* Align buttons to bottom of notes field */
+/* ---------- Form Header ---------- */
+.hub-container.housing .housing-form-container .form-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--brand-primary);
 }
 
-.notes-label {
+/* ---------- Top Row (Building + Month) ---------- */
+.hub-container.housing .top-row {
+  display: flex;
+  gap: 16px;
+}
+
+.hub-container.housing .top-row label {
+  flex: 1;
+}
+
+/* ---------- Numeric Grid 3x3 ---------- */
+.hub-container.housing .form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* ---------- Notes + Buttons Row ---------- */
+.hub-container.housing .notes-actions-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.hub-container.housing .notes-label {
   flex: 3;
 }
 
-.form-buttons {
+.hub-container.housing .form-buttons {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -81,7 +96,7 @@ textarea {
 }
 
 /* ---------- Buttons ---------- */
-button.primary {
+.hub-container.housing .housing-form-container button.primary {
   background-color: var(--brand-primary);
   color: #fff;
   border: none;
@@ -92,11 +107,11 @@ button.primary {
   transition: background 0.2s;
 }
 
-button.primary:hover {
-  background-color: #00796b; /* darker shade on hover */
+.hub-container.housing .housing-form-container button.primary:hover {
+  background-color: #00796b;
 }
 
-button.secondary {
+.hub-container.housing .housing-form-container button.secondary {
   background-color: var(--brand-secondary);
   color: #fff;
   border: none;
@@ -106,197 +121,139 @@ button.secondary {
   transition: background 0.2s;
 }
 
-button.secondary:hover {
+.hub-container.housing .housing-form-container button.secondary:hover {
   background-color: var(--brand-accent);
 }
 
-/* ---------- Toolbar (Unified for Home & Reports) ---------- */
-.housing-toolbar {
+/* ---------- Toolbar ---------- */
+.hub-container.housing .housing-toolbar {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end; /* align filters and buttons to bottom */
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
   width: 100%;
   border-radius: 8px;
-  /* padding: 12px 16px; */
-  /* box-shadow: 0 2px 6px rgba(0,0,0,0.1); */
-  flex-wrap: wrap; /* wrap if screen is too narrow */
-  gap: 12px;
 }
 
-/* Left side: filters + search */
-.toolbar-left {
+.hub-container.housing .toolbar-left {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  flex: 1; /* take remaining space */
+  flex: 1;
   min-width: 200px;
-  align-items: flex-end; /* align filters to bottom */
+  align-items: flex-end;
 }
 
-/* Right side: buttons / tabs */
-.toolbar-right {
-  display: flex;
-  gap: 12px;
-  flex-shrink: 0;
-  align-items: flex-end; /* align to bottom */
-}
-
-/* Individual filter groups */
-.toolbar-left .filter-group {
+.hub-container.housing .toolbar-left .filter-group {
   display: flex;
   flex-direction: column;
   min-width: 120px;
 }
 
-.toolbar-left input[type="text"] {
+.hub-container.housing .toolbar-left input[type="text"] {
   min-width: 300px;
 }
 
-/* Adjust buttons inside toolbar */
-.toolbar-right button {
+.hub-container.housing .toolbar-right {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  align-items: flex-end;
+}
+
+.hub-container.housing .toolbar-right button {
   min-width: 100px;
 }
 
-/* ---------- Housing Tables ---------- */
-
-.housing-table {
+/* ---------- Tables ---------- */
+.hub-container.housing .housing-table {
   table-layout: fixed;
 }
 
+.hub-container.housing .housing-table th,
+.hub-container.housing .housing-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.hub-container.housing .housing-table th {
+  white-space: normal;
+  line-height: 1.2;
+}
+
 /* Column widths */
-.housing-table .col-building {
+.hub-container.housing .housing-table .col-building {
   width: 160px;
 }
 
-.housing-table .col-month {
+.hub-container.housing .housing-table .col-month {
   width: 90px;
 }
 
-.housing-table .col-number {
+.hub-container.housing .housing-table .col-number {
   width: 90px;
   text-align: right;
 }
 
-.housing-table .col-notes {
+.hub-container.housing .housing-table .col-notes {
   width: 220px;
   white-space: normal;
   word-break: break-word;
 }
 
-.housing-table .col-actions {
+.hub-container.housing .housing-table .col-actions {
   width: 100px;
 }
 
-/* Header wrapping */
-.housing-table th {
-  white-space: normal;
-  line-height: 1.2;
-}
-
-/* ---------- Monthly Summary ---------- */
-.housing-summary-container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 16px;
-}
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 16px;
-}
-
-.summary-card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.summary-header {
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: var(--brand-primary);
-  border-bottom: 1px solid #eee;
-  padding-bottom: 4px;
-}
-
-.summary-metrics {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.summary-metrics div {
-  display: flex;
-  justify-content: space-between;
-}
-
-.metric-label {
-  font-weight: 500;
-  color: #555;
-}
-
-.metric-value {
-  font-weight: 600;
-}
-
-/* ---------- Table Actions  ---------- */
-
-/* Table Actions Container */
-.table-actions {
+/* ---------- Table Actions ---------- */
+.hub-container.housing .table-actions {
   display: flex;
   gap: 8px;
   justify-content: center;
   align-items: center;
 }
 
-/* Icon Buttons */
-.table-actions button {
+.hub-container.housing .table-actions button {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 4px 8px;
-  border: 1px solid transparent; /* change to accent color for outline style */
+  border: 1px solid transparent;
   border-radius: 4px;
-  background: none; /* no fill by default */
+  background: none;
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.2s;
 }
 
-/* Edit Icon */
-.table-actions .btn-table-edit {
+.hub-container.housing .table-actions .btn-table-edit {
   color: var(--brand-accent);
-  border-color: var(--brand-accent); /* optional outline */
+  border-color: var(--brand-accent);
 }
 
-.table-actions .btn-table-edit:hover {
+.hub-container.housing .table-actions .btn-table-edit:hover {
   background-color: var(--brand-accent);
   color: #fff;
 }
 
-/* Delete Icon */
-.table-actions .btn-table-delete {
-  color: #d32f2f; /* or your --brand-danger */
+.hub-container.housing .table-actions .btn-table-delete {
+  color: #d32f2f;
   border-color: #d32f2f;
 }
 
-.table-actions .btn-table-delete:hover {
+.hub-container.housing .table-actions .btn-table-delete:hover {
   background-color: #d32f2f;
   color: #fff;
 }
 
-/* Icon size (optional, overrides react-icons default) */
-.table-actions svg {
+.hub-container.housing .table-actions svg {
   width: 16px;
   height: 16px;
 }
 
-.modal-overlay {
+/* ---------- Modals ---------- */
+.hub-container.housing .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -309,7 +266,7 @@ button.secondary:hover {
   z-index: 1000;
 }
 
-.modal-content {
+.hub-container.housing .modal-content {
   background: white;
   padding: 1.5rem;
   border-radius: 8px;

@@ -1,11 +1,12 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-export default function DonorList({ donors, onEdit, onDelete }) {
-  if (donors.length === 0) return <p>No donors found.</p>;
+export default function DonorsList({ donors, onEdit, onDelete }) {
+  if (donors.length === 0)
+    return <p className="table-empty">No donors found.</p>;
 
   return (
-    <div className="table-container" style={{ maxWidth: "800px" }}>
-      <table className="table-app table-hover table-striped">
+    <div className="table-container hub-container-donors">
+      <table className="table-app donors-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -14,21 +15,18 @@ export default function DonorList({ donors, onEdit, onDelete }) {
           </tr>
         </thead>
         <tbody>
-          {donors.map((donor) => (
-            <tr key={donor.id}>
-              <td>{donor.name}</td>
-              <td>{donor.type}</td>
+          {donors.map((d) => (
+            <tr key={d.id}>
+              <td>{d.name}</td>
+              <td>{d.type}</td>
               <td>
                 <div className="table-actions">
-                  <button
-                    className="btn btn-sm btn-table-edit"
-                    onClick={() => onEdit(donor)}
-                  >
+                  <button className="btn-table-edit" onClick={() => onEdit(d)}>
                     <FaEdit />
                   </button>
                   <button
-                    className="btn btn-sm btn-table-delete"
-                    onClick={() => onDelete(donor.id)}
+                    className="btn-table-delete"
+                    onClick={() => onDelete(d.id)}
                   >
                     <FaTrash />
                   </button>
