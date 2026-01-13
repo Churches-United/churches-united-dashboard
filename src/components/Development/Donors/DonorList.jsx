@@ -41,4 +41,3 @@ export default function DonorList({ donors, onEdit, onDelete }) {
     </div>
   );
 }
-ƒ

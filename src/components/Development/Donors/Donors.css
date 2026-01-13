@@ -1,12 +1,137 @@
-  /* Department-specific override */
+/* ---------------- Department-specific hub container widths ---------------- */
 .hub-container.donors {
   max-width: 900px;
 }
 
-.hub-container.donations {
+.hub-container.donations,
+.hub-container.events {
   max-width: 1200px;
 }
 
-.hub-container.events {
-  max-width: 1200px;
+/* ---------------- General Form Styles ---------------- */
+.form-container {
+  max-width: 600px; /* default, can adjust per form with container overrides if needed */
+  margin: 20px auto;
+  padding: 24px;
+  background-color: rgba(28, 113, 166, 0.05); /* subtle Development blue */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: "Inter", sans-serif;
+}
+
+.form-container label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 4px;
+  font-size: 0.95rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+  outline: none;
+  border-color: #1c71a6;
+  box-shadow: 0 0 0 2px rgba(28, 113, 166, 0.2);
+}
+
+/* ---------------- Grid Layouts for Multi-field Forms ---------------- */
+.grid-form,
+.donation-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+.grid-form .full-width,
+.donation-form-grid .full-width {
+  grid-column: 1 / -1;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* ---------------- Form Buttons ---------------- */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.form-actions.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-actions button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.form-actions button[type="submit"] {
+  background-color: #1c71a6;
+  color: #fff;
+}
+
+.form-actions button[type="submit"]:hover {
+  background-color: #155a8c;
+}
+
+.form-actions button.secondary {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.form-actions button.secondary:hover {
+  background-color: #e0e0e0;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 600px) {
+  .grid-form,
+  .donation-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkbox-group {
+    flex-direction: column;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  /* extra small screens */
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
 }

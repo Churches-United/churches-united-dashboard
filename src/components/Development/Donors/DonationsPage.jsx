@@ -9,6 +9,7 @@ import "../../../styles/modal.css";
 import "./Donors.css";
 
 export default function DonationsPage() {
+  // --- Store ---
   const fetchDonations = useStore((s) => s.fetchDonations);
   const addDonation = useStore((s) => s.addDonation);
   const editDonation = useStore((s) => s.editDonation);
@@ -42,6 +43,13 @@ export default function DonationsPage() {
     setShowModal(true);
   };
 
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this donation?"))
+      return;
+    await deleteDonation(id);
+    await fetchDonations(); // refresh table after deletion
+  };
+
   const handleSubmit = async (data) => {
     if (editingDonation) {
       await editDonation(editingDonation.id, data);
@@ -49,12 +57,7 @@ export default function DonationsPage() {
       await addDonation(data);
     }
     setShowModal(false);
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this donation?")) {
-      await deleteDonation(id);
-    }
+    await fetchDonations(); // refresh table after add/edit
   };
 
   if (loading) return <p>Loading donations...</p>;
@@ -84,29 +87,22 @@ export default function DonationsPage() {
         }
       />
 
-      {/* Top action buttons */}
+      {/* Top action button */}
       <div className="toolbar-actions-top">
         <button onClick={handleAddClick}>Add Donation</button>
       </div>
 
       {/* Table */}
-      {donations.length === 0 ? (
-        <p>No donations found.</p>
-      ) : (
-        <DonationList
-          donations={donations}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      )}
+      <DonationList
+        donations={donations}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div
-            className="modal-container"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
             <button
               className="modal-close-btn"
               onClick={() => setShowModal(false)}
@@ -114,9 +110,7 @@ export default function DonationsPage() {
               &times;
             </button>
 
-            <h3>
-              {editingDonation ? "Edit Donation" : "Add Donation"}
-            </h3>
+            <h3>{editingDonation ? "Edit Donation" : "Add Donation"}</h3>
 
             <DonationForm
               donors={donors}

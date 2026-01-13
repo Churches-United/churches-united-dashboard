@@ -92,8 +92,14 @@ export default function DonorsPage() {
 
       {/* Modal */}
       {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="modal-overlay development-modal"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="modal-container development-modal-container"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="modal-close-btn"
               onClick={() => setShowModal(false)}

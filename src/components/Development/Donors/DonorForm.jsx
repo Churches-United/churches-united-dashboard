@@ -18,25 +18,35 @@ export default function DonorForm({ initialData, onSubmit, onCancel }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <select value={type} onChange={(e) => setType(e.target.value)}>
-        {DONOR_TYPES.map((t) => (
-          <option key={t} value={t}>
-            {t}
-          </option>
-        ))}
-      </select>
-      <div className="modal-actions">
-        <button type="submit">{initialData ? "Update" : "Add"} Donor</button>
-        <button type="button" className="secondary" onClick={onCancel}>
-          Cancel
-        </button>
-      </div>
-    </form>
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name
+          <input
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Donor Type
+          <select value={type} onChange={(e) => setType(e.target.value)}>
+            {DONOR_TYPES.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <div className="form-actions">
+          <button type="submit">{initialData ? "Update" : "Add"} Donor</button>
+          <button type="button" className="secondary" onClick={onCancel}>
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

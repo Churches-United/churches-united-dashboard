@@ -1,6 +1,6 @@
 import { useState } from "react";
+import "../Donors/Donors.css";
 
-// Static options for event type
 const EVENT_TYPES = [
   "Fundraiser",
   "Community Events",
@@ -29,48 +29,69 @@ export default function EventForm({ initialData, onSubmit, onCancel }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        placeholder="Event name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="grid-form">
+        {/* Row 1: 2 columns */}
+        <label>
+          Event Name
+          <input
+            placeholder="Event name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </label>
 
-      <input
-        type="datetime-local"
-        value={datetime}
-        onChange={(e) => setDatetime(e.target.value)}
-      />
+        <label>
+          Date & Time
+          <input
+            type="datetime-local"
+            value={datetime}
+            onChange={(e) => setDatetime(e.target.value)}
+          />
+        </label>
 
-      <input
-        placeholder="Venue"
-        value={venue}
-        onChange={(e) => setVenue(e.target.value)}
-      />
+        {/* Row 2: 2 columns */}
+        <label>
+          Venue
+          <input
+            placeholder="Venue"
+            value={venue}
+            onChange={(e) => setVenue(e.target.value)}
+          />
+        </label>
 
-      <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="">Select event type</option>
-        {EVENT_TYPES.map((t) => (
-          <option key={t} value={t}>
-            {t}
-          </option>
-        ))}
-      </select>
+        <label>
+          Event Type
+          <select value={type} onChange={(e) => setType(e.target.value)}>
+            <option value="">Select event type</option>
+            {EVENT_TYPES.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <input
-        placeholder="Notes"
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-      />
+        {/* Row 3: full-width */}
+        <label className="full-width">
+          Notes
+          <textarea
+            placeholder="Notes"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
+        </label>
 
-      <div className="modal-actions">
-        <button type="submit">
-          {initialData ? "Update Event" : "Add Event"}
-        </button>
-        <button type="button" className="secondary" onClick={onCancel}>
-          Cancel
-        </button>
-      </div>
-    </form>
+        {/* Row 4: buttons */}
+        <div className="form-actions full-width">
+          <button type="submit">
+            {initialData ? "Update Event" : "Add Event"}
+          </button>
+          <button type="button" className="secondary" onClick={onCancel}>
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
