@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
 import './ComplianceWeekly.css';
 
@@ -19,7 +19,12 @@ function ComplianceWeeklyList() {
   
   const formatDate = (dateString) => {
     if (!dateString) return '—';
-    return dateString.split('T')[0];
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      month: '2-digit', 
+      day: '2-digit', 
+      year: 'numeric' 
+    });
   };
   
   const handleDelete = async (id) => {
@@ -28,82 +33,65 @@ function ComplianceWeeklyList() {
     }
   };
   
-  if (loading) return <div className="loading-state">Loading...</div>;
-  if (error) return <div className="error-state">Error: {error}</div>;
+  if (loading) return <div className="table-loading">Loading...</div>;
+  if (error) return <div className="table-error">Error: {error}</div>;
   
   return (
-    <div className="weekly-reports-container">
-      <h2>Compliance Weekly Reports</h2>
-      
-      <div className="weekly-reports-toolbar">
-        <div className="toolbar-left">
-          <div className="filter-group">
-            <label>View Year:</label>
-            <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-            </select>
-          </div>
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Compliance - Weekly Records</h2>
+        <div className="department-actions">
+          <Link to="/compliance" className="active">Data Entry</Link>
+          <Link to="/compliance/reports">Reports</Link>
         </div>
-        
-        <div className="toolbar-right">
-          <button 
-            className="btn btn-sm btn-primary"
-            onClick={() => navigate('/compliance/weekly/new')}
-          >
-            ➕ New Report
-          </button>
-          
-          <button 
-            className="btn btn-sm btn-info"
-            onClick={() => navigate('/compliance/reports')}
-            style={{ marginLeft: '8px' }}
-          >
-            📊 View Reports
-          </button>
-        </div>
+      </div>
+
+      <div className="toolbar-actions-top">
+        <Link to="/compliance/weekly/new" className="btn-add-record">
+          Add New Record
+        </Link>
       </div>
       
       {records.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-state-icon">📋</div>
+        <div className="table-empty">
           <p>No records found for {year}.</p>
-          <p>Click "New Report" to create one.</p>
+          <p>Click "Add New Record" to create one.</p>
         </div>
       ) : (
         <div className="table-container">
-          <table className="table-app table-hover table-striped weekly-reports-table">
+          <table className="table-app">
             <thead>
               <tr>
-                <th>Week Of</th>
-                <th className="col-number">Households</th>
-                <th className="col-number">Individuals</th>
-                <th className="col-number">Exits</th>
+                <th>Week Date</th>
+                <th className="col-number">Total Households</th>
+                <th className="col-number">Total Individuals</th>
+                <th className="col-number">Adults</th>
+                <th className="col-number">Children</th>
+                <th className="col-number">Total Exits</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {records.map((r) => (
-                <tr key={r.id}>
-                  <td>{formatDate(r.date)}</td>
-                  <td className="col-number">{r.total_households}</td>
-                  <td className="col-number">{r.total_individuals}</td>
-                  <td className="col-number">{r.total_exits}</td>
+              {records.map((record) => (
+                <tr key={record.id}>
+                  <td>{formatDate(record.date)}</td>
+                  <td className="col-number">{record.total_households || 0}</td>
+                  <td className="col-number">{record.total_individuals || 0}</td>
+                  <td className="col-number">{record.adults || 0}</td>
+                  <td className="col-number">{record.children || 0}</td>
+                  <td className="col-number">{record.total_exits || 0}</td>
                   <td>
                     <div className="table-actions">
                       <button
-                        className="btn btn-sm btn-table-edit"
-                        onClick={() => navigate(`/compliance/weekly/edit/${r.id}`)}
+                        className="btn-table-edit"
+                        onClick={() => navigate(`/compliance/weekly/edit/${record.id}`)}
                       >
                         Edit
                       </button>
                       
                       <button
-                        className="btn btn-sm btn-table-delete"
-                        onClick={() => handleDelete(r.id)}
+                        className="btn-table-delete"
+                        onClick={() => handleDelete(record.id)}
                       >
                         Delete
                       </button>

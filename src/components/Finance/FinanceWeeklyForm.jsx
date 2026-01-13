@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
 import './Finance.css';
 
@@ -83,43 +83,53 @@ function FinanceWeeklyForm() {
         await createRecord(submitData);
         alert('Record created successfully!');
       }
-      navigate('/finance');
+      navigate('/finance/weekly');
     } catch (err) {
       alert(`Failed to ${isEditMode ? 'update' : 'create'} record: ${err.message}`);
     }
   };
   
-  if (loading && isEditMode) return <div className="loading-state">Loading...</div>;
-  if (error && isEditMode) return <div className="error-state">Error: {error}</div>;
+  if (loading && isEditMode) return <div className="table-loading">Loading...</div>;
+  if (error && isEditMode) return <div className="table-error">Error: {error}</div>;
   
   return (
-    <div className="weekly-reports-container">
-      <div className="weekly-reports-form">
-        <h2>{isEditMode ? 'Edit' : 'New'} Finance Weekly Report</h2>
-        
-        <button className="back-button" onClick={() => navigate('/finance')}>
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Finance - {isEditMode ? 'Edit' : 'New'} Weekly Report</h2>
+        <div className="department-actions">
+          <Link to="/finance" className="active">Data Entry</Link>
+          <Link to="/finance/reports">Reports</Link>
+        </div>
+      </div>
+
+      <div className="form-container">
+        <button 
+          className="secondary" 
+          onClick={() => navigate('/finance/weekly')}
+          style={{ marginBottom: '16px' }}
+        >
           ← Back to List
         </button>
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="grid-form">
           
-          <fieldset>
-            <legend>Report Date</legend>
-            <label>
-              Week Date: *
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
-              />
-              <span className="form-helper-text">Select any day in the week (will be converted to Monday)</span>
-            </label>
-          </fieldset>
+          {/* Week Date */}
+          <label>
+            Week Date: *
+            <input
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+            />
+          </label>
           
-          <fieldset>
-            <legend>Financial Position</legend>
+          {/* Financial Position */}
+          <h4 style={{ marginTop: '16px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Financial Position
+          </h4>
+          <div className="form-row">
             <label>
               Total Assets ($):
               <input
@@ -143,10 +153,13 @@ function FinanceWeeklyForm() {
                 placeholder="0.00"
               />
             </label>
-          </fieldset>
+          </div>
           
-          <fieldset>
-            <legend>Weekly Activity</legend>
+          {/* Weekly Activity */}
+          <h4 style={{ marginTop: '24px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Weekly Activity
+          </h4>
+          <div className="form-row">
             <label>
               Revenue Received ($):
               <input
@@ -182,41 +195,42 @@ function FinanceWeeklyForm() {
                 placeholder="0.00"
               />
             </label>
-          </fieldset>
+          </div>
           
-          <fieldset>
-            <legend>Additional Information</legend>
-            <label>
-              Major Expenses:
-              <textarea
-                name="major_expenses"
-                value={formData.major_expenses}
-                onChange={handleChange}
-                rows="3"
-                placeholder="e.g., New HVAC system - $5000"
-              />
-            </label>
-            
-            <label>
-              Notes:
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                rows="4"
-              />
-            </label>
-          </fieldset>
+          {/* Additional Information */}
+          <h4 style={{ marginTop: '24px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Additional Information
+          </h4>
+          <label style={{ gridColumn: '1 / -1' }}>
+            Major Expenses:
+            <textarea
+              name="major_expenses"
+              value={formData.major_expenses}
+              onChange={handleChange}
+              rows="3"
+              placeholder="e.g., New HVAC system - $5000"
+            />
+          </label>
           
-          <div className="form-buttons">
-            <button type="submit" className="btn btn-primary">
+          <label style={{ gridColumn: '1 / -1' }}>
+            Notes:
+            <textarea
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              rows="4"
+            />
+          </label>
+          
+          <div className="form-actions" style={{ gridColumn: '1 / -1', marginTop: '16px' }}>
+            <button type="submit" className="primary">
               {isEditMode ? 'Update' : 'Create'} Report
             </button>
             
             <button 
               type="button" 
-              onClick={() => navigate('/finance')}
-              className="btn btn-secondary"
+              onClick={() => navigate('/finance/weekly')}
+              className="secondary"
             >
               Cancel
             </button>

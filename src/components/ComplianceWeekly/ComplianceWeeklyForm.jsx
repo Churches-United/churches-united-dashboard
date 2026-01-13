@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
 import './ComplianceWeekly.css';
 
@@ -18,8 +18,8 @@ function ComplianceWeeklyForm() {
   
   const [formData, setFormData] = useState({
     date: '',
-    hh_without_children: 0,
-    hh_with_children: 0,
+    total_households: 0,
+    total_individuals: 0,
     adults: 0,
     children: 0,
     seniors_55_plus: 0,
@@ -31,13 +31,12 @@ function ComplianceWeeklyForm() {
     native_american: 0,
     other_race: 0,
     multi_racial: 0,
-    one_condition: 0,
-    two_conditions: 0,
-    three_plus_conditions: 0,
-    total_exits: 0
+    condition1: 0,
+    condition2: 0,
+    condition3: 0,
+    total_exits: 0,
+    notes: ''
   });
-
-  const [validationError, setValidationError] = useState('');
   
   useEffect(() => {
     if (isEditMode && id) {
@@ -53,8 +52,8 @@ function ComplianceWeeklyForm() {
     if (currentRecord && isEditMode) {
       setFormData({
         date: currentRecord.date ? currentRecord.date.split('T')[0] : '',
-        hh_without_children: currentRecord.hh_without_children || 0,
-        hh_with_children: currentRecord.hh_with_children || 0,
+        total_households: currentRecord.total_households || 0,
+        total_individuals: currentRecord.total_individuals || 0,
         adults: currentRecord.adults || 0,
         children: currentRecord.children || 0,
         seniors_55_plus: currentRecord.seniors_55_plus || 0,
@@ -66,30 +65,21 @@ function ComplianceWeeklyForm() {
         native_american: currentRecord.native_american || 0,
         other_race: currentRecord.other_race || 0,
         multi_racial: currentRecord.multi_racial || 0,
-        one_condition: currentRecord.one_condition || 0,
-        two_conditions: currentRecord.two_conditions || 0,
-        three_plus_conditions: currentRecord.three_plus_conditions || 0,
-        total_exits: currentRecord.total_exits || 0
+        condition1: currentRecord.condition1 || 0,
+        condition2: currentRecord.condition2 || 0,
+        condition3: currentRecord.condition3 || 0,
+
+        total_exits: currentRecord.total_exits || 0,
+  
+        notes: currentRecord.notes || ''
       });
     }
   }, [currentRecord, isEditMode]);
   
-  const calculateTotals = () => {
-    const totalAge = formData.adults + formData.children + formData.seniors_55_plus;
-    const totalGender = formData.female + formData.male + formData.other_gender;
-    const totalRace = formData.white + formData.black_african_american + formData.native_american + 
-                      formData.other_race + formData.multi_racial;
-    
-    return { totalAge, totalGender, totalRace };
-  };
-
-  const totals = calculateTotals();
-  const allMatch = totals.totalAge === totals.totalGender && totals.totalAge === totals.totalRace;
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    if (name === 'date') {
+    if (name === 'date' || name === 'notes') {
       setFormData(prev => ({
         ...prev,
         [name]: value
@@ -101,23 +91,26 @@ function ComplianceWeeklyForm() {
         [name]: numericValue === '' ? 0 : parseInt(numericValue, 10)
       }));
     }
-    
-    setValidationError('');
   };
+  
+  // Calculate totals for validation
+  const calculateTotals = () => {
+    const totalAge = formData.adults + formData.children + formData.seniors_55_plus;
+    const totalGender = formData.female + formData.male + formData.other_gender;
+    const totalRace = formData.white + formData.black_african_american + 
+                      formData.native_american + formData.other_race + formData.multi_racial;
+    return { totalAge, totalGender, totalRace };
+  };
+
+  const totals = calculateTotals();
+  const allMatch = totals.totalAge === totals.totalGender && totals.totalAge === totals.totalRace;
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const { totalAge, totalGender, totalRace } = calculateTotals();
-    
-    if (totalAge !== totalGender || totalAge !== totalRace || totalGender !== totalRace) {
-      const errorMsg = `Demographics validation failed:\n` +
-                      `Age Total: ${totalAge}\n` +
-                      `Gender Total: ${totalGender}\n` +
-                      `Race Total: ${totalRace}\n\n` +
-                      `All three totals must match!`;
-      setValidationError(errorMsg);
-      alert(errorMsg);
+    // Validate totals match
+    if (!allMatch) {
+      alert('Demographics totals must match! Please check Age, Gender, and Race totals.');
       return;
     }
     
@@ -129,111 +122,122 @@ function ComplianceWeeklyForm() {
         await createRecord(formData);
         alert('Record created successfully!');
       }
-      navigate('/compliance');
+      navigate('/compliance/weekly');
     } catch (err) {
       alert(`Failed to ${isEditMode ? 'update' : 'create'} record: ${err.message}`);
     }
   };
   
-  if (loading && isEditMode) return <div className="loading-state">Loading...</div>;
-  if (error && isEditMode) return <div className="error-state">Error: {error}</div>;
+  if (loading && isEditMode) return <div className="table-loading">Loading...</div>;
+  if (error && isEditMode) return <div className="table-error">Error: {error}</div>;
   
   return (
-    <div className="weekly-reports-container">
-      <div className="weekly-reports-form">
-        <h2>{isEditMode ? 'Edit' : 'New'} Compliance Weekly Report</h2>
-        
-        <button className="back-button" onClick={() => navigate('/compliance')}>
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Compliance - {isEditMode ? 'Edit' : 'New'} Weekly Report</h2>
+        <div className="department-actions">
+          <Link to="/compliance" className="active">Data Entry</Link>
+          <Link to="/compliance/reports">Reports</Link>
+        </div>
+      </div>
+
+      <div className="form-container">
+        <button 
+          className="secondary" 
+          onClick={() => navigate('/compliance/weekly')}
+          style={{ marginBottom: '16px' }}
+        >
           ← Back to List
         </button>
-
+        
         {/* Validation Summary */}
-        <div className="validation-summary">
-          <h3>Demographics Totals (Must Match)</h3>
-          <div className="totals-row">
-            <div className="total-item">
-              <strong>Age Total:</strong>
-              <span className={`total-value ${allMatch ? 'valid' : 'invalid'}`}>
-                {totals.totalAge}
-              </span>
-            </div>
-            <div className="total-item">
-              <strong>Gender Total:</strong>
-              <span className={`total-value ${allMatch ? 'valid' : 'invalid'}`}>
-                {totals.totalGender}
-              </span>
-            </div>
-            <div className="total-item">
-              <strong>Race Total:</strong>
-              <span className={`total-value ${allMatch ? 'valid' : 'invalid'}`}>
-                {totals.totalRace}
-              </span>
-            </div>
+        <div style={{ 
+          padding: '15px', 
+          marginBottom: '20px',
+          border: `2px solid ${allMatch ? '#28a745' : '#dc3545'}`,
+          borderRadius: '4px',
+          backgroundColor: allMatch ? '#d4edda' : '#f8d7da'
+        }}>
+          <h4 style={{ margin: '0 0 10px 0' }}>Demographics Totals (Must Match)</h4>
+          <div style={{ display: 'flex', gap: '20px', fontWeight: 'bold' }}>
+            <span style={{ color: allMatch ? '#28a745' : '#dc3545' }}>
+              Age Total: {totals.totalAge}
+            </span>
+            <span style={{ color: allMatch ? '#28a745' : '#dc3545' }}>
+              Gender Total: {totals.totalGender}
+            </span>
+            <span style={{ color: allMatch ? '#28a745' : '#dc3545' }}>
+              Race Total: {totals.totalRace}
+            </span>
           </div>
-          {!allMatch && totals.totalAge > 0 && (
-            <p className="message error">
-              ⚠️ Totals do not match! Please adjust your numbers before submitting.
-            </p>
-          )}
-          {allMatch && totals.totalAge > 0 && (
-            <p className="message success">
-              ✅ All totals match!
-            </p>
+          {allMatch ? (
+            <p style={{ margin: '10px 0 0 0', color: '#28a745' }}>✓ All totals match!</p>
+          ) : (
+            <p style={{ margin: '10px 0 0 0', color: '#dc3545' }}>✗ Totals must match to submit</p>
           )}
         </div>
-
-        {validationError && (
-          <div className="error-state" style={{ marginBottom: '16px' }}>
-            {validationError}
-          </div>
-        )}
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="grid-form">
           
-          <fieldset>
-            <legend>Report Date</legend>
-            <label>
-              Week Date: *
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
-              />
-              <span className="form-helper-text">Select any day in the week (will be converted to Monday)</span>
-            </label>
-          </fieldset>
+          {/* Week Date */}
+          <label>
+            Week Date: *
+            <input
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+            />
+          </label>
           
-          <fieldset>
-            <legend>Households</legend>
+          {/* Basic Counts */}
+          <h4 style={{ marginTop: '16px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Household Information
+          </h4>
+          <div className="form-row">
             <label>
-              Households without Children:
+              Total Households:
               <input
                 type="text"
                 inputMode="numeric"
-                name="hh_without_children"
-                value={formData.hh_without_children}
+                name="total_households"
+                value={formData.total_households}
                 onChange={handleChange}
               />
             </label>
             
             <label>
-              Households with Children:
+              Total Individuals:
               <input
                 type="text"
                 inputMode="numeric"
-                name="hh_with_children"
-                value={formData.hh_with_children}
+                name="total_individuals"
+                value={formData.total_individuals}
                 onChange={handleChange}
               />
             </label>
-          </fieldset>
+          </div>
           
-          <fieldset>
-            <legend>Age Demographics</legend>
-            <div className="section-total">Total: {totals.totalAge}</div>
-            
+          {/* Age Demographics */}
+          <h4 style={{ 
+            marginTop: '24px', 
+            color: 'var(--brand-primary)', 
+            gridColumn: '1 / -1',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span>Age Demographics</span>
+            <span style={{ 
+              fontSize: '0.9rem', 
+              fontWeight: 'bold',
+              color: totals.totalAge === totals.totalGender && totals.totalAge === totals.totalRace ? '#28a745' : '#dc3545'
+            }}>
+              Total: {totals.totalAge}
+            </span>
+          </h4>
+          <div className="form-row">
             <label>
               Adults:
               <input
@@ -257,7 +261,7 @@ function ComplianceWeeklyForm() {
             </label>
             
             <label>
-              Seniors (55+):
+              Seniors 55+:
               <input
                 type="text"
                 inputMode="numeric"
@@ -266,12 +270,27 @@ function ComplianceWeeklyForm() {
                 onChange={handleChange}
               />
             </label>
-          </fieldset>
+          </div>
           
-          <fieldset>
-            <legend>Gender Demographics</legend>
-            <div className="section-total">Total: {totals.totalGender}</div>
-            
+          {/* Gender Demographics */}
+          <h4 style={{ 
+            marginTop: '24px', 
+            color: 'var(--brand-primary)', 
+            gridColumn: '1 / -1',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span>Gender Demographics</span>
+            <span style={{ 
+              fontSize: '0.9rem', 
+              fontWeight: 'bold',
+              color: totals.totalAge === totals.totalGender && totals.totalAge === totals.totalRace ? '#28a745' : '#dc3545'
+            }}>
+              Total: {totals.totalGender}
+            </span>
+          </h4>
+          <div className="form-row">
             <label>
               Female:
               <input
@@ -304,12 +323,27 @@ function ComplianceWeeklyForm() {
                 onChange={handleChange}
               />
             </label>
-          </fieldset>
+          </div>
           
-          <fieldset>
-            <legend>Race Demographics</legend>
-            <div className="section-total">Total: {totals.totalRace}</div>
-            
+          {/* Race Demographics */}
+          <h4 style={{ 
+            marginTop: '24px', 
+            color: 'var(--brand-primary)', 
+            gridColumn: '1 / -1',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span>Race Demographics</span>
+            <span style={{ 
+              fontSize: '0.9rem', 
+              fontWeight: 'bold',
+              color: totals.totalAge === totals.totalGender && totals.totalAge === totals.totalRace ? '#28a745' : '#dc3545'
+            }}>
+              Total: {totals.totalRace}
+            </span>
+          </h4>
+          <div className="form-row">
             <label>
               White:
               <input
@@ -364,46 +398,53 @@ function ComplianceWeeklyForm() {
                 onChange={handleChange}
               />
             </label>
-          </fieldset>
+          </div>
           
-          <fieldset>
-            <legend>Health Conditions</legend>
+          {/*  Conditions */}
+          <h4 style={{ marginTop: '24px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Conditions
+          </h4>
+          <div className="form-row">
             <label>
-              One Condition:
+              1_Condition:
               <input
                 type="text"
                 inputMode="numeric"
-                name="one_condition"
-                value={formData.one_condition}
+                name="condition1"
+                value={formData.condition1}
                 onChange={handleChange}
               />
             </label>
             
             <label>
-              Two Conditions:
+              2_Condition:
               <input
                 type="text"
                 inputMode="numeric"
-                name="two_conditions"
-                value={formData.two_conditions}
+                name="condition2"
+                value={formData.condition2}
                 onChange={handleChange}
               />
             </label>
             
             <label>
-              Three+ Conditions:
+              3_Condition:
               <input
                 type="text"
                 inputMode="numeric"
-                name="three_plus_conditions"
-                value={formData.three_plus_conditions}
+                name="condition3"
+                value={formData.condition3}
                 onChange={handleChange}
               />
             </label>
-          </fieldset>
+            
+          </div>
           
-          <fieldset>
-            <legend>Other Metrics</legend>
+          {/* Exit Destinations */}
+          <h4 style={{ marginTop: '24px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Exit Destinations
+          </h4>
+          <div className="form-row">
             <label>
               Total Exits:
               <input
@@ -414,17 +455,32 @@ function ComplianceWeeklyForm() {
                 onChange={handleChange}
               />
             </label>
-          </fieldset>
+            
+          </div>
           
-          <div className="form-buttons">
-            <button type="submit" className="btn btn-primary">
+          {/* Notes */}
+          <h4 style={{ marginTop: '24px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Additional Notes
+          </h4>
+          <label style={{ gridColumn: '1 / -1' }}>
+            Notes:
+            <textarea
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              rows="4"
+            />
+          </label>
+          
+          <div className="form-actions" style={{ gridColumn: '1 / -1', marginTop: '16px' }}>
+            <button type="submit" className="primary">
               {isEditMode ? 'Update' : 'Create'} Report
             </button>
             
             <button 
               type="button" 
-              onClick={() => navigate('/compliance')}
-              className="btn btn-secondary"
+              onClick={() => navigate('/compliance/weekly')}
+              className="secondary"
             >
               Cancel
             </button>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
 import './Shelter.css';
 
@@ -86,43 +86,53 @@ function ShelterWeeklyForm() {
         await createRecord(formData);
         alert('Record created successfully!');
       }
-      navigate('/shelter');
+      navigate('/shelter/weekly');
     } catch (err) {
       alert(`Failed to ${isEditMode ? 'update' : 'create'} record: ${err.message}`);
     }
   };
   
-  if (loading && isEditMode) return <div className="loading-state">Loading...</div>;
-  if (error && isEditMode) return <div className="error-state">Error: {error}</div>;
+  if (loading && isEditMode) return <div className="table-loading">Loading...</div>;
+  if (error && isEditMode) return <div className="table-error">Error: {error}</div>;
   
   return (
-    <div className="weekly-reports-container">
-      <div className="weekly-reports-form">
-        <h2>{isEditMode ? 'Edit' : 'New'} Shelter Weekly Report</h2>
-        
-        <button className="back-button" onClick={() => navigate('/shelter')}>
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Shelter - {isEditMode ? 'Edit' : 'New'} Weekly Report</h2>
+        <div className="department-actions">
+          <Link to="/shelter" className="active">Data Entry</Link>
+          <Link to="/shelter/reports">Reports</Link>
+        </div>
+      </div>
+
+      <div className="form-container">
+        <button 
+          className="secondary" 
+          onClick={() => navigate('/shelter/weekly')}
+          style={{ marginBottom: '16px' }}
+        >
           ← Back to List
         </button>
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="grid-form">
           
-          <fieldset>
-            <legend>Report Date</legend>
-            <label>
-              Week Date: *
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
-              />
-              <span className="form-helper-text">Select any day in the week (will be converted to Monday)</span>
-            </label>
-          </fieldset>
+          {/* Week Date */}
+          <label>
+            Week Date: *
+            <input
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+            />
+          </label>
           
-          <fieldset>
-            <legend>Guest Categories</legend>
+          {/* Guest Categories */}
+          <h4 style={{ marginTop: '16px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Guest Categories
+          </h4>
+          <div className="form-row">
             <label>
               Single Men:
               <input
@@ -188,10 +198,13 @@ function ShelterWeeklyForm() {
                 onChange={handleChange}
               />
             </label>
-          </fieldset>
+          </div>
           
-          <fieldset>
-            <legend>Operations & Outreach</legend>
+          {/* Operations & Outreach */}
+          <h4 style={{ marginTop: '24px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Operations & Outreach
+          </h4>
+          <div className="form-row">
             <label>
               Incident Reports:
               <input
@@ -224,30 +237,31 @@ function ShelterWeeklyForm() {
                 onChange={handleChange}
               />
             </label>
-          </fieldset>
+          </div>
           
-          <fieldset>
-            <legend>Notes</legend>
-            <label>
-              Additional Notes:
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                rows="4"
-              />
-            </label>
-          </fieldset>
+          {/* Notes */}
+          <h4 style={{ marginTop: '24px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
+            Additional Notes
+          </h4>
+          <label style={{ gridColumn: '1 / -1' }}>
+            Notes:
+            <textarea
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              rows="4"
+            />
+          </label>
           
-          <div className="form-buttons">
-            <button type="submit" className="btn btn-primary">
+          <div className="form-actions" style={{ gridColumn: '1 / -1', marginTop: '16px' }}>
+            <button type="submit" className="primary">
               {isEditMode ? 'Update' : 'Create'} Report
             </button>
             
             <button 
               type="button" 
-              onClick={() => navigate('/shelter')}
-              className="btn btn-secondary"
+              onClick={() => navigate('/shelter/weekly')}
+              className="secondary"
             >
               Cancel
             </button>

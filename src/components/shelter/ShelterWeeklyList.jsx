@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
 import './Shelter.css';
 
@@ -19,7 +19,12 @@ function ShelterWeeklyList() {
   
   const formatDate = (dateString) => {
     if (!dateString) return '—';
-    return dateString.split('T')[0];
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      month: '2-digit', 
+      day: '2-digit', 
+      year: 'numeric' 
+    });
   };
   
   const handleDelete = async (id) => {
@@ -28,57 +33,36 @@ function ShelterWeeklyList() {
     }
   };
   
-  if (loading) return <div className="loading-state">Loading...</div>;
-  if (error) return <div className="error-state">Error: {error}</div>;
+  if (loading) return <div className="table-loading">Loading...</div>;
+  if (error) return <div className="table-error">Error: {error}</div>;
   
   return (
-    <div className="weekly-reports-container">
-      <h2>Shelter Weekly Reports</h2>
-      
-      <div className="weekly-reports-toolbar">
-        <div className="toolbar-left">
-          <div className="filter-group">
-            <label>View Year:</label>
-            <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-            </select>
-          </div>
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Shelter - Weekly Records</h2>
+        <div className="department-actions">
+          <Link to="/shelter" className="active">Data Entry</Link>
+          <Link to="/shelter/reports">Reports</Link>
         </div>
-        
-        <div className="toolbar-right">
-          <button 
-            className="btn btn-sm btn-primary"
-            onClick={() => navigate('/shelter/weekly/new')}
-          >
-            ➕ New Report
-          </button>
-          
-          <button 
-            className="btn btn-sm btn-info"
-            onClick={() => navigate('/shelter/reports')}
-            style={{ marginLeft: '8px' }}
-          >
-            📊 View Reports
-          </button>
-        </div>
+      </div>
+
+      <div className="toolbar-actions-top">
+        <Link to="/shelter/weekly/new" className="btn-add-record">
+          Add New Record
+        </Link>
       </div>
       
       {records.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-state-icon">🏠</div>
+        <div className="table-empty">
           <p>No records found for {year}.</p>
-          <p>Click "New Report" to create one.</p>
+          <p>Click "Add New Record" to create one.</p>
         </div>
       ) : (
         <div className="table-container">
-          <table className="table-app table-hover table-striped weekly-reports-table">
+          <table className="table-app">
             <thead>
               <tr>
-                <th>Week Of</th>
+                <th>Week Date</th>
                 <th className="col-number">Total Guests</th>
                 <th className="col-number">Single Men</th>
                 <th className="col-number">Single Women</th>
@@ -88,26 +72,26 @@ function ShelterWeeklyList() {
               </tr>
             </thead>
             <tbody>
-              {records.map((r) => (
-                <tr key={r.id}>
-                  <td>{formatDate(r.date)}</td>
-                  <td className="col-number">{r.total_guests}</td>
-                  <td className="col-number">{r.single_men}</td>
-                  <td className="col-number">{r.single_women}</td>
-                  <td className="col-number">{r.families}</td>
-                  <td className="col-number">{r.incident_reports}</td>
+              {records.map((record) => (
+                <tr key={record.id}>
+                  <td>{formatDate(record.date)}</td>
+                  <td className="col-number">{record.total_guests || 0}</td>
+                  <td className="col-number">{record.single_men || 0}</td>
+                  <td className="col-number">{record.single_women || 0}</td>
+                  <td className="col-number">{record.families || 0}</td>
+                  <td className="col-number">{record.incident_reports || 0}</td>
                   <td>
                     <div className="table-actions">
                       <button
-                        className="btn btn-sm btn-table-edit"
-                        onClick={() => navigate(`/shelter/weekly/edit/${r.id}`)}
+                        className="btn-table-edit"
+                        onClick={() => navigate(`/shelter/weekly/edit/${record.id}`)}
                       >
                         Edit
                       </button>
                       
                       <button
-                        className="btn btn-sm btn-table-delete"
-                        onClick={() => handleDelete(r.id)}
+                        className="btn-table-delete"
+                        onClick={() => handleDelete(record.id)}
                       >
                         Delete
                       </button>

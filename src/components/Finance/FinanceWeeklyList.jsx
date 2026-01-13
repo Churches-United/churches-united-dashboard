@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
 import './Finance.css';
 
@@ -36,54 +36,33 @@ function FinanceWeeklyList() {
     }
   };
   
-  if (loading) return <div className="loading-state">Loading...</div>;
-  if (error) return <div className="error-state">Error: {error}</div>;
+  if (loading) return <div className="table-loading">Loading...</div>;
+  if (error) return <div className="table-error">Error: {error}</div>;
   
   return (
-    <div className="weekly-reports-container">
-      <h2>Finance Weekly Reports</h2>
-      
-      <div className="weekly-reports-toolbar">
-        <div className="toolbar-left">
-          <div className="filter-group">
-            <label>View Year:</label>
-            <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-            </select>
-          </div>
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Finance - Weekly Records</h2>
+        <div className="department-actions">
+          <Link to="/finance" className="active">Data Entry</Link>
+          <Link to="/finance/reports">Reports</Link>
         </div>
-        
-        <div className="toolbar-right">
-          <button 
-            className="btn btn-sm btn-primary"
-            onClick={() => navigate('/finance/weekly/new')}
-          >
-            ➕ New Report
-          </button>
-          
-          <button 
-            className="btn btn-sm btn-info"
-            onClick={() => navigate('/finance/reports')}
-            style={{ marginLeft: '8px' }}
-          >
-            📊 View Reports
-          </button>
-        </div>
+      </div>
+
+      <div className="toolbar-actions-top">
+        <Link to="/finance/weekly/new" className="btn-add-record">
+          Add New Record
+        </Link>
       </div>
       
       {records.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-state-icon">💰</div>
+        <div className="table-empty">
           <p>No records found for {year}.</p>
-          <p>Click "New Report" to create one.</p>
+          <p>Click "Add New Record" to create one.</p>
         </div>
       ) : (
         <div className="table-container">
-          <table className="table-app table-hover table-striped weekly-reports-table">
+          <table className="table-app">
             <thead>
               <tr>
                 <th>Week Of</th>
@@ -111,14 +90,14 @@ function FinanceWeeklyList() {
                   <td>
                     <div className="table-actions">
                       <button
-                        className="btn btn-sm btn-table-edit"
+                        className="btn-table-edit"
                         onClick={() => navigate(`/finance/weekly/edit/${r.id}`)}
                       >
                         Edit
                       </button>
                       
                       <button
-                        className="btn btn-sm btn-table-delete"
+                        className="btn-table-delete"
                         onClick={() => handleDelete(r.id)}
                       >
                         Delete
