@@ -1,33 +1,54 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
+import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
 import DonationForm from "./DonationForm";
 import DonationTable from "./DonationTable";
 
+import "../../../styles/modal.css";
+import "./Donors.css";
+
 export default function DonationsPage() {
   const fetchDonations = useStore((s) => s.fetchDonations);
-  const deleteDonation = useStore((s) => s.deleteDonation);
-  const editDonation = useStore((s) => s.editDonation);
   const addDonation = useStore((s) => s.addDonation);
+  const editDonation = useStore((s) => s.editDonation);
+  const deleteDonation = useStore((s) => s.deleteDonation);
+
   const donations = useStore((s) => s.donations);
-  const loading = useStore((s) => s.loading);
-  const error = useStore((s) => s.error);
   const donors = useStore((s) => s.donors);
   const fetchDonors = useStore((s) => s.fetchDonors);
 
+  const loading = useStore((s) => s.loading);
+  const error = useStore((s) => s.error);
+
+  // --- Modal / form state ---
+  const [showModal, setShowModal] = useState(false);
   const [editingDonation, setEditingDonation] = useState(null);
 
+  // --- Fetch data ---
   useEffect(() => {
     fetchDonations();
     fetchDonors();
   }, [fetchDonations, fetchDonors]);
 
+  // --- Handlers ---
+  const handleAddClick = () => {
+    setEditingDonation(null);
+    setShowModal(true);
+  };
+
+  const handleEdit = (donation) => {
+    setEditingDonation(donation);
+    setShowModal(true);
+  };
+
   const handleSubmit = async (data) => {
     if (editingDonation) {
       await editDonation(editingDonation.id, data);
-      setEditingDonation(null);
     } else {
       await addDonation(data);
     }
+    setShowModal(false);
   };
 
   const handleDelete = async (id) => {
@@ -36,14 +57,76 @@ export default function DonationsPage() {
     }
   };
 
+  if (loading) return <p>Loading donations...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
-    <div>
-      <h2>Donations</h2>
-      <DonationForm donors={donors} onSubmit={handleSubmit} initialData={editingDonation} />
-      <h3>All Donations</h3>
-      {loading ? <p>Loading donations...</p> : error ? <p>Error: {error}</p> :
-        <DonationTable donations={donations} onEdit={setEditingDonation} onDelete={handleDelete} />
-      }
+    <div className="hub-container donations">
+      {/* Department Header */}
+      <DepartmentHeader
+        title="Donations"
+        actions={
+          <>
+            <NavLink
+              to="/development"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Data Entry
+            </NavLink>
+            <NavLink
+              to="/development/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
+
+      {/* Top action buttons */}
+      <div className="toolbar-actions-top">
+        <button onClick={handleAddClick}>Add Donation</button>
+      </div>
+
+      {/* Table */}
+      {donations.length === 0 ? (
+        <p>No donations found.</p>
+      ) : (
+        <DonationTable
+          donations={donations}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
+
+      {/* Modal */}
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div
+            className="modal-container"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowModal(false)}
+            >
+              &times;
+            </button>
+
+            <h3>
+              {editingDonation ? "Edit Donation" : "Add Donation"}
+            </h3>
+
+            <DonationForm
+              donors={donors}
+              initialData={editingDonation}
+              onSubmit={handleSubmit}
+              onCancel={() => setShowModal(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

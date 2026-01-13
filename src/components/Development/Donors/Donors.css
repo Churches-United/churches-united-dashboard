@@ -1,0 +1,12 @@
+  /* Department-specific override */
+.hub-container.donors {
+  max-width: 900px;
+}
+
+.hub-container.donations {
+  max-width: 1200px;
+}
+
+.hub-container.events {
+  max-width: 1200px;
+}

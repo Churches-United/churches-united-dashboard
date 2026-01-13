@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
+import "../../../styles/modal.css";
+import "./Donors.css";
 
 export default function DonorsPage() {
+  // --- Store ---
   const fetchDonors = useStore((state) => state.fetchDonors);
   const addDonor = useStore((state) => state.addDonor);
   const deleteDonor = useStore((state) => state.deleteDonor);
@@ -10,37 +16,52 @@ export default function DonorsPage() {
   const loading = useStore((state) => state.loading);
   const error = useStore((state) => state.error);
 
+  // --- Modal / form state ---
+  const [showModal, setShowModal] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [name, setName] = useState("");
   const [type, setType] = useState("Individual");
-  const [editId, setEditId] = useState(null);
 
+  // --- Fetch donors ---
   useEffect(() => {
     fetchDonors();
   }, [fetchDonors]);
 
-  const handleAddDonor = async (e) => {
-    e.preventDefault();
-
-    if (!name.trim()) return;
-    // prevent duplicates
-    const nameExists = donors.some(
-      (d) => d.name.toLowerCase() === name.trim().toLowerCase()
-    );
-
-    if (nameExists) {
-      alert("A donor with this name already exists.");
-      return;
-    }
-
-    await addDonor(name, type);
+  // --- Handlers ---
+  const handleAddClick = () => {
+    setEditId(null);
     setName("");
     setType("Individual");
+    setShowModal(true);
   };
 
   const handleEdit = (donor) => {
     setEditId(donor.id);
     setName(donor.name);
     setType(donor.type);
+    setShowModal(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!name.trim()) return;
+
+    const nameExists =
+      !editId &&
+      donors.some((d) => d.name.toLowerCase() === name.trim().toLowerCase());
+
+    if (nameExists) {
+      alert("A donor with this name already exists.");
+      return;
+    }
+
+    if (editId) {
+      await editDonor(editId, name, type);
+    } else {
+      await addDonor(name, type);
+    }
+
+    setShowModal(false);
   };
 
   const handleDelete = async (id) => {
@@ -57,41 +78,40 @@ export default function DonorsPage() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h2>Donors</h2>
-      <h3>{editId ? "Edit Donor" : "Add Donor"}</h3>
-      <form onSubmit={handleAddDonor}>
-        <input
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="Individual">Individual</option>
-          <option value="Organization">Organization</option>
-          <option value="Corporate">Corporate</option>
-        </select>
-        <button type="submit">{editId ? "Update" : "Add"} Donor</button>
-        {editId && (
-          <button
-            type="button"
-            onClick={() => {
-              setEditId(null);
-              setName("");
-              setType("Individual");
-            }}
-          >
-            Cancel
-          </button>
-        )}
-      </form>
-      <h3>Donor List</h3>
+    <div className="hub-container donors">
+      {/* Department Header */}
+      <DepartmentHeader
+        title="Donors"
+        actions={
+          <>
+            <NavLink
+              to="/development"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Data Entry
+            </NavLink>
+            <NavLink
+              to="/development/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
+
+      {/* Top action buttons */}
+      <div className="toolbar-actions-top">
+        <button onClick={handleAddClick}>Add Donor</button>
+      </div>
+
+      {/* Table */}
       {donors.length === 0 ? (
         <p>No donors found.</p>
       ) : (
         <div className="table-container" style={{ maxWidth: "800px" }}>
           <table className="table-app table-hover table-striped">
-            {" "}
             <thead>
               <tr>
                 <th>Name</th>
@@ -110,13 +130,13 @@ export default function DonorsPage() {
                         className="btn btn-sm btn-table-edit"
                         onClick={() => handleEdit(donor)}
                       >
-                        Edit
+                        <FaEdit />
                       </button>
                       <button
                         className="btn btn-sm btn-table-delete"
                         onClick={() => handleDelete(donor.id)}
                       >
-                        Delete
+                        <FaTrash />
                       </button>
                     </div>
                   </td>
@@ -124,6 +144,47 @@ export default function DonorsPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Modal */}
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowModal(false)}
+            >
+              &times;
+            </button>
+
+            <h3>{editId ? "Edit Donor" : "Add Donor"}</h3>
+
+            <form onSubmit={handleSubmit}>
+              <input
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+
+              <select value={type} onChange={(e) => setType(e.target.value)}>
+                <option value="Individual">Individual</option>
+                <option value="Organization">Organization</option>
+                <option value="Corporate">Corporate</option>
+              </select>
+
+              <div className="modal-actions">
+                <button type="submit">{editId ? "Update" : "Add"} Donor</button>
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

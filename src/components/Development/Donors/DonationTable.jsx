@@ -1,3 +1,5 @@
+import { FaEdit, FaTrash } from "react-icons/fa";
+
 export default function DonationTable({ donations, onEdit, onDelete }) {
   const formatDate = (date) => new Date(date).toLocaleDateString("en-US");
 
@@ -35,7 +37,7 @@ export default function DonationTable({ donations, onEdit, onDelete }) {
                     className="btn btn-sm btn-table-edit"
                     onClick={() => onEdit(r)}
                   >
-                    Edit
+                    <FaEdit />
                   </button>
                   <button
                     className="btn btn-sm btn-table-delete"
@@ -43,7 +45,7 @@ export default function DonationTable({ donations, onEdit, onDelete }) {
                       handleDelete(r.housing_building_id, r.month_date)
                     }
                   >
-                    Delete
+                    <FaTrash />
                   </button>
                 </div>
               </td>
