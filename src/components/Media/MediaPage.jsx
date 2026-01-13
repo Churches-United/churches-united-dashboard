@@ -5,7 +5,6 @@ import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 import MediaToolBar from "./MediaToolBar";
 import MediaList from "./MediaList";
 import MediaForm from "./MediaForm";
-import "../../styles/toolbar.css";
 import "./Media.css";
 
 export default function MediaPage() {
@@ -21,27 +20,20 @@ export default function MediaPage() {
   const [yearFilter, setYearFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Generate year options dynamically from store
+  // Derive dynamic filter options from store
+  const platformOptions = Array.from(
+    new Set(mediaRecords.map((r) => r.platform))
+  ).sort();
   const yearOptions = Array.from(
-    new Set(
-      mediaRecords.map((r) =>
-        r.month_date ? new Date(r.month_date).getFullYear() : null
-      )
-    )
-  )
-    .filter(Boolean)
-    .sort((a, b) => b - a);
+    new Set(mediaRecords.map((r) => new Date(r.month_date).getFullYear()))
+  ).sort((a, b) => b - a);
 
   // Filtered records
   const filteredRecords = mediaRecords
     .filter((r) => {
       if (platformFilter && r.platform !== platformFilter) return false;
-      if (yearFilter) {
-        const recordYear = r.month_date
-          ? new Date(r.month_date).getFullYear()
-          : null;
-        if (recordYear !== +yearFilter) return false;
-      }
+      if (yearFilter && new Date(r.month_date).getFullYear() !== +yearFilter)
+        return false;
       if (searchTerm) {
         const term = searchTerm.toLowerCase();
         const combined = `${r.platform ?? ""} ${r.notes ?? ""}`.toLowerCase();
@@ -50,6 +42,11 @@ export default function MediaPage() {
       return true;
     })
     .sort((a, b) => new Date(b.month_date) - new Date(a.month_date));
+
+  // Fetch records on mount
+  useEffect(() => {
+    fetchMediaRecords();
+  }, [fetchMediaRecords]);
 
   /** --- Handlers --- **/
   const handleAddMedia = () => {
@@ -65,59 +62,41 @@ export default function MediaPage() {
 
   return (
     <div className="hub-container">
-      {/* Department Header */}
       <DepartmentHeader
         title="Media Records"
         actions={
           <>
-            <NavLink
-              to="/media"
-              end
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/media" end>
               Data Entry
             </NavLink>
-            <NavLink
-              to="/media/reports"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Reports
-            </NavLink>
+            <NavLink to="/media/reports">Reports</NavLink>
           </>
         }
       />
-
-      {/* Top Action Buttons */}
       <div className="toolbar-actions-top">
         <button onClick={handleAddMedia}>Add Media</button>
       </div>
-
-      {/* Filters Toolbar */}
-      <MediaToolBar
-        filters={{
-          year: {
-            label: "Year",
-            value: yearFilter,
-            options: yearOptions,
-            onChange: setYearFilter,
-            type: "number",
-          },
-          platform: {
-            label: "Platform",
-            value: platformFilter,
-            options: [
-              "Website",
-              "Facebook",
-              "Instagram",
-              "TikTok",
-              "Newsletter",
-            ],
-            onChange: setPlatformFilter,
-          },
-        }}
-        search={{ value: searchTerm, onChange: setSearchTerm }}
-        onClear={handleClearFilters}
-      />
+      <div className="media-toolbar">
+        <MediaToolBar
+          filters={{
+            platform: {
+              label: "Platform",
+              value: platformFilter,
+              options: platformOptions,
+              onChange: setPlatformFilter,
+            },
+            year: {
+              label: "Year",
+              value: yearFilter,
+              options: yearOptions,
+              onChange: setYearFilter,
+              type: "number",
+            },
+          }}
+          search={{ value: searchTerm, onChange: setSearchTerm }}
+          onClear={handleClearFilters}
+        />
+      </div>
 
       {/* Table */}
       <MediaList
@@ -138,7 +117,6 @@ export default function MediaPage() {
             >
               &times;
             </button>
-
             <MediaForm
               editRecord={editingRecord}
               setEditRecord={setEditingRecord}
@@ -150,3 +128,6 @@ export default function MediaPage() {
     </div>
   );
 }
+
+
+// todo - make toolbar smaller so add media button is more page is more balanced.  

@@ -8,6 +8,7 @@ import NewsletterReport from "./NewsletterReport";
 import AudienceGrowthReport from "./AudienceGrowthReport";
 
 export default function MediaReports() {
+  // --- Store actions ---
   const fetchMonthlyMediaReport = useStore(
     (state) => state.fetchMonthlyMediaReport
   );
@@ -18,6 +19,7 @@ export default function MediaReports() {
     (state) => state.fetchAudienceGrowthReport
   );
 
+  // --- Store data ---
   const monthlyReport = useStore((state) => state.monthlyReport);
   const newsletterReport = useStore((state) => state.newsletterReport);
   const audienceReport = useStore((state) => state.audienceReport);
@@ -26,12 +28,13 @@ export default function MediaReports() {
   const loadingNewsletter = useStore((state) => state.loadingNewsletterReports);
   const loadingAudience = useStore((state) => state.loadingAudienceReports);
 
+  // --- Local state ---
   const [platform, setPlatform] = useState("");
   const [year, setYear] = useState("");
   const [search, setSearch] = useState("");
+  const [activeReport, setActiveReport] = useState("monthly");
 
-  const [activeTab, setActiveTab] = useState("monthly");
-
+  // --- Fetch all reports on mount ---
   useEffect(() => {
     fetchMonthlyMediaReport();
     fetchNewsletterReport();
@@ -42,17 +45,18 @@ export default function MediaReports() {
     fetchAudienceGrowthReport,
   ]);
 
+  // --- Determine available years dynamically from monthly report ---
+  const years = Array.from(
+    new Set(monthlyReport.map((r) => r.month_date.slice(0, 4)))
+  ).sort((a, b) => b - a);
+
+  // --- Filtered monthly report ---
   const filteredMonthly = monthlyReport
     .filter((r) => !platform || r.platform === platform)
     .filter((r) => !year || r.month_date.startsWith(year))
     .filter(
       (r) => !search || r.platform.toLowerCase().includes(search.toLowerCase())
     );
-
-  // Determine available years from monthly report
-  const years = Array.from(
-    new Set(monthlyReport.map((r) => r.month_date.slice(0, 4)))
-  ).sort((a, b) => b - a);
 
   return (
     <div className="hub-container">
@@ -76,52 +80,49 @@ export default function MediaReports() {
           </>
         }
       />
+
+      {/* Toolbar */}
       <MediaReportsToolBar
-        filters={{
-          year: {
-            label: "Year",
-            options: years,
-            value: year,
-            onChange: setYear,
-          },
-          platform: {
-            label: "Platform",
-            options: [
-              "Website",
-              "Facebook",
-              "Instagram",
-              "TikTok",
-              "Newsletter",
-            ],
-            value: platform,
-            onChange: setPlatform,
-          },
-        }}
-        search={{ value: search, onChange: setSearch }}
-        rightButtons={[
-          { label: "Monthly", onClick: () => setActiveTab("monthly") },
-          { label: "Newsletter", onClick: () => setActiveTab("newsletter") },
-          { label: "Audience Growth", onClick: () => setActiveTab("audience") },
+        year={year}
+        setYear={setYear}
+        platform={platform}
+        setPlatform={setPlatform}
+        search={search}
+        setSearch={setSearch}
+        activeReport={activeReport}
+        setActiveReport={setActiveReport}
+        YEAR_OPTIONS={years}
+        PLATFORM_OPTIONS={[
+          "Website",
+          "Facebook",
+          "Instagram",
+          "TikTok",
+          "Newsletter",
         ]}
+        onClear={() => {
+          setYear("");
+          setPlatform("");
+          setSearch("");
+        }}
       />
 
       {/* Report content */}
       <div style={{ marginTop: "1rem" }}>
-        {activeTab === "monthly" &&
+        {activeReport === "monthly" &&
           (loadingMonthly ? (
             <p>Loading monthly report…</p>
           ) : (
             <MonthlyMediaReport records={filteredMonthly} />
           ))}
 
-        {activeTab === "newsletter" &&
+        {activeReport === "newsletter" &&
           (loadingNewsletter ? (
             <p>Loading newsletter report…</p>
           ) : (
             <NewsletterReport records={newsletterReport} />
           ))}
 
-        {activeTab === "audience" &&
+        {activeReport === "audience-growth" &&
           (loadingAudience ? (
             <p>Loading audience growth report…</p>
           ) : (

@@ -1,35 +1,23 @@
-/* ---------- Department Hub Container ---------- */
-/* todo decided if this should be wider with the bigger table */
-/* .hub-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-} */
 
 
-/* ------ Media Table Wrapper ------ */
-.media-table-container {
-  max-width: 1400px; 
-  margin: 0 auto;
-}
-
-/* ------ Media Toolbar ------ */
-.media-toolbar {
+/* ---------- Media Toolbar ---------- */
+.media-toolbar .toolbar-container {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 12px;
-  padding: 0;    
-  width: 100%;   
+  align-items: flex-end; /* clear button aligns with bottom of filters */
+  padding: 8px 12px;     /* shorter toolbar */
+  margin-bottom: 0;
+  width: 100%;
   max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
+  background-color: rgba(0,0,0,0.05); /* subtle background */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  gap: 12px;
 }
 
-
+/* Left side filters */
 .toolbar-left {
   display: flex;
   gap: 16px;
@@ -38,36 +26,118 @@
   flex: 1;
 }
 
-
+/* Right side (Clear button) */
 .toolbar-right {
   display: flex;
   align-items: flex-end;
-  margin-left: 16px; 
+  margin-left: 16px;
 }
 
-
+/* Individual filter group */
 .filter-group {
   display: flex;
   flex-direction: column;
 }
 
-.btn-add {
-  padding: 6px 12px;
+.filter-group label {
+  margin-bottom: 4px;
+  font-weight: 500;
   font-size: 0.875rem;
-  cursor: pointer;
+}
+
+.filter-group select,
+.filter-group input {
+  padding: 6px 10px;
   border-radius: 4px;
-  border: none;
-  background-color: var(--brand-accent);
+  border: 1px solid #ccc;
+  font-size: 0.875rem;
+  min-width: 120px;
+  background-color: #fff;
+}
+
+/* Clear button */
+.clear-button {
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid #888; /* subtle grey */
+  border-radius: 4px;
+  background-color: transparent;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+  align-self: flex-end; /* aligns with bottom of filters */
+}
+
+.clear-button:hover {
+  background-color: #555;
   color: #fff;
-  transition: opacity 0.3s;
 }
 
-.btn-add:hover {
-  opacity: 0.85;
+/* ---------- Bottom Action Button ---------- */
+.toolbar-actions-bottom {
+  display: flex;
+  justify-content: flex-start; /* left-aligned; can change to flex-end */
+  margin-top: 12px;
 }
 
+.toolbar-actions-bottom button {
+  padding: 6px 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 2px solid var(--brand-primary); /* primary outlined */
+  background-color: transparent;
+  color: var(--brand-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
 
-/* ------  Media Form ------ */
+.toolbar-actions-bottom button:hover {
+  background-color: var(--brand-primary);
+  color: #fff;
+}
+
+/* ---------- Media Table ---------- */
+.media-table-container {
+  max-width: 1400px; 
+  margin: 0 auto;
+}
+
+.media-table {
+  font-size: 0.875rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.media-table th,
+.media-table td {
+  padding: 12px 8px;
+  vertical-align: middle;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.media-table thead {
+  background-color: var(--brand-primary);
+  color: #fff;
+}
+
+.media-table .col-platform { min-width: 120px; }
+.media-table .col-month { min-width: 100px; }
+.media-table .col-number { text-align: right; font-variant-numeric: tabular-nums; }
+.media-table .col-notes { max-width: 200px; white-space: pre-wrap; word-wrap: break-word; }
+
+.media-table tbody tr:hover {
+  background-color: var(--brand-primary-soft);
+}
+
+.media-table .table-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* ---------- Media Form ---------- */
 .media-form {
   max-width: 700px;
   margin: 0 auto;
@@ -80,18 +150,14 @@
   gap: 12px;
 }
 
-/* Inline sections for Month + Platform */
 .form-section-inline {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
 }
 
-.form-section-inline label {
-  flex: 1 1 200px;
-}
+.form-section-inline label { flex: 1 1 200px; }
 
-/* Dynamic Field Headings */
 .media-form h4 {
   margin-top: 16px;
   margin-bottom: 8px;
@@ -99,7 +165,6 @@
   font-weight: 600;
 }
 
-/* Form Inputs */
 .media-form label {
   display: flex;
   flex-direction: column;
@@ -121,7 +186,6 @@
   resize: vertical;
 }
 
-/* Form Buttons */
 .form-buttons {
   display: flex;
   justify-content: flex-end;
@@ -156,11 +220,11 @@
   opacity: 0.85;
 }
 
-/* ------ Modal Styling ------ */
+/* ---------- Modal Styling ---------- */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0,0,0,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -174,7 +238,7 @@
   padding: 24px;
   max-width: 900px;
   width: 100%;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
 
 .modal-close-btn {
@@ -198,97 +262,4 @@
 /* Optional modal body padding */
 .media-modal-body {
   padding: 20px;
-}
-
-/* ------ Media Table Styling ------ */
-.media-table {
-  font-size: 0.875rem;
-  width: 100%; /* fill container width */
-}
-
-.media-table th,
-.media-table td {
-  padding: 12px 8px;
-  vertical-align: middle;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.media-table thead {
-  background-color: var(--brand-primary);
-  color: #fff;
-}
-
-.media-table .col-platform {
-  min-width: 120px;
-}
-
-.media-table .col-month {
-  min-width: 100px;
-}
-
-.media-table .col-number {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.media-table .col-notes {
-  max-width: 200px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.media-table tbody tr:hover {
-  background-color: var(--brand-primary-soft);
-}
-
-/* Table Actions */
-.media-table .table-actions {
-  display: flex;
-  gap: 6px;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-
-/* ____Report Card____ */
-.report-card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  padding: 16px;
-  width: 220px;
-  margin: 12px;
-  flex: 1 1 220px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.report-card h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.report-card .value {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-
-.report-card .delta.positive {
-  color: green;
-}
-
-.report-card .delta.negative {
-  color: red;
-}
-
-/* Container for cards */
-.report-card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: flex-start; /* or center */
 }
