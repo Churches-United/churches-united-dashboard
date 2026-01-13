@@ -15,7 +15,7 @@ export default function DevelopmentHome() {
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Data Entry
+              Home
             </NavLink>
             <NavLink
               to="/development/reports"

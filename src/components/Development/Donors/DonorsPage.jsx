@@ -89,7 +89,7 @@ export default function DonorsPage() {
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Data Entry
+              Home
             </NavLink>
             <NavLink
               to="/development/reports"
@@ -110,7 +110,7 @@ export default function DonorsPage() {
       {donors.length === 0 ? (
         <p>No donors found.</p>
       ) : (
-        <div className="table-container" style={{ maxWidth: "800px" }}>
+        <div className="table-container">
           <table className="table-app table-hover table-striped">
             <thead>
               <tr>
