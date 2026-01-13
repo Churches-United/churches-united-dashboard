@@ -14,6 +14,7 @@ export default function EventsList({ events, onEdit, onDelete }) {
             <th>Date / Time</th>
             <th>Venue</th>
             <th>Type</th>
+            <th>Notes</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -24,6 +25,7 @@ export default function EventsList({ events, onEdit, onDelete }) {
               <td>{formatDate(event.datetime)}</td>
               <td>{event.venue}</td>
               <td>{event.type}</td>
+              <td>{event.notes || "—"}</td>
               <td>
                 <div className="table-actions">
                   <button

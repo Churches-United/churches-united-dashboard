@@ -1,3 +1,6 @@
+import { useState } from "react";
+
+// Static options for event type
 const EVENT_TYPES = [
   "Fundraiser",
   "Community Events",
@@ -7,13 +10,21 @@ const EVENT_TYPES = [
 
 export default function EventForm({ initialData, onSubmit, onCancel }) {
   const [name, setName] = useState(initialData?.name || "");
-  const [datetime, setDatetime] = useState(initialData?.datetime?.slice(0,16) || "");
+  const [datetime, setDatetime] = useState(
+    initialData?.datetime?.slice(0, 16) || ""
+  );
   const [venue, setVenue] = useState(initialData?.venue || "");
   const [type, setType] = useState(initialData?.type || "");
   const [notes, setNotes] = useState(initialData?.notes || "");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!name || !datetime || !venue || !type) {
+      alert("Name, date/time, venue, and type are required");
+      return;
+    }
+
     onSubmit({ name, datetime, venue, type, notes });
   };
 
@@ -24,29 +35,38 @@ export default function EventForm({ initialData, onSubmit, onCancel }) {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
+
       <input
         type="datetime-local"
         value={datetime}
         onChange={(e) => setDatetime(e.target.value)}
       />
+
       <input
         placeholder="Venue"
         value={venue}
         onChange={(e) => setVenue(e.target.value)}
       />
+
       <select value={type} onChange={(e) => setType(e.target.value)}>
         <option value="">Select event type</option>
         {EVENT_TYPES.map((t) => (
-          <option key={t} value={t}>{t}</option>
+          <option key={t} value={t}>
+            {t}
+          </option>
         ))}
       </select>
+
       <input
         placeholder="Notes"
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
       />
+
       <div className="modal-actions">
-        <button type="submit">{initialData ? "Update Event" : "Add Event"}</button>
+        <button type="submit">
+          {initialData ? "Update Event" : "Add Event"}
+        </button>
         <button type="button" className="secondary" onClick={onCancel}>
           Cancel
         </button>
