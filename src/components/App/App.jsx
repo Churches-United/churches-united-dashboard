@@ -9,7 +9,7 @@ import AboutPage from "../AboutPage/AboutPage";
 import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
 
-import DonorsPage from "../Development/Donors/Donors";
+import DonorsPage from "../Development/Donors/DonorsPage";
 import Events from "../Development/Events/Events";
 import DevelopmentHome from "../Development/DevelopmentHome";
 import DevelopmentReports from "../Development/DevelopmentReports";
