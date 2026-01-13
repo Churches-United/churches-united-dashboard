@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './ComplianceWeekly.css';
+//import './ComplianceWeekly.css';
 
 export default function ComplianceHome() {
   return (

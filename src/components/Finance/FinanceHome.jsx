@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Finance.css';
+//import './Finance.css';
 
 export default function FinanceHome() {
   return (

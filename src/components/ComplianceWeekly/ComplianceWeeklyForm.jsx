@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
-import './ComplianceWeekly.css';
+//import './ComplianceWeekly.css';
 
 function ComplianceWeeklyForm() {
   const navigate = useNavigate();

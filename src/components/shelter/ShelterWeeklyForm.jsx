@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
-import './Shelter.css';
+//import './Shelter.css';
 
 function ShelterWeeklyForm() {
   const navigate = useNavigate();
