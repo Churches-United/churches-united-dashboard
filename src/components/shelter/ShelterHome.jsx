@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-//import './Shelter.css';
 
 export default function ShelterHome() {
   return (
@@ -13,28 +12,32 @@ export default function ShelterHome() {
         </div>
       </div>
 
-      <div className="row">
-        <div className="card">
-          <div className="card-body">
-            <h5 className="card-title">🏠 Weekly Shelter Management</h5>
-            <p className="card-text">
-              Track guest counts, occupancy levels, incident reports, and operational metrics on a weekly basis.
-            </p>
-            <Link to="/shelter/weekly" className="btn-primary">
-              View Weekly Records
-            </Link>
+      <div className="row g-4">
+        <div className="col-md-6">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body">
+              <h5 className="card-title">🏠 Weekly Shelter Management</h5>
+              <p className="card-text">
+                Track guest counts, occupancy levels, incident reports, and operational metrics on a weekly basis.
+              </p>
+              <Link to="/shelter/weekly" className="btn btn-primary">
+                View Weekly Records
+              </Link>
+            </div>
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-body">
-            <h5 className="card-title">📈 Shelter Reports & Analytics</h5>
-            <p className="card-text">
-              View comprehensive reports on occupancy trends and shelter operations
-            </p>
-            <Link to="/shelter/reports" className="btn-primary">
-              View Reports
-            </Link>
+        <div className="col-md-6">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body">
+              <h5 className="card-title">📈 Shelter Reports & Analytics</h5>
+              <p className="card-text">
+                View comprehensive reports on occupancy trends and shelter operations
+              </p>
+              <Link to="/shelter/reports" className="btn btn-primary">
+                View Reports
+              </Link>
+            </div>
           </div>
         </div>
       </div>

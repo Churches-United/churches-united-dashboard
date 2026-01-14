@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
-//import './Shelter.css';
+import '../../styles/tables.css';
 
 function ShelterWeeklyList() {
   const navigate = useNavigate();
@@ -19,12 +19,7 @@ function ShelterWeeklyList() {
   
   const formatDate = (dateString) => {
     if (!dateString) return '—';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: '2-digit', 
-      day: '2-digit', 
-      year: 'numeric' 
-    });
+    return new Date(dateString).toLocaleDateString('en-US');
   };
   
   const handleDelete = async (id) => {
@@ -38,17 +33,6 @@ function ShelterWeeklyList() {
   
   return (
     <div className="hub-container">
-      {/* Year Selector */}
-      <div style={{ marginBottom: '20px' }}>
-        <label>Year: </label>
-        <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-          <option value="2026">2026</option>
-        </select>
-      </div>
-      
       <div className="department-header">
         <h2>Shelter - Weekly Records</h2>
         <div className="department-actions">
@@ -69,8 +53,8 @@ function ShelterWeeklyList() {
           <p>Click "Add New Record" to create one.</p>
         </div>
       ) : (
-        <div className="table-container">
-          <table className="table-app">
+        <div className="table-container" style={{ maxWidth: "1400px", margin: "0 auto" }}>
+          <table className="table-app table-hover table-striped">
             <thead>
               <tr>
                 <th>Week Date</th>
@@ -94,14 +78,14 @@ function ShelterWeeklyList() {
                   <td>
                     <div className="table-actions">
                       <button
-                        className="btn-table-edit"
+                        className="btn btn-sm btn-table-edit"
                         onClick={() => navigate(`/shelter/weekly/edit/${record.id}`)}
                       >
                         Edit
                       </button>
                       
                       <button
-                        className="btn-table-delete"
+                        className="btn btn-sm btn-table-delete"
                         onClick={() => handleDelete(record.id)}
                       >
                         Delete
