@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
-import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
+import DonorToolBar from "./DonorToolBar";
 import DonorForm from "./DonorForm";
 import DonorList from "./DonorList";
+import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
 
 import "../../../styles/modal.css";
 import "./Donors.css";
@@ -22,6 +23,9 @@ export default function DonorsPage() {
   // --- Modal / form state ---
   const [showModal, setShowModal] = useState(false);
   const [editingDonor, setEditingDonor] = useState(null);
+
+  // --- Toolbar filters ---
+  const [filters, setFilters] = useState({ name: "", type: "" });
 
   // --- Fetch donors ---
   useEffect(() => {
@@ -55,6 +59,13 @@ export default function DonorsPage() {
     await fetchDonors(); // refresh table after add/edit
   };
 
+  // --- Filter donors based on toolbar selections ---
+  const filteredDonors = donors.filter((d) => {
+    if (filters.name && d.name !== filters.name) return false;
+    if (filters.type && d.type !== filters.type) return false;
+    return true;
+  });
+
   if (loading) return <p>Loading donors...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -82,15 +93,33 @@ export default function DonorsPage() {
         }
       />
 
-      {/* Top action button */}
-      <div className="toolbar-actions-top">
-        <button onClick={handleAddClick}>Add Donor</button>
+      {/* Toolbar + Add button wrapper */}
+      <div className="toolbar-wrapper">
+        <DonorToolBar
+          tableData={donors}
+          filters={filters}
+          setFilters={setFilters}
+          rightButtons={[
+            {
+              label: "Clear",
+              onClick: () => setFilters({ name: "", type: "" }),
+            },
+          ]}
+        />
+
+        <div className="toolbar-action-button">
+          <button onClick={handleAddClick}>Add Donor</button>
+        </div>
       </div>
 
-      {/* Table */}
-      <DonorList donors={donors} onEdit={handleEdit} onDelete={handleDelete} />
+      {/* Donor table */}
+      <DonorList
+        donors={filteredDonors}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
-      {/* Modal */}
+      {/* Modal for Add/Edit */}
       {showModal && (
         <div
           className="modal-overlay development-modal"

@@ -1,0 +1,225 @@
+/* -------------------- Donor Toolbar -------------------- */
+
+/* Wrapper holds toolbar + button on one line */
+.toolbar-wrapper {
+  display: flex;
+  align-items: center;           /* vertically center filters + button */
+  justify-content: space-between; /* filters left, button right */
+  flex-wrap: wrap;               /* wrap on smaller screens */
+  gap: 12px;                     /* spacing if wrapped */
+  max-width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Toolbar container for filters */
+.toolbar-container.donor {
+  display: flex;
+  flex-wrap: wrap;               /* allows filters to wrap if needed */
+  gap: 12px;
+  background-color: #f9f9f9;
+  padding: 8px 16px;
+  border-radius: 6px;
+  align-items: center;           /* vertically center the selects */
+}
+
+/* Filters inside toolbar */
+.toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px; 
+}
+
+/* Clear button inside toolbar */
+.clear-button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  align-self: flex-end; /* aligns with selects vertically */
+}
+
+.clear-button:hover {
+  background-color: #d0d0d0;
+}
+
+/* Add Donor button */
+.toolbar-action-button {
+  display: flex;
+}
+
+.toolbar-action-button button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #1c71a6;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap; /* don’t let text wrap */
+}
+
+.toolbar-action-button button:hover {
+  background-color: #155a86;
+}
+
+
+/* ------ Donation Toolbar ------ */
+.toolbar-container.donation {
+  display: flex;
+  flex-wrap: wrap; /* allow filters to wrap on smaller screens */
+  gap: 12px;
+  padding: 8px 16px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  align-items: center; /* vertically center filters */
+  max-width: 700px; 
+}
+
+/* Left side filters */
+.toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Each filter group: label + input/checkbox */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+}
+
+/* Checkboxes row */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+/* Clear button styling */
+.clear-button {
+  margin-top: 22px; /* visually lines up with selects */
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.clear-button:hover {
+  background-color: #d0d0d0;
+}
+
+/* Add Donation button styling */
+.toolbar-action-button {
+  margin-left: auto; /* push it to the right of toolbar */
+}
+
+.toolbar-action-button button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #1c71a6; /* primary color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.toolbar-action-button button:hover {
+  background-color: #155a86;
+}
+
+/* Wrapper for filters + button inline */
+.toolbar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* filters left, button follows */
+  flex-wrap: wrap; /* wrap on smaller screens */
+  gap: 12px;
+  max-width: 100%;
+}
+
+/* ------ Events Toolbar ------ */
+.toolbar-container.events {
+  display: flex;
+  flex-wrap: wrap;      /* wrap filters on small screens */
+  gap: 12px;
+  padding: 8px 16px;
+  background-color: #f9f9f9;
+  /* max-width: 1200px; */
+  border-radius: 6px;
+  align-items: flex-start; /* align filters at the top */
+}
+
+.toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center; /* vertically center selects and search */
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px; /* adjust for select/input width */
+}
+
+.filter-group input,
+.filter-group select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Clear button inside toolbar */
+.clear-button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  align-self: flex-end; /* aligns with filter selects */
+}
+
+.clear-button:hover {
+  background-color: #d0d0d0;
+}
+
+/* Wrapper for toolbar + Add button */
+.toolbar-wrapper {
+  display: flex;
+  align-items: center;       /* vertically center filters + button */
+  justify-content: space-between; /* filters left, button right */
+  flex-wrap: wrap;           /* wrap on smaller screens */
+  gap: 12px;                 /* spacing if wrapping */
+  margin-bottom: 12px;       /* space before table */
+}
+
+/* Add Event button */
+.toolbar-action-button button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #1c71a6; /* primary color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;       /* don’t break text */
+}
+
+.toolbar-action-button button:hover {
+  background-color: #155a86; /* darker on hover */
+}
+

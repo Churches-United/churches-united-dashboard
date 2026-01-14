@@ -29,7 +29,8 @@ export default function EventForm({ initialData, onSubmit, onCancel }) {
   };
 
   return (
-    <div className="form-container">
+    // todo style form
+    <div className="form-container development">
       <form onSubmit={handleSubmit} className="grid-form">
         {/* Row 1: 2 columns */}
         <label>
@@ -84,7 +85,7 @@ export default function EventForm({ initialData, onSubmit, onCancel }) {
 
         {/* Row 4: buttons */}
         <div className="form-actions full-width">
-          <button type="submit">
+          <button type="submit" className="primary">
             {initialData ? "Update Event" : "Add Event"}
           </button>
           <button type="button" className="secondary" onClick={onCancel}>

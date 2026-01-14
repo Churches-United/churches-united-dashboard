@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
 import EventForm from "./EventForm";
 import EventList from "./EventList";
+import EventsToolBar from "./EventsToolBar";
 
 import "../../../styles/modal.css";
 import "../Donors/Donors.css";
@@ -17,6 +17,7 @@ export const EVENT_TYPES = [
 ];
 
 export default function EventsPage() {
+  // --- Store ---
   const fetchEvents = useStore((state) => state.fetchEvents);
   const addEvent = useStore((state) => state.addEvent);
   const editEvent = useStore((state) => state.editEvent);
@@ -26,13 +27,25 @@ export default function EventsPage() {
   const loading = useStore((state) => state.loading);
   const error = useStore((state) => state.error);
 
+  // --- Modal / form state ---
   const [showModal, setShowModal] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
 
+  // --- Filters state ---
+  const [filters, setFilters] = useState({
+    name: "",
+    type: "",
+    venue: "",
+    year: "",
+    notes: "",
+  });
+
+  // --- Fetch events ---
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents]);
 
+  // --- Handlers ---
   const handleAddClick = () => {
     setEditingEvent(null);
     setShowModal(true);
@@ -56,8 +69,25 @@ export default function EventsPage() {
       await addEvent(data);
     }
     setShowModal(false);
-    await fetchEvents(); // refresh table after add/edit
+    await fetchEvents();
   };
+
+  // --- Filter events ---
+  const filteredEvents = events.filter((e) => {
+    const eventYear = e.datetime ? new Date(e.datetime).getFullYear() : null;
+
+    if (filters.name && e.name !== filters.name) return false;
+    if (filters.type && e.type !== filters.type) return false;
+    if (filters.venue && e.venue !== filters.venue) return false;
+    if (filters.year && eventYear !== Number(filters.year)) return false;
+    if (
+      filters.notes &&
+      !`${e.notes ?? ""}`.toLowerCase().includes(filters.notes.toLowerCase())
+    )
+      return false;
+
+    return true;
+  });
 
   if (loading) return <p>Loading events...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -86,13 +116,40 @@ export default function EventsPage() {
         }
       />
 
-      {/* Top action buttons */}
-      <div className="toolbar-actions-top">
-        <button onClick={handleAddClick}>Add Event</button>
+      {/* Toolbar + Add button wrapper */}
+      <div className="toolbar-wrapper">
+        {/* Toolbar */}
+        <EventsToolBar
+          tableData={events}
+          filters={filters}
+          setFilters={setFilters}
+          rightButtons={[
+            {
+              label: "Clear",
+              onClick: () =>
+                setFilters({
+                  name: "",
+                  type: "",
+                  venue: "",
+                  year: "",
+                  notes: "",
+                }),
+            },
+          ]}
+        />
+
+        {/* Add Event button */}
+        <div className="toolbar-action-button">
+          <button onClick={handleAddClick}>Add Event</button>
+        </div>
       </div>
 
       {/* Table */}
-      <EventList events={events} onEdit={handleEdit} onDelete={handleDelete} />
+      <EventList
+        events={filteredEvents}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
       {/* Modal */}
       {showModal && (

@@ -1,15 +1,18 @@
 /* ---------------- Department-specific hub container widths ---------------- */
 .hub-container.donors {
-  max-width: 900px;
+  max-width: 700px;
 }
 
-.hub-container.donations,
-.hub-container.events {
+.hub-container.donations {
   max-width: 1200px;
 }
 
+.hub-container.events {
+  max-width: 1400px;
+}
 
-/* ---------------- Development Forms - Scoped ---------------- */
+
+/* ---------------- Development Forms  ---------------- */
 
 /* Donor Form - vertical */
 .hub-container.donors .form-container {
@@ -105,3 +108,5 @@
     width: 100%;
   }
 }
+
+

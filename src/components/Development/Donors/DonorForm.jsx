@@ -18,7 +18,8 @@ export default function DonorForm({ initialData, onSubmit, onCancel }) {
   };
 
   return (
-    <div className="form-container">
+    // style form
+    <div className="form-container development">
       <form onSubmit={handleSubmit}>
         <label>
           Name
@@ -40,8 +41,8 @@ export default function DonorForm({ initialData, onSubmit, onCancel }) {
           </select>
         </label>
 
-        <div className="form-actions">
-          <button type="submit">{initialData ? "Update" : "Add"} Donor</button>
+        <div className="form-buttons">
+          <button type="submit" className="primary">{initialData ? "Update" : "Add"} Donor</button>
           <button type="button" className="secondary" onClick={onCancel}>
             Cancel
           </button>

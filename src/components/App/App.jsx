@@ -10,7 +10,7 @@ import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
 
 import DonorsPage from "../Development/Donors/DonorsPage";
-import Events from "../Development/Events/Events";
+import EventsPage from "../Development/Events/EventsPage";
 import DevelopmentHome from "../Development/DevelopmentHome";
 import DevelopmentReports from "../Development/DevelopmentReports";
 import DonationsPage from "../Development/Donors/DonationsPage";
@@ -105,7 +105,7 @@ function App() {
           <Route path="/development" element={<DevelopmentHome />} />
           <Route path="/development/donors" element={<DonorsPage />} />
           <Route path="/development/donations" element={<DonationsPage />} />
-          <Route path="/development/events" element={<Events />} />
+          <Route path="/development/events" element={<EventsPage />} />
           <Route path="/development/reports" element={<DevelopmentReports />} />
 
           {/* Outreach */}

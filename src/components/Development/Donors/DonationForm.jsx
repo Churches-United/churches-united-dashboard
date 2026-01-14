@@ -41,7 +41,8 @@ export default function DonationForm({
   };
 
   return (
-    <div className="form-container">
+    // style form
+    <div className="form-container development">
       <form onSubmit={handleSubmit} className="donation-form-grid">
         <label>
           Donor
@@ -105,7 +106,7 @@ export default function DonationForm({
         </label>
 
         <div className="form-actions full-width">
-          <button type="submit">
+          <button type="submit" className="primary">
             {initialData ? "Update" : "Add"} Donation
           </button>
           <button type="button" className="secondary" onClick={onCancel}>
