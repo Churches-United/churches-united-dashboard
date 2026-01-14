@@ -4,9 +4,11 @@ import useStore from "../../../zustand/store";
 import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
 import DonationForm from "./DonationForm";
 import DonationList from "./DonationList";
+import DonationToolBar from "./DonationToolbar";
 
 import "../../../styles/modal.css";
 import "./Donors.css";
+import "../DevelopmentToolBar.css";
 
 export default function DonationsPage() {
   // --- Store ---
@@ -25,6 +27,14 @@ export default function DonationsPage() {
   // --- Modal / form state ---
   const [showModal, setShowModal] = useState(false);
   const [editingDonation, setEditingDonation] = useState(null);
+
+  // --- Toolbar filter state ---
+  const [filters, setFilters] = useState({
+    donor: "",
+    notable: false,
+    restricted: false,
+    search: "",
+  });
 
   // --- Fetch data ---
   useEffect(() => {
@@ -60,6 +70,19 @@ export default function DonationsPage() {
     await fetchDonations(); // refresh table after add/edit
   };
 
+  // --- Filter donations ---
+  const filteredDonations = donations.filter((d) => {
+    if (filters.donor && d.donor_name !== filters.donor) return false;
+    if (filters.notable && !d.notable) return false;
+    if (filters.restricted && !d.restricted) return false;
+    if (
+      filters.search &&
+      !d.notes?.toLowerCase().includes(filters.search.toLowerCase())
+    )
+      return false;
+    return true;
+  });
+
   if (loading) return <p>Loading donations...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -87,14 +110,34 @@ export default function DonationsPage() {
         }
       />
 
-      {/* Top action button */}
-      <div className="toolbar-actions-top">
-        <button onClick={handleAddClick}>Add Donation</button>
+      {/* Toolbar + Add Button wrapper */}
+      <div className="toolbar-wrapper">
+        <DonationToolBar
+          tableData={donations}
+          filters={filters}
+          setFilters={setFilters}
+          rightButtons={[
+            {
+              label: "Clear",
+              onClick: () =>
+                setFilters({
+                  donor: "",
+                  notable: false,
+                  restricted: false,
+                  search: "",
+                }),
+            },
+          ]}
+        />
+
+        <div className="toolbar-action-button">
+          <button onClick={handleAddClick}>Add Donation</button>
+        </div>
       </div>
 
       {/* Table */}
       <DonationList
-        donations={donations}
+        donations={filteredDonations}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />

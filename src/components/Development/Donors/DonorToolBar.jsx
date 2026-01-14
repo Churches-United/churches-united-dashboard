@@ -16,6 +16,7 @@ export default function DevelopmentToolbar({
   ).sort();
 
   return (
+    // todo - a name/search combo filter would be cool
     <div className="toolbar-container donor">
       <div className="toolbar-left">
         {/* Name filter */}
