@@ -48,7 +48,7 @@ export default function HousingPage() {
   });
 
   return (
-    <div className="hub-container">
+    <div className="hub-container housing">
       <DepartmentHeader
         title="North Campus Housing"
         actions={

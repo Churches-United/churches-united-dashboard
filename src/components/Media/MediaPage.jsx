@@ -61,7 +61,7 @@ export default function MediaPage() {
   };
 
   return (
-    <div className="hub-container">
+    <div className="hub-container media">
       <DepartmentHeader
         title="Media Records"
         actions={
@@ -128,6 +128,3 @@ export default function MediaPage() {
     </div>
   );
 }
-
-
-// todo - make toolbar smaller so add media button is more page is more balanced.  

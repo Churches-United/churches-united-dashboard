@@ -45,74 +45,76 @@ export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
   }, [selectedVolunteer, selectedLocation, selectedYear, search]);
 
   return (
-    <div className="toolbar-container">
-      <div className="toolbar-left">
-        {/* Year Filter */}
-        <div className="filter-group">
-          <label>Year:</label>
-          <select
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(e.target.value)}
-          >
-            <option value="">All</option>
-            {yearOptions.map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
-          </select>
+    // <div className="hub-container outreach">
+      <div className="toolbar-container outreach">
+        <div className="toolbar-left">
+          {/* Year Filter */}
+          <div className="filter-group">
+            <label>Year:</label>
+            <select
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+            >
+              <option value="">All</option>
+              {yearOptions.map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Volunteer Filter */}
+          <div className="filter-group">
+            <label>Volunteer:</label>
+            <select
+              value={selectedVolunteer}
+              onChange={(e) => setSelectedVolunteer(e.target.value)}
+            >
+              <option value="">All</option>
+              {volunteerOptions.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Location Filter */}
+          <div className="filter-group">
+            <label>Location:</label>
+            <select
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+            >
+              <option value="">All</option>
+              {locationOptions.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Search Filter */}
+          <div className="filter-group">
+            <label>Search:</label>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
         </div>
 
-        {/* Volunteer Filter */}
-        <div className="filter-group">
-          <label>Volunteer:</label>
-          <select
-            value={selectedVolunteer}
-            onChange={(e) => setSelectedVolunteer(e.target.value)}
-          >
-            <option value="">All</option>
-            {volunteerOptions.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Location Filter */}
-        <div className="filter-group">
-          <label>Location:</label>
-          <select
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
-          >
-            <option value="">All</option>
-            {locationOptions.map((loc) => (
-              <option key={loc} value={loc}>
-                {loc}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Search Filter */}
-        <div className="filter-group">
-          <label>Search:</label>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        {/* Clear Button */}
+        <div className="toolbar-right">
+          <button className="clear-button" onClick={onClear}>
+            Clear
+          </button>
         </div>
       </div>
-
-      {/* Clear Button */}
-      <div className="toolbar-right">
-        <button className="clear-button" onClick={onClear}>
-          Clear
-        </button>
-      </div>
-    </div>
+    // </div>
   );
 }

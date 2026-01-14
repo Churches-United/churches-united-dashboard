@@ -4,17 +4,17 @@
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
+
 /* Department-specific override */
-.hub-container.community-outreach {
+.hub-container.outreach {
   max-width: 1200px;
+  font-family: var(--font-family);
 }
 
 /* Toolbar container for reports or outreach - see toolbar.css*/
-
 .filter-group {
   display: flex;
   flex-direction: column;
-  font-family: var(--font-family); /* matches app font */
   font-size: 0.9rem;
 }
 
@@ -32,7 +32,6 @@
 }
 
 /* ---------- Tables ---------- */
-
 .table-container.table-contained {
   max-width: 1200px;
   margin: 0 auto 1rem auto;
@@ -43,7 +42,6 @@
 }
 
 /* ---------- Accordion (Volunteer List) ---------- */
-
 .accordion {
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -64,7 +62,6 @@
   padding: 12px 16px;
   background-color: rgba(42, 87, 84);
   color: #fff;
-
   font-weight: 600;
   border: none;
   cursor: pointer;
@@ -86,7 +83,6 @@
 }
 
 /* ---------- Modals ---------- */
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -129,8 +125,7 @@
   color: var(--danger);
 }
 
-/* ---------- Form  ---------- */
-
+/* ---------- Global Form Styles ---------- */
 .form-container {
   max-width: 700px;
   margin: 40px auto;
@@ -143,32 +138,6 @@
   gap: 24px;
 }
 
-.engagement-form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px 24px;
-}
-
-.engagement-form-grid .full-width {
-  grid-column: 1 / -1;
-}
-
-.engagement-form-grid label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.engagement-form-grid input,
-.engagement-form-grid select {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-top: 4px;
-  font-size: 0.95rem;
-}
-
 .form-actions {
   display: flex;
   gap: 12px;
@@ -176,7 +145,172 @@
   margin-top: 16px;
 }
 
-/* Responsive adjustments */
+/* ---------- Community Outreach Forms ---------- */
+
+/* ---------- Volunteer Form ---------- */
+.volunteer-form-container {
+  max-width: 800px; /* wider than engagement form */
+  margin: 40px auto;
+  padding: 32px;
+  background-color: rgba(42, 87, 84, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.volunteer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.volunteer-form h3 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--brand-primary);
+}
+
+.volunteer-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.volunteer-form input,
+.volunteer-form select {
+  margin-top: 6px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.volunteer-form input:focus,
+.volunteer-form select:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px rgba(42, 87, 84, 0.2);
+}
+
+.volunteer-form .form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.volunteer-form .form-actions .primary {
+  background-color: var(--brand-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.volunteer-form .form-actions .primary:hover {
+  background-color: var(--brand-secondary);
+}
+
+.volunteer-form .form-actions .secondary {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.volunteer-form .form-actions .secondary:hover {
+  background-color: #e0e0e0;
+}
+
+/* VolunteerEngagementForm - grid layout */
+.hub-container.outreach .engagement-form-grid {
+  max-width: 700px;
+  margin: 32px auto;
+  padding: 24px;
+  /* background-color: rgba(42, 87, 84, 0.05); */
+  border-radius: 8px;
+  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+.hub-container.outreach .engagement-form-grid .full-width {
+  grid-column: 1 / -1;
+}
+
+.hub-container.outreach .engagement-form-grid h3 {
+  grid-column: 1 / -1;
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--brand-primary);
+}
+
+.hub-container.outreach .engagement-form-grid label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.hub-container.outreach .engagement-form-grid input,
+.hub-container.outreach .engagement-form-grid select {
+  margin-top: 4px;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.hub-container.outreach .engagement-form-grid input:focus,
+.hub-container.outreach .engagement-form-grid select:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px rgba(42, 87, 84, 0.2);
+}
+
+.hub-container.outreach .engagement-form-grid .form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.hub-container.outreach .engagement-form-grid .form-actions .primary {
+  background-color: var(--brand-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.hub-container.outreach .engagement-form-grid .form-actions .primary:hover {
+  background-color: var(--brand-secondary);
+}
+
+.hub-container.outreach .engagement-form-grid .form-actions .secondary {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+}
+
+.hub-container.outreach .engagement-form-grid .form-actions .secondary:hover {
+  background-color: #e0e0e0;
+}
+
+/* ---------- Responsive adjustments ---------- */
 @media (max-width: 768px) {
   .outreach-toolbar {
     flex-direction: column;
@@ -198,5 +332,23 @@
   .toolbar-right button {
     width: 100%;
     justify-content: center;
+  }
+
+  .hub-container.outreach .engagement-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .volunteer-form-container {
+    padding: 24px;
+    margin: 24px auto;
+  }
+  .volunteer-form .form-actions {
+    flex-direction: column;
+  }
+  .volunteer-form .form-actions button {
+    width: 100%;
   }
 }

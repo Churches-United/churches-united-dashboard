@@ -75,7 +75,7 @@ export default function CommunityOutreachPage() {
   };
 
   return (
-    <div className="hub-container community-outreach">
+    <div className="hub-container outreach">
       {/* Department Header */}
       <DepartmentHeader
         title="Community Outreach"

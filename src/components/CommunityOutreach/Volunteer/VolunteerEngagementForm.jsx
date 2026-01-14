@@ -86,94 +86,98 @@ export default function VolunteerEngagementForm({ editId, setEditId }) {
     return <p className="table-error">Error: {errorVolunteers}</p>;
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit} className="engagement-form-grid">
-        <h3>{editId ? "Edit Engagement" : "Log Volunteer Engagement"}</h3>
+    <div className="hub-container outreach">
+      <div className="form-container engagement-form">
+        <form onSubmit={handleSubmit} className="engagement-form-grid">
+          <h3>{editId ? "Edit Engagement" : "Log Volunteer Engagement"}</h3>
 
-        {/* Volunteer */}
-        <label className="full-width">
-          Volunteer
-          <select
-            value={volunteerId}
-            onChange={(e) => setVolunteerId(e.target.value)}
-            required
-          >
-            <option value="">Select Volunteer</option>
-            {volunteers.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.name} ({v.type})
-              </option>
-            ))}
-          </select>
-        </label>
-
-        {/* Event Date | Location */}
-        <label>
-          Event Date
-          <input
-            type="date"
-            value={eventDate}
-            onChange={(e) => setEventDate(e.target.value)}
-            required
-          />
-        </label>
-
-        <label>
-          Location
-          <select
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-          >
-            <option value="">Select Location</option>
-            {LOCATIONS.map((loc) => (
-              <option key={loc} value={loc}>
-                {loc}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        {/* # Volunteers | Signups */}
-        <label>
-          # Volunteers
-          <input
-            type="number"
-            min="1"
-            value={numberVolunteers}
-            onChange={(e) => setNumberVolunteers(e.target.value)}
-            required
-          />
-        </label>
-
-        <label>
-          Software Signups
-          <input
-            type="number"
-            min="0"
-            value={softwareSignups}
-            onChange={(e) => setSoftwareSignups(e.target.value)}
-          />
-        </label>
-
-        {/* Buttons */}
-        <div className="form-actions full-width">
-          <button type="submit" className="primary">
-            {editId ? "Update Engagement" : "Submit Engagement"}
-          </button>
-          {editId && (
-            <button
-              type="button"
-              className="secondary"
-              onClick={() => setEditId(null)}
+          {/* Volunteer */}
+          <label className="full-width">
+            Volunteer
+            <select
+              value={volunteerId}
+              onChange={(e) => setVolunteerId(e.target.value)}
+              required
             >
-              Cancel
-            </button>
-          )}
-        </div>
+              <option value="">Select Volunteer</option>
+              {volunteers.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.name} ({v.type})
+                </option>
+              ))}
+            </select>
+          </label>
 
-        {errorEngagements && <p className="table-error">{errorEngagements}</p>}
-      </form>
+          {/* Event Date | Location */}
+          <label>
+            Event Date
+            <input
+              type="date"
+              value={eventDate}
+              onChange={(e) => setEventDate(e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            Location
+            <select
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              required
+            >
+              <option value="">Select Location</option>
+              {LOCATIONS.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {/* # Volunteers | Signups */}
+          <label>
+            # Volunteers
+            <input
+              type="number"
+              min="1"
+              value={numberVolunteers}
+              onChange={(e) => setNumberVolunteers(e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            Software Signups
+            <input
+              type="number"
+              min="0"
+              value={softwareSignups}
+              onChange={(e) => setSoftwareSignups(e.target.value)}
+            />
+          </label>
+
+          {/* Buttons */}
+          <div className="form-actions full-width">
+            <button type="submit" className="primary">
+              {editId ? "Update Engagement" : "Submit Engagement"}
+            </button>
+            {editId && (
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => setEditId(null)}
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+
+          {errorEngagements && (
+            <p className="table-error">{errorEngagements}</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

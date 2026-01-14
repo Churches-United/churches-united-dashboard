@@ -5,6 +5,7 @@ export default function VolunteerAccordion() {
   const [open, setOpen] = useState(false);
 
   return (
+    // todo - department page over this
     <div className="accordion">
       <button className="accordion-header" onClick={() => setOpen(!open)}>
         Volunteers {open ? "▲" : "▼"}

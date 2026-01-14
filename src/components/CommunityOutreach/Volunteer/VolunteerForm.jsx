@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useStore from "../../../zustand/store";
+import "../CommunityOutreach.css";
 
 export default function VolunteerForm({ volunteerToEdit, onFinish }) {
   const addVolunteer = useStore((state) => state.addVolunteer);
@@ -64,9 +65,9 @@ export default function VolunteerForm({ volunteerToEdit, onFinish }) {
   if (loading) return <p className="table-loading">Loading...</p>;
   if (error) return <p className="table-error">Error: {error}</p>;
 
-  return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit} className="grid-form">
+   return (
+    <div className="volunteer-form-container">
+      <form onSubmit={handleSubmit} className="volunteer-form">
         <h3>{volunteerToEdit ? "Edit Volunteer" : "Add Volunteer"}</h3>
 
         <label>
