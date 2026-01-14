@@ -13,3 +13,30 @@
   flex-direction: column;
   gap: 24px;
 }
+
+/* ----- Summary Cards ----- */
+.summary-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.summary-card h4 {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.summary-value {
+  font-size: 1.8rem;
+  font-weight: 600;
+}

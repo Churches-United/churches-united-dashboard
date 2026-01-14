@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
 import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
@@ -8,13 +8,20 @@ import VolunteerWeeklyReport from "./VolunteerWeeklyReport";
 import VolunteerMonthlyReport from "./VolunteerMonthlyReport";
 import VolunteerByLocationReport from "./VolunteerByLocationReport";
 import VolunteerMonthlyByLocationReport from "./VolunteerMonthlyByLocationReport";
+import VolunteerSummaryCards from "./VolunteerSummaryCards";
+
+import "./OutreachReports.css";
 
 export default function CommunityOutreachReportsPage() {
+  // Filters for toolbar
   const [year, setYear] = useState("");
   const [location, setLocation] = useState("");
   const [search, setSearch] = useState("");
   const [activeReport, setActiveReport] = useState("weekly");
 
+  // -------------------
+  // Reports slices
+  // -------------------
   const weeklyReports = useStore((state) => state.volunteerWeeklyReports);
   const monthlyReports = useStore((state) => state.volunteerMonthlyReports);
   const byLocationReports = useStore(
@@ -24,6 +31,40 @@ export default function CommunityOutreachReportsPage() {
     (state) => state.volunteerMonthlyByLocationReports
   );
 
+  // -------------------
+  // Engagements slice for summary cards
+  // -------------------
+  const volunteerEngagements = useStore((state) => state.engagements);
+  const fetchEngagements = useStore((state) => state.fetchEngagements);
+
+  // Fetch raw engagement data on mount
+  useEffect(() => {
+    fetchEngagements();
+  }, [fetchEngagements]);
+
+  // -------------------
+  // Compute period (month-to-date) & year-to-date data
+  // -------------------
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  // Filter month-to-date
+  const periodData = volunteerEngagements.filter((r) => {
+    if (!r.event_date) return false;
+    const d = new Date(r.event_date);
+    return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
+  });
+
+  // Filter year-to-date
+  const ytdData = volunteerEngagements.filter((r) => {
+    if (!r.event_date) return false;
+    return new Date(r.event_date).getFullYear() === currentYear;
+  });
+
+  // -------------------
+  // Toolbar Options (derived from all reports)
+  // -------------------
   const allReports = [
     ...weeklyReports,
     ...monthlyReports,
@@ -46,6 +87,9 @@ export default function CommunityOutreachReportsPage() {
     new Set(allReports.map((r) => r.location).filter(Boolean))
   ).sort();
 
+  // -------------------
+  // Render active report
+  // -------------------
   const renderReport = () => {
     const reportProps = { year, location, search };
 
@@ -67,11 +111,11 @@ export default function CommunityOutreachReportsPage() {
     setYear("");
     setLocation("");
     setSearch("");
-    setActiveReport("weekly"); 
+    setActiveReport("weekly");
   };
 
   return (
-    <div className="hub-container">
+    <div className="hub-container outreach">
       <DepartmentHeader
         title="Community Outreach Reports"
         actions={
@@ -84,6 +128,10 @@ export default function CommunityOutreachReportsPage() {
         }
       />
 
+      {/* Summary cards show period (month-to-date) + YTD metrics */}
+      <VolunteerSummaryCards periodData={periodData} ytdData={ytdData} />
+
+      {/* Toolbar */}
       <ReportsToolbar
         year={year}
         setYear={setYear}
@@ -98,6 +146,7 @@ export default function CommunityOutreachReportsPage() {
         onClear={handleClearFilters}
       />
 
+      {/* Report output */}
       <div className="report-container">{renderReport()}</div>
     </div>
   );
