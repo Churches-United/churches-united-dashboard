@@ -12,7 +12,7 @@ import RegisterPage from "../RegisterPage/RegisterPage";
 import DonorsPage from "../Development/Donors/DonorsPage";
 import EventsPage from "../Development/Events/EventsPage";
 import DevelopmentHome from "../Development/DevelopmentHome";
-import DevelopmentReports from "../Development/DevelopmentReports";
+import DevelopmentReportsPage from "../Development/DevelopmentReportsPage";
 import DonationsPage from "../Development/Donors/DonationsPage";
 
 import ComplianceHome from "../ComplianceWeekly/ComplianceHome";
@@ -107,7 +107,7 @@ function App() {
           <Route path="/development/donors" element={<DonorsPage />} />
           <Route path="/development/donations" element={<DonationsPage />} />
           <Route path="/development/events" element={<EventsPage />} />
-          <Route path="/development/reports" element={<DevelopmentReports />} />
+          <Route path="/development/reports" element={<DevelopmentReportsPage />} />
 
           {/* Outreach */}
           <Route path="/outreach" element={<CommunityOutreachHome />} />
