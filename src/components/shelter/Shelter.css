@@ -1,230 +1,164 @@
-/* Same CSS as Compliance - just copy the entire ComplianceWeekly.css file */
-/* Or you can import it: @import '../ComplianceWeekly/ComplianceWeekly.css'; */
+/* Import shared styles if needed */
+/* @import '../../styles/shared.css'; */
 
-/* ------ Weekly Reports Table Wrapper ------ */
-.weekly-reports-container {
-  max-width: 1400px; 
-  margin: 0 auto;
-}
-
-/* ------ Weekly Reports Toolbar ------ */
-.weekly-reports-toolbar {
+/* Department Header */
+.department-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 12px;
-  padding: 0;    
-  width: 100%;   
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.toolbar-left {
-  display: flex;
-  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  padding-top: 24px;
+  border-bottom: 3px solid var(--brand-primary);
   flex-wrap: wrap;
-  align-items: flex-end;
-  flex: 1;
-}
-
-.toolbar-right {
-  display: flex;
-  align-items: flex-end;
-  margin-left: 16px; 
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.filter-group label {
-  font-size: 0.875rem;
-  margin-bottom: 4px;
-  font-weight: 500;
-}
-
-.filter-group select {
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 0.875rem;
-}
-
-/* ------ Weekly Reports Form ------ */
-.weekly-reports-form {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 24px;
-  background-color: rgba(3, 166, 150, 0.05);
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
   gap: 12px;
 }
 
-.weekly-reports-form h2 {
-  margin: 0 0 16px 0;
-  font-size: 1.5rem;
-  color: #333;
-}
-
-.weekly-reports-form fieldset {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.weekly-reports-form legend {
-  font-size: 1rem;
+.department-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
   font-weight: 600;
-  padding: 0 8px;
-  color: #333;
+  flex-shrink: 0;
 }
 
-.weekly-reports-form label {
+.department-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.department-actions a {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--brand-primary);
+  padding-bottom: 4px;
+}
+
+.department-actions a.active {
+  border-bottom: 2px solid var(--brand-primary);
+}
+
+/* Hub container */
+.hub-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
-  font-size: 0.875rem;
+  gap: 24px;
+  border-radius: 8px;
+}
+
+/* Cards on home page */
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.card-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
   margin-bottom: 12px;
-  font-weight: 500;
 }
 
-.weekly-reports-form input,
-.weekly-reports-form select,
-.weekly-reports-form textarea {
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 0.875rem;
-  margin-top: 4px;
-}
-
-.weekly-reports-form textarea {
-  min-height: 60px;
-  resize: vertical;
-  font-family: inherit;
-}
-
-.form-helper-text {
-  font-size: 0.75rem;
+.card-text {
+  font-size: 0.95rem;
   color: #666;
-  margin-top: 4px;
-  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex: 1;
 }
 
-/* Form Buttons */
-.form-buttons {
+/* Buttons */
+.btn-primary {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+  background-color: var(--brand-primary);
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background-color: #00796b;
+  color: #fff;
+}
+
+/* Top action button */
+.toolbar-actions-top {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  margin-top: 12px;
+  margin-bottom: 8px;
 }
 
-.weekly-reports-form .btn {
-  cursor: pointer;
-  border: none;
+.btn-add-record {
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid var(--brand-primary);
   border-radius: 4px;
-  font-size: 0.875rem;
-  padding: 6px 12px;
-  transition: opacity 0.3s;
-}
-
-.weekly-reports-form .btn-primary {
-  background-color: var(--brand-accent);
-  color: #fff;
-}
-
-.weekly-reports-form .btn-primary:hover {
-  opacity: 0.85;
-}
-
-.weekly-reports-form .btn-secondary {
-  background-color: #e0e0e0;
-  color: #333;
-}
-
-.weekly-reports-form .btn-secondary:hover {
-  opacity: 0.85;
-}
-
-.back-button {
-  padding: 6px 12px;
-  font-size: 0.875rem;
+  background-color: transparent;
+  color: var(--brand-primary);
   cursor: pointer;
-  border-radius: 4px;
-  border: none;
-  background-color: #6c757d;
-  color: #fff;
-  transition: opacity 0.3s;
-  margin-bottom: 16px;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.back-button:hover {
-  opacity: 0.85;
-}
-
-/* ------ Weekly Reports Table ------ */
-.weekly-reports-table {
-  font-size: 0.875rem;
-  width: 100%;
-}
-
-.weekly-reports-table th,
-.weekly-reports-table td {
-  padding: 12px 8px;
-  vertical-align: middle;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.weekly-reports-table thead {
+.btn-add-record:hover {
   background-color: var(--brand-primary);
-  color: #fff;
+  color: white;
 }
 
-.weekly-reports-table .col-number {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
+/* Responsive */
+@media (max-width: 768px) {
+  .department-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.weekly-reports-table tbody tr:hover {
-  background-color: var(--brand-primary-soft);
-}
+  .department-actions {
+    justify-content: flex-start;
+    width: 100%;
+  }
 
-.weekly-reports-table .table-actions {
-  display: flex;
-  gap: 6px;
-  justify-content: flex-start;
-  align-items: center;
-}
+  .row {
+    grid-template-columns: 1fr;
+  }
 
-/* Empty State */
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: #666;
-}
-
-.empty-state-icon {
-  font-size: 3rem;
-  margin-bottom: 12px;
-  opacity: 0.5;
-}
-
-/* Loading/Error States */
-.loading-state,
-.error-state {
-  text-align: center;
-  padding: 40px;
-  font-size: 1rem;
-}
-
-.error-state {
-  color: #dc3545;
-  background: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
+  .toolbar-actions-top {
+    justify-content: flex-start;
+    width: 100%;
+  }
 }

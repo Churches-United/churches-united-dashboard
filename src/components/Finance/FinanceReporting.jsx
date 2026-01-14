@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useStore from "../../zustand/store";
-import "./Finance.css";
+//import "./Finance.css";
 
 // Import chart components
 import LineChart from "../Charts/LineChart";

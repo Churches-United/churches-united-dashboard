@@ -1,90 +1,111 @@
-import axios from "axios";
+// src/zustand/slices/kitchen.slice.js
+import axios from 'axios';
 
-const kitchenSlice = (set, get) => ({
+const createKitchenSlice = (set) => ({
+  // State
   kitchenRecords: [],
-  loading: false,
-  error: null,
+  kitchenWeeklyReports: [],      
+  kitchenMonthlyReports: [],     
+  kitchenLoading: false,
+  kitchenError: null,
 
+  // Fetch all records
   fetchKitchenRecords: async () => {
-    set({ loading: true, error: null });
+    set({ kitchenLoading: true, kitchenError: null });
     try {
-      const res = await fetch("/api/kitchen");
-      const data = await res.json();
-      set({ kitchenRecords: data, loading: false });
-    } catch (err) {
-      set({ error: err.message, loading: false });
+      const response = await axios.get('/api/kitchen');
+      set({ kitchenRecords: response.data, kitchenLoading: false });
+    } catch (error) {
+      console.error('Error fetching kitchen records:', error);
+      set({ kitchenError: error.message, kitchenLoading: false });
     }
   },
 
-  addKitchenRecord: async (week_date, total_meals_served, notes) => {
-    set({ loading: true, error: null });
+  // Add kitchen record to the database
+  addKitchenRecord: async (weekDate, totalMealsServed, notes) => {
+    set({ kitchenLoading: true, kitchenError: null });
     try {
-      const response = await axios.post("/api/kitchen", {
-        week_date,
-        total_meals_served,
-        notes,
+      const response = await axios.post('/api/kitchen', {
+        week_date: weekDate,
+        total_meals_served: totalMealsServed,
+        notes: notes
       });
-      set((state) => ({
-        kitchenRecords: [response.data, ...state.kitchenRecords],
-        loading: false,
-      }));
-    } catch (err) {
-      console.error("addKitchenRecord error:", err);
       
-      if (err.response?.status === 409) {
-        set({ error: `A record for ${week_date} already exists`, loading: false });
-      } else if (err.response?.status === 400) {
-        set({ error: err.response.data.message, loading: false });
-      } else {
-        set({ error: "Failed to add kitchen record", loading: false });
-      }
+      set((state) => ({
+        kitchenRecords: [...state.kitchenRecords, response.data],
+        kitchenLoading: false
+      }));
+    } catch (error) {
+      console.error('Error adding kitchen record:', error);
+      set({ kitchenError: error.message, kitchenLoading: false });
     }
   },
 
-  editKitchenRecord: async (id, total_meals_served, notes) => {
-    set({ loading: true, error: null });
+  // Edit kitchen record or update
+  editKitchenRecord: async (id, totalMealsServed, notes) => {
+    set({ kitchenLoading: true, kitchenError: null });
     try {
       const response = await axios.put(`/api/kitchen/${id}`, {
-        total_meals_served,
-        notes,
+        total_meals_served: totalMealsServed,
+        notes: notes
       });
+      
       set((state) => ({
         kitchenRecords: state.kitchenRecords.map((record) =>
           record.id === id ? response.data : record
         ),
-        loading: false,
+        kitchenLoading: false
       }));
-    } catch (err) {
-      console.error("editKitchenRecord error:", err);
-      
-      if (err.response?.status === 404) {
-        set({ error: "Record not found", loading: false });
-      } else if (err.response?.status === 400) {
-        set({ error: err.response.data.message, loading: false });
-      } else {
-        set({ error: "Failed to edit kitchen record", loading: false });
-      }
+    } catch (error) {
+      console.error('Error updating kitchen record:', error);
+      set({ kitchenError: error.message, kitchenLoading: false });
     }
   },
 
+  // Delete kitchen record
   deleteKitchenRecord: async (id) => {
-    set({ loading: true, error: null });
+    set({ kitchenLoading: true, kitchenError: null });
     try {
       await axios.delete(`/api/kitchen/${id}`);
+      
       set((state) => ({
         kitchenRecords: state.kitchenRecords.filter((record) => record.id !== id),
-        loading: false,
+        kitchenLoading: false
       }));
+    } catch (error) {
+      console.error('Error deleting kitchen record:', error);
+      set({ kitchenError: error.message, kitchenLoading: false });
+    }
+  },  
+
+  // Fetch weekly kitchen reports
+  fetchKitchenWeeklyReports: async () => {
+    set({ kitchenLoading: true, kitchenError: null });
+    try {
+      const res = await axios.get('/api/kitchen/reports/weekly');
+      set({ kitchenWeeklyReports: res.data, kitchenLoading: false });
     } catch (err) {
-      console.error("deleteKitchenRecord error:", err);
-      
-      if (err.response?.status === 404) {
-        set({ error: "Record not found", loading: false });
-      } else {
-        set({ error: "Failed to delete kitchen record", loading: false });
-      }
+      console.error('fetchKitchenWeeklyReports error:', err);
+      set({ kitchenError: 'Failed to fetch weekly kitchen reports', kitchenLoading: false });
     }
   },
+
+  // Fetch monthly kitchen reports
+  fetchKitchenMonthlyReports: async () => {
+    set({ kitchenLoading: true, kitchenError: null });
+    try {
+      const res = await axios.get('/api/kitchen/reports/monthly');
+      set({ kitchenMonthlyReports: res.data, kitchenLoading: false });
+    } catch (err) {
+      console.error('fetchKitchenMonthlyReports error:', err);
+      set({ kitchenError: 'Failed to fetch monthly kitchen reports', kitchenLoading: false });
+    }
+  },
+
+  // Clear error
+  clearKitchenError: () => set({ kitchenError: null }),
 });
 
-export default kitchenSlice;
+export default createKitchenSlice;
+
+
