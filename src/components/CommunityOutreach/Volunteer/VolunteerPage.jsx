@@ -5,7 +5,8 @@ import OutreachToolbar from "../OutreachToolBar";
 import VolunteerForm from "./VolunteerForm";
 import VolunteerList from "./VolunteerList";
 import { NavLink } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+import "../CommunityOutreach.css";
+import "../../Development/DevelopmentToolBar.css";
 
 export default function VolunteersPage() {
   const fetchVolunteers = useStore((state) => state.fetchVolunteers);
@@ -56,17 +57,19 @@ export default function VolunteersPage() {
           </>
         }
       />
-      <div className="toolbar-actions-top">
-        <button onClick={handleAdd}>
-          <FaPlus /> Add Volunteer
-        </button>
-      </div>
+      <div className="toolbar-wrapper volunteer">
+        <OutreachToolbar
+          filters={filters}
+          onFilterChange={setFilters}
+          onClear={handleClearFilters}
+        />
 
-      <OutreachToolbar
-        filters={filters}
-        onFilterChange={setFilters}
-        onClear={handleClearFilters}
-      />
+        <div className="toolbar-action-button">
+          <button onClick={handleAdd}>
+            Add Volunteer
+          </button>
+        </div>
+      </div>
 
       <VolunteerList onEdit={handleEdit} filters={filters} />
 

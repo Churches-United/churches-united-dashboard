@@ -35,7 +35,7 @@ export default function VolunteerEngagementsPage() {
     setFilters({ volunteerId: "", year: "", location: "" });
 
   return (
-    <div className="hub-container outreach">
+    <div className="hub-container vol-engagement">
       <DepartmentHeader
         title="Community Outreach"
         actions={
@@ -56,16 +56,17 @@ export default function VolunteerEngagementsPage() {
           </>
         }
       />
-      <div className="toolbar-actions-top">
-        <button onClick={handleAdd}>Add Engagement</button>
+      <div className="toolbar-wrapper volunteer">
+        <OutreachToolbar
+          filters={filters}
+          onFilterChange={setFilters}
+          onClear={handleClearFilters}
+        />
+
+        <div className="toolbar-action-button">
+          <button onClick={handleAdd}>Add Volunteer Engagement</button>
+        </div>
       </div>
-
-      <OutreachToolbar
-        filters={filters}
-        onFilterChange={setFilters}
-        onClear={handleClearFilters}
-      />
-
       <VolunteerEngagementList onEdit={handleEdit} filters={filters} />
 
       {showModal && (
