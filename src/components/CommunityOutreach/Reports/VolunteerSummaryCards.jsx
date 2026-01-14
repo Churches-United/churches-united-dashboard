@@ -66,13 +66,14 @@ export default function VolunteerSummaryCards({
   )[0];
 
   return (
+    // todo - Since we are in January... could do quarter data? 
     <div className="summary-card-grid">
       <div className="summary-card">
         <h4>Total Volunteers</h4>
         <p className="summary-value">
           <FaUsers /> {periodVolunteers}
         </p>
-        <small>YTD: {ytdVolunteers}</small>
+        <small>This Year: {ytdVolunteers}</small>
       </div>
 
       <div className="summary-card">
@@ -80,10 +81,9 @@ export default function VolunteerSummaryCards({
         <p className="summary-value">
           <FaCheck /> {periodSignups}
         </p>
-        <small>YTD: {ytdSignups}</small>
+        <small>This Year: {ytdSignups}</small>
       </div>
-
-      <div className="summary-card">
+      {/* <div className="summary-card">
         <h4>Volunteer Type</h4>
         <p className="summary-value">
           <FaUsers /> Group: {periodGroup}
@@ -93,9 +93,9 @@ export default function VolunteerSummaryCards({
         </small>
         <br />
         <small>
-          YTD — Group: {ytdGroup}, Individual: {ytdIndividual}
+          This Year — Group: {ytdGroup}, Individual: {ytdIndividual}
         </small>
-      </div>
+      </div> */}
 
       <div className="summary-card">
         <h4>Top Location</h4>
@@ -104,7 +104,7 @@ export default function VolunteerSummaryCards({
         </p>
         <small>
           {topLocationYTD
-            ? `YTD: ${topLocationYTD[0]} (${topLocationYTD[1]})`
+            ? `This Year: ${topLocationYTD[0]} (${topLocationYTD[1]})`
             : ""}
         </small>
       </div>
