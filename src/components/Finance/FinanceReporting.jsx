@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import useStore from "../../zustand/store";
-//import "./Finance.css";
+import '../../styles/tables.css';
+import './Finance.css';
 
 // Import chart components
 import LineChart from "../Charts/LineChart";
@@ -37,7 +39,7 @@ function FinanceReporting() {
 
   const formatDate = (dateString) => {
     if (!dateString) return '—';
-    return dateString.split('T')[0];
+    return new Date(dateString).toLocaleDateString('en-US');
   };
 
   // ========== METRICS TAB CHART DATA ==========
@@ -222,16 +224,16 @@ function FinanceReporting() {
 
   // ========== LOADING & ERROR STATES ==========
   
-  if (loading) return <div className="report-loading">Loading...</div>;
-  if (error) return <div className="report-error">Error: {error}</div>;
+  if (loading) return <div className="table-loading">Loading...</div>;
+  if (error) return <div className="table-error">Error: {error}</div>;
 
   // ========== METRICS TAB RENDER ==========
   
   const renderMetrics = () => {
     if (!metrics) {
       return (
-        <div className="report-empty-state">
-          <div className="report-empty-state-icon">📊</div>
+        <div className="table-empty">
+          <div style={{ fontSize: '3rem', marginBottom: '16px', opacity: 0.4 }}>📊</div>
           <p>No metrics data available for {year}</p>
         </div>
       );
@@ -241,13 +243,33 @@ function FinanceReporting() {
     const weeklyAvgChartData = getWeeklyAveragesChartData();
 
     return (
-      <div className="reporting-content">
-        <h3>Financial Metrics Overview</h3>
+      <div style={{ padding: '20px 0' }}>
         
-        {/* Charts Section */}
-        <div style={{ marginBottom: '32px' }}>
+        {/* Charts Section Header */}
+        <h3 style={{ 
+          fontSize: '1.5rem', 
+          fontWeight: '600', 
+          marginBottom: '24px',
+          color: '#333'
+        }}>
+          Financial Overview
+        </h3>
+        
+        {/* Charts Section - Side by Side */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', 
+          gap: '24px',
+          marginBottom: '48px'
+        }}>
           {weeklyAvgChartData && (
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ 
+              maxHeight: '280px',
+              backgroundColor: '#fff',
+              padding: '20px',
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+            }}>
               <BarChart 
                 data={weeklyAvgChartData} 
                 title="Weekly Averages"
@@ -256,7 +278,13 @@ function FinanceReporting() {
           )}
           
           {expenseChartData && (
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ 
+              maxHeight: '280px',
+              backgroundColor: '#fff',
+              padding: '20px',
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+            }}>
               <PieChart 
                 data={expenseChartData} 
                 title="Expense Breakdown"
@@ -265,84 +293,153 @@ function FinanceReporting() {
           )}
         </div>
 
-        {/* Annual Totals */}
-        <div className="report-section-title">Annual Totals</div>
-        <table className="summary-table">
-          <tbody>
-            <tr>
-              <td>Total Revenue:</td>
-              <td className="text-positive">{formatCurrency(metrics.total_revenue)}</td>
-            </tr>
-            <tr>
-              <td>Total Bills Paid:</td>
-              <td className="text-negative">{formatCurrency(metrics.total_bills)}</td>
-            </tr>
-            <tr>
-              <td>Total Payroll:</td>
-              <td className="text-negative">{formatCurrency(metrics.total_payroll)}</td>
-            </tr>
-            <tr>
-              <td>Net Change (Year):</td>
-              <td className={metrics.net_change_year >= 0 ? 'text-positive' : 'text-negative'}>
-                {formatCurrency(metrics.net_change_year)}
-              </td>
-            </tr>
-            <tr>
-              <td>Total Weeks Reported:</td>
-              <td className="text-neutral">{metrics.total_weeks || 0}</td>
-            </tr>
-          </tbody>
-        </table>
+        {/* Divider Line */}
+        <div style={{
+          borderTop: '2px solid #e0e0e0',
+          marginBottom: '32px'
+        }}></div>
 
-        {/* Weekly Averages */}
-        <div className="report-section-title">Weekly Averages</div>
-        <table className="summary-table">
-          <tbody>
-            <tr>
-              <td>Avg Weekly Revenue:</td>
-              <td>{formatCurrency(metrics.avg_weekly_revenue)}</td>
-            </tr>
-            <tr>
-              <td>Avg Weekly Bills:</td>
-              <td>{formatCurrency(metrics.avg_weekly_bills)}</td>
-            </tr>
-            <tr>
-              <td>Avg Weekly Payroll:</td>
-              <td>{formatCurrency(metrics.avg_weekly_payroll)}</td>
-            </tr>
-          </tbody>
-        </table>
+        {/* Tables Section Header */}
+        <h3 style={{ 
+          fontSize: '1.5rem', 
+          fontWeight: '600', 
+          marginBottom: '24px',
+          color: '#333'
+        }}>
+          Financial Metrics Summary
+        </h3>
 
-        {/* Asset Positions */}
-        <div className="report-section-title">Asset Positions</div>
-        <table className="summary-table">
-          <tbody>
-            <tr>
-              <td>Average Total Assets:</td>
-              <td>{formatCurrency(metrics.avg_assets)}</td>
-            </tr>
-            <tr>
-              <td>Max Total Assets:</td>
-              <td>{formatCurrency(metrics.max_assets)}</td>
-            </tr>
-            <tr>
-              <td>Min Total Assets:</td>
-              <td>{formatCurrency(metrics.min_assets)}</td>
-            </tr>
-            <tr>
-              <td>Avg Operating Balance:</td>
-              <td>{formatCurrency(metrics.avg_operating_balance)}</td>
-            </tr>
-            <tr>
-              <td>Max Operating Balance:</td>
-              <td>{formatCurrency(metrics.max_operating_balance)}</td>
-            </tr>
-            <tr>
-              <td>Min Operating Balance:</td>
-              <td>{formatCurrency(metrics.min_operating_balance)}</td>
-            </tr>
-          </tbody>
-        </table>
+        {/* Tables in 3 columns */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+          gap: '24px'
+        }}>
+          
+          {/* Annual Totals */}
+          <div>
+            <h4 style={{ 
+              fontSize: '1.125rem', 
+              fontWeight: '600', 
+              marginBottom: '12px',
+              color: 'var(--brand-primary)'
+            }}>
+              Annual Totals
+            </h4>
+            <div className="table-container">
+              <table className="table-app" style={{ fontSize: '0.875rem' }}>
+                <tbody>
+                  <tr>
+                    <td>Total Revenue:</td>
+                    <td className="col-number" style={{ color: 'green' }}>
+                      {formatCurrency(metrics.total_revenue)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Total Bills Paid:</td>
+                    <td className="col-number" style={{ color: 'red' }}>
+                      {formatCurrency(metrics.total_bills)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Total Payroll:</td>
+                    <td className="col-number" style={{ color: 'red' }}>
+                      {formatCurrency(metrics.total_payroll)}
+                    </td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#f8f9fa' }}>
+                    <td><strong>Net Change (Year):</strong></td>
+                    <td className="col-number" style={{ 
+                      color: metrics.net_change_year >= 0 ? 'green' : 'red',
+                      fontWeight: 'bold'
+                    }}>
+                      {formatCurrency(metrics.net_change_year)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Total Weeks Reported:</td>
+                    <td className="col-number">{metrics.total_weeks || 0}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Weekly Averages */}
+          <div>
+            <h4 style={{ 
+              fontSize: '1.125rem', 
+              fontWeight: '600', 
+              marginBottom: '12px',
+              color: 'var(--brand-primary)'
+            }}>
+              Weekly Averages
+            </h4>
+            <div className="table-container">
+              <table className="table-app" style={{ fontSize: '0.875rem' }}>
+                <tbody>
+                  <tr>
+                    <td>Avg Weekly Revenue:</td>
+                    <td className="col-number">{formatCurrency(metrics.avg_weekly_revenue)}</td>
+                  </tr>
+                  <tr>
+                    <td>Avg Weekly Bills:</td>
+                    <td className="col-number">{formatCurrency(metrics.avg_weekly_bills)}</td>
+                  </tr>
+                  <tr>
+                    <td>Avg Weekly Payroll:</td>
+                    <td className="col-number">{formatCurrency(metrics.avg_weekly_payroll)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Asset Positions */}
+          <div>
+            <h4 style={{ 
+              fontSize: '1.125rem', 
+              fontWeight: '600', 
+              marginBottom: '12px',
+              color: 'var(--brand-primary)'
+            }}>
+              Asset Positions
+            </h4>
+            <div className="table-container">
+              <table className="table-app" style={{ fontSize: '0.875rem' }}>
+                <tbody>
+                  <tr>
+                    <td>Avg Total Assets:</td>
+                    <td className="col-number">{formatCurrency(metrics.avg_assets)}</td>
+                  </tr>
+                  <tr>
+                    <td>Max Total Assets:</td>
+                    <td className="col-number">{formatCurrency(metrics.max_assets)}</td>
+                  </tr>
+                  <tr>
+                    <td>Min Total Assets:</td>
+                    <td className="col-number">{formatCurrency(metrics.min_assets)}</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#f8f9fa' }}>
+                    <td colSpan="2" style={{ paddingTop: '8px' }}></td>
+                  </tr>
+                  <tr>
+                    <td>Avg Operating Balance:</td>
+                    <td className="col-number">{formatCurrency(metrics.avg_operating_balance)}</td>
+                  </tr>
+                  <tr>
+                    <td>Max Operating Balance:</td>
+                    <td className="col-number">{formatCurrency(metrics.max_operating_balance)}</td>
+                  </tr>
+                  <tr>
+                    <td>Min Operating Balance:</td>
+                    <td className="col-number">{formatCurrency(metrics.min_operating_balance)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -352,8 +449,8 @@ function FinanceReporting() {
   const renderCashflow = () => {
     if (!cashflow || cashflow.length === 0) {
       return (
-        <div className="report-empty-state">
-          <div className="report-empty-state-icon">💰</div>
+        <div className="table-empty">
+          <div style={{ fontSize: '3rem', marginBottom: '16px', opacity: 0.4 }}>💰</div>
           <p>No cash flow data available for {year}</p>
         </div>
       );
@@ -362,12 +459,28 @@ function FinanceReporting() {
     const chartData = getCashFlowChartData();
 
     return (
-      <div className="reporting-content">
-        <h3>Cash Flow Analysis</h3>
+      <div style={{ padding: '20px 0' }}>
+        
+        {/* Chart Section Header */}
+        <h3 style={{ 
+          fontSize: '1.5rem', 
+          fontWeight: '600', 
+          marginBottom: '24px',
+          color: '#333'
+        }}>
+          Cash Flow Visualization
+        </h3>
         
         {/* Line Chart */}
         {chartData && (
-          <div style={{ marginBottom: '32px' }}>
+          <div style={{ 
+            maxHeight: '300px',
+            marginBottom: '48px',
+            backgroundColor: '#fff',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+          }}>
             <LineChart 
               data={chartData} 
               title="Cash Flow Over Time"
@@ -375,31 +488,55 @@ function FinanceReporting() {
           </div>
         )}
 
+        {/* Divider Line */}
+        <div style={{
+          borderTop: '2px solid #e0e0e0',
+          marginBottom: '32px'
+        }}></div>
+
+        {/* Table Section Header */}
+        <h3 style={{ 
+          fontSize: '1.5rem', 
+          fontWeight: '600', 
+          marginBottom: '24px',
+          color: '#333'
+        }}>
+          Weekly Cash Flow Data
+        </h3>
+
         {/* Table */}
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Week Of</th>
-              <th className="col-currency">Revenue</th>
-              <th className="col-currency">Total Expenses</th>
-              <th className="col-currency">Net Change</th>
-              <th className="col-currency">Operating Balance</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cashflow.map((week, index) => (
-              <tr key={index}>
-                <td>{formatDate(week.date)}</td>
-                <td className="col-currency text-positive">{formatCurrency(week.revenue_received)}</td>
-                <td className="col-currency text-negative">{formatCurrency(week.total_expenses)}</td>
-                <td className={`col-currency ${week.net_change >= 0 ? 'text-positive' : 'text-negative'}`}>
-                  {formatCurrency(week.net_change)}
-                </td>
-                <td className="col-currency">{formatCurrency(week.operating_account_balance)}</td>
+        <div className="table-container" style={{ maxWidth: "1400px", margin: "0 auto" }}>
+          <table className="table-app table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Week Of</th>
+                <th className="col-number">Revenue</th>
+                <th className="col-number">Total Expenses</th>
+                <th className="col-number">Net Change</th>
+                <th className="col-number">Operating Balance</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {cashflow.map((week, index) => (
+                <tr key={index}>
+                  <td>{formatDate(week.date)}</td>
+                  <td className="col-number" style={{ color: 'green' }}>
+                    {formatCurrency(week.revenue_received)}
+                  </td>
+                  <td className="col-number" style={{ color: 'red' }}>
+                    {formatCurrency(week.total_expenses)}
+                  </td>
+                  <td className="col-number" style={{ 
+                    color: week.net_change >= 0 ? 'green' : 'red'
+                  }}>
+                    {formatCurrency(week.net_change)}
+                  </td>
+                  <td className="col-number">{formatCurrency(week.operating_account_balance)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   };
@@ -409,8 +546,8 @@ function FinanceReporting() {
   const renderSummary = () => {
     if (!summary || summary.length === 0) {
       return (
-        <div className="report-empty-state">
-          <div className="report-empty-state-icon">📋</div>
+        <div className="table-empty">
+          <div style={{ fontSize: '3rem', marginBottom: '16px', opacity: 0.4 }}>📋</div>
           <p>No summary data available for {year}</p>
         </div>
       );
@@ -422,15 +559,31 @@ function FinanceReporting() {
     const totalAssetsData = getTotalAssetsData();
 
     return (
-      <div className="reporting-content">
-        <h3>Weekly Summary</h3>
+      <div style={{ padding: '20px 0' }}>
+        
+        {/* Charts Section Header */}
+        <h3 style={{ 
+          fontSize: '1.5rem', 
+          fontWeight: '600', 
+          marginBottom: '24px',
+          color: '#333'
+        }}>
+          Financial Trends
+        </h3>
         
         {/* Charts Grid */}
-        <div style={{ marginBottom: '32px' }}>
+        <div style={{ marginBottom: '48px' }}>
           
           {/* Chart 1: Revenue vs Expenses (Full Width) */}
           {revenueVsExpensesData && (
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ 
+              maxHeight: '300px',
+              marginBottom: '24px',
+              backgroundColor: '#fff',
+              padding: '20px',
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+            }}>
               <LineChart 
                 data={revenueVsExpensesData} 
                 title="Revenue vs Expenses Over Time"
@@ -441,30 +594,52 @@ function FinanceReporting() {
           {/* Two Column Layout for smaller charts */}
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', 
             gap: '24px',
             marginBottom: '24px'
           }}>
             {/* Chart 2: Net Change */}
             {netChangeData && (
-              <BarChart 
-                data={netChangeData} 
-                title="Weekly Net Change"
-              />
+              <div style={{ 
+                maxHeight: '280px',
+                backgroundColor: '#fff',
+                padding: '20px',
+                borderRadius: '8px',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+              }}>
+                <BarChart 
+                  data={netChangeData} 
+                  title="Weekly Net Change"
+                />
+              </div>
             )}
 
             {/* Chart 3: Operating Balance */}
             {operatingBalanceData && (
-              <LineChart 
-                data={operatingBalanceData} 
-                title="Operating Balance Trend"
-              />
+              <div style={{ 
+                maxHeight: '280px',
+                backgroundColor: '#fff',
+                padding: '20px',
+                borderRadius: '8px',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+              }}>
+                <LineChart 
+                  data={operatingBalanceData} 
+                  title="Operating Balance Trend"
+                />
+              </div>
             )}
           </div>
 
           {/* Chart 4: Total Assets (Full Width) */}
           {totalAssetsData && (
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ 
+              maxHeight: '300px',
+              backgroundColor: '#fff',
+              padding: '20px',
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+            }}>
               <LineChart 
                 data={totalAssetsData} 
                 title="Total Assets Over Time"
@@ -473,38 +648,63 @@ function FinanceReporting() {
           )}
         </div>
 
+        {/* Divider Line */}
+        <div style={{
+          borderTop: '2px solid #e0e0e0',
+          marginBottom: '32px'
+        }}></div>
+
+        {/* Table Section Header */}
+        <h3 style={{ 
+          fontSize: '1.5rem', 
+          fontWeight: '600', 
+          marginBottom: '24px',
+          color: '#333'
+        }}>
+          Detailed Weekly Data
+        </h3>
+
         {/* Data Table */}
-        <div className="report-section-title">Detailed Weekly Data</div>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Week Of</th>
-              <th className="col-currency">Total Assets</th>
-              <th className="col-currency">Operating Balance</th>
-              <th className="col-currency">Revenue</th>
-              <th className="col-currency">Bills Paid</th>
-              <th className="col-currency">Payroll</th>
-              <th className="col-currency">Net Change</th>
-              <th>Major Expenses</th>
-            </tr>
-          </thead>
-          <tbody>
-            {summary.map((week, index) => (
-              <tr key={index}>
-                <td>{formatDate(week.date)}</td>
-                <td className="col-currency">{formatCurrency(week.total_assets)}</td>
-                <td className="col-currency">{formatCurrency(week.operating_account_balance)}</td>
-                <td className="col-currency text-positive">{formatCurrency(week.revenue_received)}</td>
-                <td className="col-currency text-negative">{formatCurrency(week.bills_paid)}</td>
-                <td className="col-currency text-negative">{formatCurrency(week.payroll_paid)}</td>
-                <td className={`col-currency ${week.net_change >= 0 ? 'text-positive' : 'text-negative'}`}>
-                  {formatCurrency(week.net_change)}
-                </td>
-                <td>{week.major_expenses || '—'}</td>
+        <div className="table-container" style={{ maxWidth: "1400px", margin: "0 auto" }}>
+          <table className="table-app table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Week Of</th>
+                <th className="col-number">Total Assets</th>
+                <th className="col-number">Operating Balance</th>
+                <th className="col-number">Revenue</th>
+                <th className="col-number">Bills Paid</th>
+                <th className="col-number">Payroll</th>
+                <th className="col-number">Net Change</th>
+                <th>Major Expenses</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {summary.map((week, index) => (
+                <tr key={index}>
+                  <td>{formatDate(week.date)}</td>
+                  <td className="col-number">{formatCurrency(week.total_assets)}</td>
+                  <td className="col-number">{formatCurrency(week.operating_account_balance)}</td>
+                  <td className="col-number" style={{ color: 'green' }}>
+                    {formatCurrency(week.revenue_received)}
+                  </td>
+                  <td className="col-number" style={{ color: 'red' }}>
+                    {formatCurrency(week.bills_paid)}
+                  </td>
+                  <td className="col-number" style={{ color: 'red' }}>
+                    {formatCurrency(week.payroll_paid)}
+                  </td>
+                  <td className="col-number" style={{ 
+                    color: week.net_change >= 0 ? 'green' : 'red'
+                  }}>
+                    {formatCurrency(week.net_change)}
+                  </td>
+                  <td>{week.major_expenses || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   };
@@ -512,14 +712,21 @@ function FinanceReporting() {
   // ========== MAIN RENDER ==========
   
   return (
-    <div className="reporting-container">
-      <div className="reporting-header">
+    <div className="finance-hub-container">
+      <div className="finance-department-header">
         <h2>Finance Reports - {year}</h2>
+        <div className="finance-department-actions">
+          <Link to="/finance">Data Entry</Link>
+          <Link to="/finance/reports" className="active">Reports</Link>
+        </div>
       </div>
 
-      <div className="reporting-year-selector">
+      <div className="finance-year-selector">
         <label>Year:</label>
-        <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
+        <select 
+          value={year} 
+          onChange={(e) => setYear(parseInt(e.target.value))}
+        >
           <option value="2023">2023</option>
           <option value="2024">2024</option>
           <option value="2025">2025</option>
@@ -528,21 +735,21 @@ function FinanceReporting() {
         </select>
       </div>
 
-      <div className="reporting-tabs">
+      <div className="finance-tabs-container">
         <button 
-          className={`reporting-tab ${activeTab === "metrics" ? "active" : ""}`}
+          className={`finance-tab-button ${activeTab === "metrics" ? "active" : ""}`}
           onClick={() => setActiveTab("metrics")}
         >
           Financial Metrics
         </button>
         <button 
-          className={`reporting-tab ${activeTab === "cashflow" ? "active" : ""}`}
+          className={`finance-tab-button ${activeTab === "cashflow" ? "active" : ""}`}
           onClick={() => setActiveTab("cashflow")}
         >
           Cash Flow
         </button>
         <button 
-          className={`reporting-tab ${activeTab === "summary" ? "active" : ""}`}
+          className={`finance-tab-button ${activeTab === "summary" ? "active" : ""}`}
           onClick={() => setActiveTab("summary")}
         >
           Weekly Summary
