@@ -41,10 +41,30 @@ function ShelterWeeklyList() {
         </div>
       </div>
 
-      <div className="toolbar-actions-top">
-        <Link to="/shelter/weekly/new" className="btn-add-record">
-          Add New Record
-        </Link>
+      {/* Toolbar with Year Selector and Add Button */}
+      <div className="toolbar-container">
+        <div className="toolbar-left">
+          <div className="filter-group">
+            <label htmlFor="year-select">Year:</label>
+            <select 
+              id="year-select"
+              value={year} 
+              onChange={(e) => setYear(parseInt(e.target.value))}
+            >
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="toolbar-right">
+          <Link to="/shelter/weekly/new" className="btn-add-record">
+            Add New Record
+          </Link>
+        </div>
       </div>
       
       {records.length === 0 ? (

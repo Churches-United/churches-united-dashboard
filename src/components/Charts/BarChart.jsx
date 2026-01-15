@@ -1,3 +1,4 @@
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -18,20 +19,21 @@ ChartJS.register(
   Legend
 );
 
-function BarChart({ data, options, title, horizontal = false }) {
+function BarChart({ data, title, options = {} }) {
   const defaultOptions = {
     responsive: true,
     maintainAspectRatio: true,
-    indexAxis: horizontal ? 'y' : 'x',
+    aspectRatio: 2, // 2:1 ratio for bar charts
     plugins: {
       legend: {
         position: 'top',
         labels: {
-          boxWidth: 12,
           padding: 15,
           font: {
             size: 12
-          }
+          },
+          boxWidth: 15,
+          boxHeight: 15
         }
       },
       title: {
@@ -39,7 +41,7 @@ function BarChart({ data, options, title, horizontal = false }) {
         text: title,
         font: {
           size: 16,
-          weight: 600
+          weight: 'bold'
         },
         padding: {
           bottom: 20
@@ -49,43 +51,79 @@ function BarChart({ data, options, title, horizontal = false }) {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         titleFont: {
-          size: 13
+          size: 14
         },
         bodyFont: {
-          size: 12
+          size: 13
+        },
+        callbacks: {
+          label: function(context) {
+            let label = context.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              label += new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+              }).format(context.parsed.y);
+            }
+            return label;
+          }
         }
       }
     },
     scales: {
       y: {
         beginAtZero: true,
+        grid: {
+          color: 'rgba(0, 0, 0, 0.05)',
+          drawBorder: false
+        },
         ticks: {
           font: {
             size: 11
+          },
+          callback: function(value) {
+            return new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            }).format(value);
           }
-        },
-        grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
         }
       },
       x: {
+        grid: {
+          display: false,
+          drawBorder: false
+        },
         ticks: {
           font: {
             size: 11
           }
-        },
-        grid: {
-          display: false
         }
       }
     }
   };
 
-  return (
-    <div style={{ padding: '20px', backgroundColor: '#fff', borderRadius: '4px' }}>
-      <Bar data={data} options={{ ...defaultOptions, ...options }} />
-    </div>
-  );
+  const mergedOptions = {
+    ...defaultOptions,
+    ...options,
+    plugins: {
+      ...defaultOptions.plugins,
+      ...(options.plugins || {})
+    },
+    scales: {
+      ...defaultOptions.scales,
+      ...(options.scales || {})
+    }
+  };
+
+  return <Bar data={data} options={mergedOptions} />;
 }
 
 export default BarChart;

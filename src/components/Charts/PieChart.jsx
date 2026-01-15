@@ -1,3 +1,4 @@
+import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -6,40 +7,23 @@ import {
   Legend
 } from 'chart.js';
 
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-function PieChart({ data, options, title }) {
+function PieChart({ data, title, options = {} }) {
   const defaultOptions = {
     responsive: true,
     maintainAspectRatio: true,
+    aspectRatio: 1.5, // Makes it wider and less tall
     plugins: {
       legend: {
         position: 'right',
         labels: {
-          boxWidth: 12,
           padding: 15,
           font: {
             size: 12
           },
-          generateLabels: (chart) => {
-            const datasets = chart.data.datasets;
-            return chart.data.labels.map((label, i) => {
-              const value = datasets[0].data[i];
-              const total = datasets[0].data.reduce((a, b) => a + b, 0);
-              const percentage = ((value / total) * 100).toFixed(1);
-              
-              return {
-                text: `${label} (${percentage}%)`,
-                fillStyle: datasets[0].backgroundColor[i],
-                hidden: false,
-                index: i
-              };
-            });
-          }
+          boxWidth: 15,
+          boxHeight: 15
         }
       },
       title: {
@@ -47,7 +31,7 @@ function PieChart({ data, options, title }) {
         text: title,
         font: {
           size: 16,
-          weight: 600
+          weight: 'bold'
         },
         padding: {
           bottom: 20
@@ -57,29 +41,46 @@ function PieChart({ data, options, title }) {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         titleFont: {
-          size: 13
+          size: 14
         },
         bodyFont: {
-          size: 12
+          size: 13
         },
         callbacks: {
           label: function(context) {
-            const label = context.label || '';
+            let label = context.label || '';
+            if (label) {
+              label += ': ';
+            }
             const value = context.parsed || 0;
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
             const percentage = ((value / total) * 100).toFixed(1);
-            return `${label}: ${value} (${percentage}%)`;
+            label += `${value.toLocaleString()} (${percentage}%)`;
+            return label;
           }
         }
+      }
+    },
+    layout: {
+      padding: {
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10
       }
     }
   };
 
-  return (
-    <div style={{ padding: '20px', backgroundColor: '#fff', borderRadius: '4px', maxWidth: '600px', margin: '0 auto' }}>
-      <Pie data={data} options={{ ...defaultOptions, ...options }} />
-    </div>
-  );
+  const mergedOptions = {
+    ...defaultOptions,
+    ...options,
+    plugins: {
+      ...defaultOptions.plugins,
+      ...(options.plugins || {})
+    }
+  };
+
+  return <Pie data={data} options={mergedOptions} />;
 }
 
 export default PieChart;
