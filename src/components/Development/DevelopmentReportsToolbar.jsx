@@ -62,21 +62,23 @@ export default function DevelopmentReportsToolbar({
         {/* Name / Event */}
         <div className="filter-group">
           <label>Name / Event</label>
-          <input
-            type="text"
+          <select
             value={filters.name || ""}
             onChange={(e) => setFilters({ ...filters, name: e.target.value })}
-            disabled={disableNameSearch}
+            disabled={disableNameSearch || nameOptions.length === 0}
             style={
-              disableNameSearch ? { opacity: 0.5, cursor: "not-allowed" } : {}
+              disableNameSearch || nameOptions.length === 0
+                ? { opacity: 0.5, cursor: "not-allowed" }
+                : {}
             }
-            list="name-options"
-          />
-          <datalist id="name-options">
+          >
+            <option value="">All</option>
             {nameOptions.map((n) => (
-              <option key={n} value={n} />
+              <option key={n} value={n}>
+                {n}
+              </option>
             ))}
-          </datalist>
+          </select>
         </div>
 
         {/* Search */}

@@ -22,8 +22,10 @@ export default function DevelopmentReportsPage() {
   });
 
   // ---------------- Store Data ----------------
-  const donationWeeklyReports = useStore((state) => state.donationWeeklyReports) || [];
-  const donationMonthlyReports = useStore((state) => state.donationMonthlyReports) || [];
+  const donationWeeklyReports =
+    useStore((state) => state.donationWeeklyReports) || [];
+  const donationMonthlyReports =
+    useStore((state) => state.donationMonthlyReports) || [];
   const donations = useStore((state) => state.donations) || [];
   const donors = useStore((state) => state.donors) || [];
   const events = useStore((state) => state.events) || [];
@@ -31,8 +33,12 @@ export default function DevelopmentReportsPage() {
   const fetchDonations = useStore((state) => state.fetchDonations);
   const fetchDonors = useStore((state) => state.fetchDonors);
   const fetchEvents = useStore((state) => state.fetchEvents);
-  const fetchWeeklyDonationReports = useStore((state) => state.fetchWeeklyDonationReports);
-  const fetchMonthlyDonationReports = useStore((state) => state.fetchMonthlyDonationReports);
+  const fetchWeeklyDonationReports = useStore(
+    (state) => state.fetchWeeklyDonationReports
+  );
+  const fetchMonthlyDonationReports = useStore(
+    (state) => state.fetchMonthlyDonationReports
+  );
 
   // Fetch data on mount
   useEffect(() => {
@@ -73,9 +79,11 @@ export default function DevelopmentReportsPage() {
 
   // Name / Event options
   const nameOptions =
-    category === "donations"
+    category === "donations" && donors.length
       ? Array.from(new Set(donors.map((d) => d.name))).sort()
-      : Array.from(new Set(events.map((e) => e.name))).sort();
+      : category === "events" && events.length
+      ? Array.from(new Set(events.map((e) => e.name))).sort()
+      : [];
 
   // ---------------- Report Options ----------------
   const reportOptions =
@@ -90,7 +98,8 @@ export default function DevelopmentReportsPage() {
           { value: "by-venue", label: "Events By Venue" },
         ];
 
-  const handleClearFilters = () => setFilters({ year: "", name: "", search: "" });
+  const handleClearFilters = () =>
+    setFilters({ year: "", name: "", search: "" });
 
   // ---------------- Render Report Component ----------------
   const renderReport = () => {
