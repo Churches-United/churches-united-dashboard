@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
 import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
-import ReportsToolbar from "./ReportsToolBar";
-
+import OutreachReportsToolbar from "./OutreachReportsToolBar";
 import VolunteerWeeklyReport from "./VolunteerWeeklyReport";
 import VolunteerMonthlyReport from "./VolunteerMonthlyReport";
 import VolunteerByLocationReport from "./VolunteerByLocationReport";
@@ -118,7 +117,7 @@ export default function CommunityOutreachReportsPage() {
       <VolunteerSummaryCards periodData={periodData} ytdData={ytdData} />
 
       {/* Toolbar */}
-      <ReportsToolbar
+      <OutreachReportsToolbar
         year={year}
         setYear={setYear}
         location={location}

@@ -90,7 +90,7 @@ function App() {
             path="/registration"
             element={user.id ? <Navigate to="/" replace /> : <RegisterPage />}
           />
-          <Route exact path="/about" element={<AboutPage />} />
+          {/* <Route exact path="/about" element={<AboutPage />} /> */}
 
           {/* Housing */}
           <Route path="/housing" element={<HousingHome />} />

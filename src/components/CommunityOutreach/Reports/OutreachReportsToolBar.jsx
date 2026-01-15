@@ -27,9 +27,14 @@ export default function ReportsToolbar({
       <div className="toolbar-left">
         <div className="filter-group">
           <label>Report:</label>
-          <select value={activeReport} onChange={(e) => setActiveReport(e.target.value)}>
+          <select
+            value={activeReport}
+            onChange={(e) => setActiveReport(e.target.value)}
+          >
             {reportOptions.map((r) => (
-              <option key={r.value} value={r.value}>{r.label}</option>
+              <option key={r.value} value={r.value}>
+                {r.label}
+              </option>
             ))}
           </select>
         </div>
@@ -38,31 +43,46 @@ export default function ReportsToolbar({
           <label>Year:</label>
           <select value={year} onChange={(e) => setYear(e.target.value)}>
             <option value="">All</option>
-            {YEAR_OPTIONS.map((y) => <option key={y} value={y}>{y}</option>)}
+            {YEAR_OPTIONS.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
           </select>
         </div>
 
         <div className="filter-group">
           <label>Location:</label>
-          <select value={location} onChange={(e) => setLocation(e.target.value)}>
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          >
             <option value="">All</option>
-            {LOCATION_OPTIONS.map((loc) => <option key={loc} value={loc}>{loc}</option>)}
+            {LOCATION_OPTIONS.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
+            ))}
           </select>
         </div>
 
         <div className="filter-group">
           <label>Search:</label>
-          <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
-      </div>
-
-      {/* Right side clear button */}
-      <div className="toolbar-right">
-        <button className="clear-button" onClick={onClear}>Clear</button>
+        <div className="filter-group">
+          <button className="clear-button" onClick={onClear}>
+            Clear
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 
-
-// todo - conditional render or grey out dropdowns if they do not work with that report. 
+// todo - conditional render or grey out dropdowns if they do not work with that report.

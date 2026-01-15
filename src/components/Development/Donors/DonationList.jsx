@@ -1,4 +1,5 @@
-import { FaEdit, FaTrash } from "react-icons/fa";
+// Plain number with commas
+export const numberFormatter = new Intl.NumberFormat("en-US");
 
 export default function DonationList({ donations, onEdit, onDelete }) {
   const formatDate = (date) => new Date(date).toLocaleDateString("en-US");
@@ -25,20 +26,23 @@ export default function DonationList({ donations, onEdit, onDelete }) {
             <tr key={d.id}>
               <td>{formatDate(d.date)}</td>
               <td>{d.donor_name}</td>
-              <td>${Number(d.amount).toFixed(2)}</td>
+              <td className="col-number">
+                ${numberFormatter.format(d.amount)}
+              </td>
+
               <td>{d.notable ? "Yes" : "No"}</td>
               <td>{d.restricted ? "Yes" : "No"}</td>
               <td>{d.notes || "—"}</td>
               <td>
                 <div className="table-actions">
                   <button className="btn-table-edit" onClick={() => onEdit(d)}>
-                    <FaEdit />
+                  Edit
                   </button>
                   <button
                     className="btn-table-delete"
                     onClick={() => onDelete(d.id)}
                   >
-                    <FaTrash />
+                    Delete
                   </button>
                 </div>
               </td>

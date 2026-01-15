@@ -1,5 +1,4 @@
 import useStore from "../../../zustand/store";
-import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function VolunteerEngagementList({ onEdit, filters = {} }) {
   const engagements = useStore((state) => state.engagements);
@@ -50,7 +49,7 @@ export default function VolunteerEngagementList({ onEdit, filters = {} }) {
                     className="btn-table-edit"
                     onClick={() => onEdit(e.id)}
                   >
-                    <FaEdit />
+                    Edit
                   </button>
                   <button
                     className="btn-table-delete"
@@ -59,7 +58,7 @@ export default function VolunteerEngagementList({ onEdit, filters = {} }) {
                         deleteEngagement(e.id);
                     }}
                   >
-                    <FaTrash />
+                    Delete
                   </button>
                 </div>
               </td>

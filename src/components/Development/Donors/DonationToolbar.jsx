@@ -13,7 +13,7 @@ export default function DonationToolBar({
 
   return (
     <div className="toolbar-container donation">
-      <div className="toolbar-left">
+      <div className="toolbar-left donation">
         {/* Donor dropdown */}
         <div className="filter-group">
           <label>Donor:</label>
@@ -55,7 +55,7 @@ export default function DonationToolBar({
         </div>
 
         {/* Notes search */}
-        <div className="filter-group">
+        <div className="filter-group donation">
           <input
             type="text"
             placeholder="Search notes..."

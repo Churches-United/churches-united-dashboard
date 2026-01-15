@@ -1,4 +1,3 @@
-import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function DonorsList({ donors, onEdit, onDelete }) {
   if (donors.length === 0)
@@ -22,13 +21,13 @@ export default function DonorsList({ donors, onEdit, onDelete }) {
               <td>
                 <div className="table-actions">
                   <button className="btn-table-edit" onClick={() => onEdit(d)}>
-                    <FaEdit />
+                   Edit
                   </button>
                   <button
                     className="btn-table-delete"
                     onClick={() => onDelete(d.id)}
                   >
-                    <FaTrash />
+                   Delete
                   </button>
                 </div>
               </td>

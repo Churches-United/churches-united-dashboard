@@ -11,6 +11,7 @@ export default function HousingMonthlySummary() {
   if (!summary || summary.length === 0) return <p>No summary data available.</p>;
 
   return (
+    // todo - figure out what happened to styles...
     <section className="housing-summary-container">
       <h3>Monthly Summary</h3>
 

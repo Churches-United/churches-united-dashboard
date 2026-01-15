@@ -71,65 +71,77 @@
   background-color: #155a86;
 }
 
-/* ------ Donation Toolbar ------ */
+/* ---------------- Donation Toolbar ---------------- */
 .toolbar-container.donation {
   display: flex;
-  flex-wrap: wrap; 
-  gap: 12px;
+  flex-wrap: wrap;        
+  gap: 20px;              
   background-color: #f9f9f9;
+  width: 75%;
   border-radius: 6px;
-  align-items: center; 
-  max-width: none;
-  width: 85%;
+  padding: 12px 16px;
+  align-items: flex-end;  
 }
 
-/* Left side filters */
-.toolbar-left {
+/* Left side: filters */
+.toolbar-left.donation {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
+  gap: 24px;
+  align-items: flex-end;  
 }
 
-/* Each filter group: label + input/checkbox */
-.filter-group {
+/* Individual filter group (label + select/input) */
+.filter-group.donation {
   display: flex;
   flex-direction: column;
-  min-width: 120px;
 }
 
-/* Checkboxes row */
+/* Label styling */
+.filter-group.donation label {
+  margin-bottom: 4px;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* Inputs and selects */
+.filter-group.donation input,
+.filter-group.donation select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 0.875rem;
+  min-width: 120px;
+  box-sizing: border-box;
+}
+
+/* Checkbox group */
 .checkbox-group {
   display: flex;
-  align-items: center;
+  align-items: center;   /* bottom align checkboxes */
   gap: 16px;
-  margin-top: 22px;
 }
 
-/* Clear button styling */
+/* Clear button now aligns with bottom naturally */
 .clear-button {
-  margin-top: 22px; /* visually lines up with selects */
   padding: 6px 12px;
   border-radius: 4px;
-  background-color: #e0e0e0;
   border: 1px solid #ccc;
+  background-color: #e0e0e0;
   cursor: pointer;
   white-space: nowrap;
+  align-self: flex-end;  
 }
 
 .clear-button:hover {
   background-color: #d0d0d0;
 }
 
-/* Add Donation button styling */
-.toolbar-action-button {
-  margin-left: auto; /* push it to the right of toolbar */
-}
 
 .toolbar-action-button button {
   padding: 8px 16px;
   border-radius: 4px;
-  background-color: #1c71a6; /* primary color */
+  background-color: #1c71a6;
   color: white;
   border: none;
   cursor: pointer;
@@ -140,6 +152,7 @@
 .toolbar-action-button button:hover {
   background-color: #155a86;
 }
+
 
 /* Wrapper for filters + button inline */
 .toolbar-wrapper {

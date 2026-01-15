@@ -55,9 +55,9 @@ function Nav() {
               </>
             )}
 
-            <li>
+            {/* <li>
               <NavLink to="/about">About</NavLink>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </header>

@@ -1,4 +1,3 @@
-import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function EventsList({ events, onEdit, onDelete }) {
   const formatDate = (date) => new Date(date).toLocaleString();
@@ -30,13 +29,13 @@ export default function EventsList({ events, onEdit, onDelete }) {
               <td>
                 <div className="table-actions">
                   <button className="btn-table-edit" onClick={() => onEdit(e)}>
-                    <FaEdit />
+                    Edit
                   </button>
                   <button
                     className="btn-table-delete"
                     onClick={() => onDelete(e.id)}
                   >
-                    <FaTrash />
+                    Delete
                   </button>
                 </div>
               </td>

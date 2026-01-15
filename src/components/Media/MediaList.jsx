@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import useStore from "../../zustand/store";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import { numberFormatter, formatPercent } from "../../styles/formatters";
 
 export default function MediaList({ records, onEdit }) {
@@ -124,13 +123,13 @@ export default function MediaList({ records, onEdit }) {
               <td className="col-actions">
                 <div className="table-actions">
                   <button className="btn-table-edit" onClick={() => onEdit(r)}>
-                    <FaEdit />
+                   Edit
                   </button>
                   <button
                     className="btn-table-delete"
                     onClick={() => handleDelete(r.platform, r.month_date)}
                   >
-                    <FaTrash />
+                   Delete
                   </button>
                 </div>
               </td>
