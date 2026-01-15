@@ -1,0 +1,41 @@
+/* ================================
+   Footer
+================================ */
+.footer {
+  margin-top: 48px;
+  padding: 24px 16px;
+}
+
+/* Thin divider line */
+.footer-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
+}
+
+/* Footer navigation */
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-nav a {
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #555;
+}
+
+/* Active / hover */
+.footer-nav a:hover,
+.footer-nav a.active {
+  color: var(--brand-primary);
+}
+
+.copyright {
+    justify-self: center;
+    padding: 10px;
+    color: #959393;
+}
