@@ -19,9 +19,6 @@ export default function CommunityOutreachReportsPage() {
   const [search, setSearch] = useState("");
   const [activeReport, setActiveReport] = useState("weekly");
 
-  // -------------------
-  // Reports slices
-  // -------------------
   const weeklyReports = useStore((state) => state.volunteerWeeklyReports);
   const monthlyReports = useStore((state) => state.volunteerMonthlyReports);
   const byLocationReports = useStore(
@@ -31,9 +28,6 @@ export default function CommunityOutreachReportsPage() {
     (state) => state.volunteerMonthlyByLocationReports
   );
 
-  // -------------------
-  // Engagements slice for summary cards
-  // -------------------
   const volunteerEngagements = useStore((state) => state.engagements);
   const fetchEngagements = useStore((state) => state.fetchEngagements);
 
@@ -42,9 +36,7 @@ export default function CommunityOutreachReportsPage() {
     fetchEngagements();
   }, [fetchEngagements]);
 
-  // -------------------
   // Compute period (month-to-date) & year-to-date data
-  // -------------------
   const now = new Date();
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
@@ -62,9 +54,6 @@ export default function CommunityOutreachReportsPage() {
     return new Date(r.event_date).getFullYear() === currentYear;
   });
 
-  // -------------------
-  // Toolbar Options (derived from all reports)
-  // -------------------
   const allReports = [
     ...weeklyReports,
     ...monthlyReports,
@@ -87,9 +76,6 @@ export default function CommunityOutreachReportsPage() {
     new Set(allReports.map((r) => r.location).filter(Boolean))
   ).sort();
 
-  // -------------------
-  // Render active report
-  // -------------------
   const renderReport = () => {
     const reportProps = { year, location, search };
 

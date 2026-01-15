@@ -1,53 +1,126 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+
+import DonationWeeklyReport from "./Reports/DonationWeeklyReport";
+import DonationMonthlyReport from "./Reports/DonationMonthlyReport";
+import DonationByDonorReport from "./Reports/DonationByDonorReport";
+import UpcomingEventsReport from "./Reports/UpcomingEventsReport";
+import EventsByVenueReport from "./Reports/EventsByVenueReport";
+
 import DevelopmentReportsToolbar from "./DevelopmentReportsToolbar";
-import DonationReporting from "./Reports/DonationReporting";
 import useStore from "../../zustand/store";
 
 export default function DevelopmentReportsPage() {
-  // --- Tabs as dropdown ---
-  const [activeReport, setActiveReport] = useState("donations");
+  // ------------------------------
+  // State
+  // ------------------------------
+  const [category, setCategory] = useState("donations"); // Donations or Events
+  const [report, setReport] = useState("weekly"); // default report per category
 
-  // --- Filters for each report ---
-  const [donationFilters, setDonationFilters] = useState({});
-  const [donorFilters, setDonorFilters] = useState({});
+  const [filters, setFilters] = useState({
+    year: "",
+    name: "",
+    search: "",
+  });
 
-  const handleClearDonationFilters = () => setDonationFilters({});
-  const handleClearDonorFilters = () => setDonorFilters({});
-
-  // --- Fetch data from store (optional if you want live counts for cards) ---
-  const donors = useStore((s) => s.donors);
+  // ------------------------------
+  // Store data
+  // ------------------------------
   const donations = useStore((s) => s.donations);
+  const donors = useStore((s) => s.donors);
   const events = useStore((s) => s.events);
-  const fetchDonors = useStore((s) => s.fetchDonors);
   const fetchDonations = useStore((s) => s.fetchDonations);
+  const fetchDonors = useStore((s) => s.fetchDonors);
   const fetchEvents = useStore((s) => s.fetchEvents);
+  const loading = useStore((s) => s.loading);
+  const error = useStore((s) => s.error);
 
   useEffect(() => {
-    fetchDonors();
     fetchDonations();
+    fetchDonors();
     fetchEvents();
-  }, [fetchDonors, fetchDonations, fetchEvents]);
+  }, [fetchDonations, fetchDonors, fetchEvents]);
 
-  // --- Top metrics cards ---
-  const cards = [
-    { label: "Total Donations", value: donations.length },
-    { label: "Total Donors", value: donors.length },
-    {
-      label: "Upcoming Events (3 months)",
-      value: events
-        .filter((e) => {
-          const now = new Date();
-          const threeMonths = new Date();
-          threeMonths.setMonth(now.getMonth() + 3);
-          const eventDate = new Date(e.datetime);
-          return eventDate >= now && eventDate <= threeMonths;
-        })
-        .length,
-    },
-  ];
+  // ------------------------------
+  // Report defaults when category changes
+  // ------------------------------
+  useEffect(() => {
+    if (category === "donations") setReport("weekly");
+    if (category === "events") setReport("upcoming");
+    // reset filters when category changes (optional)
+    setFilters({ year: "", name: "", search: "" });
+  }, [category]);
 
+  // ------------------------------
+  // Derived dropdown options
+  // ------------------------------
+  const yearOptions = Array.from(
+    new Set(
+      (category === "donations" ? donations : events)
+        .map((item) =>
+          item.datetime ? new Date(item.datetime).getFullYear() : item.year
+        )
+        .filter(Boolean)
+    )
+  ).sort((a, b) => b - a); // descending
+
+  const nameOptions = Array.from(
+    new Set(
+      (category === "donations"
+        ? donors.map((d) => d.name)
+        : events.map((e) => e.name)
+      ).filter(Boolean)
+    )
+  ).sort();
+
+  // ------------------------------
+  // Report options per category
+  // ------------------------------
+  const reportOptions =
+    category === "donations"
+      ? [
+          { value: "weekly", label: "Donations Weekly" },
+          { value: "monthly", label: "Donations Monthly" },
+          { value: "by-donor", label: "Donors" },
+        ]
+      : [
+          { value: "upcoming", label: "Upcoming Events" },
+          { value: "by-venue", label: "Events by Venue" },
+        ];
+
+  // ------------------------------
+  // Render active report
+  // ------------------------------
+  const renderReport = () => {
+    if (category === "donations") {
+      if (report === "weekly")
+        return <DonationWeeklyReport filters={filters} />;
+      if (report === "monthly")
+        return <DonationMonthlyReport filters={filters} />;
+      if (report === "by-donor")
+        return <DonationByDonorReport filters={filters} />;
+    }
+
+    if (category === "events") {
+      if (report === "upcoming")
+        return <UpcomingEventsReport filters={filters} />;
+      if (report === "by-venue")
+        return <EventsByVenueReport filters={filters} />;
+    }
+
+    return null;
+  };
+
+  // ------------------------------
+  // Loading / error states
+  // ------------------------------
+  if (loading) return <p>Loading reports...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  // ------------------------------
+  // Render Page
+  // ------------------------------
   return (
     <div className="hub-container development-reports">
       {/* Department Header */}
@@ -72,54 +145,24 @@ export default function DevelopmentReportsPage() {
         }
       />
 
-      {/* Top Cards */}
-      <div className="report-cards">
-        {cards.map((c) => (
-          <div key={c.label} className="report-card">
-            <p className="report-card-value">{c.value}</p>
-            <p className="report-card-label">{c.label}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Toolbar + Report Selector */}
+      {/* Toolbar + Filters */}
       <div className="toolbar-wrapper development-reports">
         <DevelopmentReportsToolbar
-          activeTable={activeReport === "donations" ? "donations" : "donors"}
-          tableData={{
-            donations,
-            donors,
-          }}
-          filters={activeReport === "donations" ? donationFilters : donorFilters}
-          setFilters={
-            activeReport === "donations" ? setDonationFilters : setDonorFilters
-          }
-          onClear={
-            activeReport === "donations"
-              ? handleClearDonationFilters
-              : handleClearDonorFilters
-          }
-          reportOptions={["Donations", "Donors"]}
-          activeReport={activeReport}
-          setActiveReport={setActiveReport}
+          category={category}
+          setCategory={setCategory}
+          report={report}
+          setReport={setReport}
+          reportOptions={reportOptions}
+          filters={filters}
+          setFilters={setFilters}
+          yearOptions={yearOptions}
+          nameOptions={nameOptions}
+          onClear={() => setFilters({ year: "", name: "", search: "" })}
         />
       </div>
 
-      {/* Table / Report */}
-      <div className="report-table">
-        {activeReport === "donations" && (
-          <DonationReporting filters={donationFilters} />
-        )}
-        {activeReport === "donors" && (
-          <DonorReporting filters={donorFilters} />
-        )}
-      </div>
+      {/* Active Report Table */}
+      <div className="tab-content">{renderReport()}</div>
     </div>
   );
 }
-
-
-// todo - decide if events is worth having a filter for?
-// todo - instead could do an event card with the next 3 months listed
-// todo - come up with some donation cards 
-

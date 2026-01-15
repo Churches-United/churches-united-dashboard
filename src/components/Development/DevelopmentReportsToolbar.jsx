@@ -1,49 +1,36 @@
 import React from "react";
 
 export default function DevelopmentReportsToolbar({
-  activeReport = "donations-weekly",
-  setActiveReport = () => {},
-  tableData = { donations: [], donors: [] },
-  filters = {},
-  setFilters = () => {},
-  onClear = () => {},
+  category,
+  setCategory,
+  report,
+  setReport,
+  reportOptions = [],
+  filters,
+  setFilters,
+  yearOptions = [],
+  nameOptions = [],
+  onClear,
 }) {
-  // Define your 3 report options
-  const reportOptions = [
-    { value: "donations-weekly", label: "Donations Weekly" },
-    { value: "donations-monthly", label: "Donations Monthly" },
-    { value: "donors", label: "Donors" },
-  ];
-
-  // Helper to compute filter options
-  const getOptions = (field) => {
-    if (activeReport === "donors" && tableData.donors) {
-      return Array.from(
-        new Set(tableData.donors.map((item) => item[field]).filter(Boolean))
-      ).sort();
-    }
-    if (
-      (activeReport === "donations-weekly" ||
-        activeReport === "donations-monthly") &&
-      tableData.donations
-    ) {
-      return Array.from(
-        new Set(tableData.donations.map((item) => item[field]).filter(Boolean))
-      ).sort();
-    }
-    return [];
-  };
-
   return (
-    <div className="toolbar-container development-reports">
+    <div className="toolbar-container development">
       <div className="toolbar-left">
-        {/* Report Selector Dropdown */}
+        {/* ---------------- Category ---------------- */}
         <div className="filter-group">
-          <label>Report:</label>
+          <label>Category</label>
           <select
-            value={activeReport}
-            onChange={(e) => setActiveReport(e.target.value)}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
           >
+            <option value="donations">Donations</option>
+            <option value="events">Events</option>
+          </select>
+        </div>
+
+        {/* ---------------- Report ---------------- */}
+        <div className="filter-group">
+          <label>Report</label>
+          <select value={report} onChange={(e) => setReport(e.target.value)}>
             {reportOptions.map((r) => (
               <option key={r.value} value={r.value}>
                 {r.label}
@@ -52,47 +39,41 @@ export default function DevelopmentReportsToolbar({
           </select>
         </div>
 
-        {/* Filters: example Year filter */}
-        {(activeReport === "donations-weekly" ||
-          activeReport === "donations-monthly") && (
-          <div className="filter-group">
-            <label>Year:</label>
-            <select
-              value={filters.year || ""}
-              onChange={(e) => setFilters({ ...filters, year: e.target.value })}
-            >
-              <option value="">All</option>
-              {getOptions("year").map((y) => (
-                <option key={y} value={y}>
-                  {y}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {activeReport === "donors" && (
-          <div className="filter-group">
-            <label>Donor Type:</label>
-            <select
-              value={filters.donorType || ""}
-              onChange={(e) =>
-                setFilters({ ...filters, donorType: e.target.value })
-              }
-            >
-              <option value="">All</option>
-              {getOptions("donorType").map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {/* Search input */}
+        {/* ---------------- Year ---------------- */}
         <div className="filter-group">
-          <label>Search:</label>
+          <label>Year</label>
+          <select
+            value={filters.year || ""}
+            onChange={(e) => setFilters({ ...filters, year: e.target.value })}
+          >
+            <option value="">All</option>
+            {yearOptions.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* ---------------- Name / Event ---------------- */}
+        <div className="filter-group">
+          <label>Name / Event</label>
+          <select
+            value={filters.name || ""}
+            onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+          >
+            <option value="">All</option>
+            {nameOptions.map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* ---------------- Search ---------------- */}
+        <div className="filter-group">
+          <label>Search</label>
           <input
             type="text"
             placeholder="Search..."
@@ -100,13 +81,13 @@ export default function DevelopmentReportsToolbar({
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
           />
         </div>
-      </div>
 
-      {/* Right side clear button */}
-      <div className="toolbar-right">
-        <button className="clear-button" onClick={onClear}>
-          Clear
-        </button>
+        {/* ---------------- Clear ---------------- */}
+        <div className="filter-group">
+          <button className="clear-button" onClick={onClear}>
+            Clear
+          </button>
+        </div>
       </div>
     </div>
   );
