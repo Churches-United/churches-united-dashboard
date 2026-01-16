@@ -1,38 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import useStore from '../../zustand/store';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import KitchenWeeklyReport from "./Reports/KitchenWeeklyReport.jsx";
+import KitchenMonthlyReport from "./Reports/KitchenMonthlyReport.jsx";
+import KitchenStatsReport from "./Reports/KitchenStatsReport.jsx";
 
 export default function KitchenReports() {
-  const { kitchenRecords, fetchKitchenRecords, kitchenLoading, kitchenError } = useStore();
-  const [stats, setStats] = useState({
-    totalMeals: 0,
-    avgMealsPerWeek: 0,
-    recordsTracked: 0
+  const [activeTab, setActiveTab] = useState("weekly");
+  const [filters, setFilters] = useState({
+    year: "",
+    search: "",
   });
 
-  useEffect(() => {
-    fetchKitchenRecords();
-  }, [fetchKitchenRecords]);
-
-  useEffect(() => {
-    if (kitchenRecords && kitchenRecords.length > 0) {
-      const totalMeals = kitchenRecords.reduce((sum, r) => sum + (r.total_meals_served || 0), 0);
-
-      setStats({
-        totalMeals,
-        avgMealsPerWeek: (totalMeals / kitchenRecords.length).toFixed(0),
-        recordsTracked: kitchenRecords.length
-      });
-    }
-  }, [kitchenRecords]);
-
-  if (kitchenLoading) {
-    return <div className="container mt-4"><h3>Loading reports...</h3></div>;
-  }
-
-  if (kitchenError) {
-    return <div className="container mt-4 alert alert-danger">{kitchenError}</div>;
-  }
+  const tabs = {
+    weekly: <KitchenWeeklyReport filters={filters} />,
+    monthly: <KitchenMonthlyReport filters={filters} />,
+    stats: <KitchenStatsReport filters={filters} />,
+  };
 
   return (
     <div className="container mt-4">
@@ -43,65 +26,58 @@ export default function KitchenReports() {
         </Link>
       </div>
 
-      <div className="row g-4 mb-4">
-        <div className="col-md-4">
-          <div className="card text-center">
-            <div className="card-body">
-              <h5 className="card-title">Total Meals Served</h5>
-              <h2 className="text-primary">{stats.totalMeals.toLocaleString()}</h2>
-              <p className="text-muted">All time total</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-4">
-          <div className="card text-center">
-            <div className="card-body">
-              <h5 className="card-title">Average Per Week</h5>
-              <h2 className="text-success">{stats.avgMealsPerWeek}</h2>
-              <p className="text-muted">Meals per week</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-4">
-          <div className="card text-center">
-            <div className="card-body">
-              <h5 className="card-title">Records Tracked</h5>
-              <h2 className="text-info">{stats.recordsTracked}</h2>
-              <p className="text-muted">Weeks of data</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="card">
-        <div className="card-header">
-          <h5>Recent Weekly Records</h5>
-        </div>
+      <div className="card mb-4">
         <div className="card-body">
-          <div className="table-responsive">
-            <table className="table table-sm">
-              <thead>
-                <tr>
-                  <th>Week Date</th>
-                  <th>Total Meals Served</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {kitchenRecords?.slice(0, 10).map((record) => (
-                  <tr key={record.id}>
-                    <td>{new Date(record.week_date).toLocaleDateString()}</td>
-                    <td>{record.total_meals_served}</td>
-                    <td>{record.notes || 'N/A'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="row g-3">
+            <div className="col-md-4">
+              <label className="form-label">Filter by Year</label>
+              <select
+                className="form-select"
+                value={filters.year}
+                onChange={(e) => setFilters({ ...filters, year: e.target.value })}
+              >
+                <option value="">All Years</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+              </select>
+            </div>
+            <div className="col-md-4">
+              <label className="form-label">Search</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search notes..."
+                value={filters.search}
+                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+              />
+            </div>
           </div>
         </div>
       </div>
+
+      <div className="mb-3">
+        <button
+          className={`btn ${activeTab === "weekly" ? "btn-primary" : "btn-outline-primary"} me-2`}
+          onClick={() => setActiveTab("weekly")}
+        >
+          Weekly Report
+        </button>
+        <button
+          className={`btn ${activeTab === "monthly" ? "btn-primary" : "btn-outline-primary"} me-2`}
+          onClick={() => setActiveTab("monthly")}
+        >
+          Monthly Report
+        </button>
+        <button
+          className={`btn ${activeTab === "stats" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => setActiveTab("stats")}
+        >
+          Statistics & Charts
+        </button>
+      </div>
+
+      <div>{tabs[activeTab]}</div>
     </div>
   );
 }
