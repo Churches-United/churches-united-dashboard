@@ -140,31 +140,21 @@ export default function CommunityOutreachReportsPage() {
 
       {/* ---------------- Chart + KPIs ---------------- */}
       <div className="dashboard-container outreach">
-        <div className="charts-row outreach">
-          {/* Chart takes 3/4 of width */}
-          <div className="dashboard-container outreach layout-75-25">
-            <div className="charts-row outreach">
-              <div className="chart-column outreach">
-                <MonthlyVolunteerYoYChart
-                  reports={monthlyReports}
-                  monthsToShow={6}
-                />
-              </div>
+        <div className="chart-column outreach">
+          <MonthlyVolunteerYoYChart reports={monthlyReports} monthsToShow={6} />
+        </div>
 
-              <div className="kpi-column outreach">
-                <VolunteerKPI
-                  title={`Total ${monthName} Volunteers`}
-                  monthlyReports={monthlyReports}
-                  color="blue"
-                />
-                <VolunteerKPI
-                  title={`Software Signups (${monthName})`}
-                  monthlyReports={monthlyReports}
-                  color="green"
-                />
-              </div>
-            </div>
-          </div>
+        <div className="kpi-column outreach">
+          <VolunteerKPI
+            title={`Total ${monthName} Volunteers`}
+            monthlyReports={monthlyReports}
+            color="blue"
+          />
+          <VolunteerKPI
+            title={`Software Signups (${monthName})`}
+            monthlyReports={monthlyReports}
+            color="green"
+          />
         </div>
       </div>
 
