@@ -205,6 +205,11 @@ CREATE TABLE "volunteers" (
 DROP TABLE IF EXISTS "volunteer_events" CASCADE;
 DROP TABLE IF EXISTS "volunteer_engagements" CASCADE;
 
+
+-- Remove all data but keep table structure
+TRUNCATE TABLE volunteer_engagements RESTART IDENTITY CASCADE;
+DROP TABLE IF EXISTS volunteer_engagements CASCADE;
+
 CREATE TABLE "volunteer_engagements" (
   "id" SERIAL PRIMARY KEY,
   "volunteer_id" INTEGER NOT NULL

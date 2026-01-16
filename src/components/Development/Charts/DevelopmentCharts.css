@@ -1,0 +1,109 @@
+/* ---------------- Development Dashboard Container ---------------- */
+.dashboard-container.development {
+  display: flex;
+  flex-direction: column; /* charts row stacked above KPIs row */
+  gap: 2rem; /* spacing between charts and KPIs */
+  margin-bottom: 2rem;
+}
+
+/* ---------------- Charts Row ---------------- */
+.charts-row.development {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Line chart takes 3/4 of row */
+.charts-row.development .chart-column {
+  flex: 3; /* 75% */
+  min-width: 0; /* prevent shrinking */
+}
+
+/* Pie chart takes 1/4 of row */
+.charts-row.development .pie-column {
+  flex: 1; /* 25% */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+
+/* ---------------- KPI Row ---------------- */
+.kpi-row.development {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap; /* wraps if screen is narrow */
+}
+
+/* Individual KPI card */
+.kpi-card.development {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background-color: #f0f8ff; /* light fun color */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+  cursor: default;
+}
+
+/* Hover / fun effects */
+.kpi-card.development:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  background-color: #e6f2ff;
+}
+
+/* KPI title */
+.kpi-title.development {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1c71a6;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+/* KPI value */
+.kpi-value.development {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #03a696;
+  transition: transform 0.2s, color 0.2s;
+}
+
+/* Value hover effect */
+.kpi-value.development:hover {
+  transform: scale(1.1);
+  color: #028f7f;
+}
+
+/* KPI subtext (e.g., YTD) */
+.kpi-subtext.development {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 0.25rem;
+}
+
+.kpi-card.development {
+  background: linear-gradient(135deg, #f0f8ff, #d0ebff);
+  border: 1px solid #cfe2ff;
+}
+
+/* ---------------- Optional: Responsive tweaks ---------------- */
+@media (max-width: 768px) {
+  .charts-row.development {
+    flex-direction: column;
+  }
+
+  .charts-row.development .chart-column,
+  .charts-row.development .pie-column {
+    flex: unset;
+    width: 100%;
+  }
+
+  .kpi-row.development {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

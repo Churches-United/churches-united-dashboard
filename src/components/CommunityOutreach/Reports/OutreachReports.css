@@ -1,38 +1,76 @@
-.report-container {
-  background: #fff;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+/* ONLY affects Community Outreach */
+.dashboard-container.outreach {
+  display: flex;
+  gap: 1.5rem;
 }
 
-.hub-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 16px;
+.dashboard-container.outreach .chart-column {
+  flex: 3; /* 75% */
+}
+
+.dashboard-container.outreach .kpi-column {
+  flex: 1; /* 25% */
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1rem;
 }
 
-/* ----- Summary Cards ----- */
-.dashboard-container {
+
+/* ---------------- KPI Row ---------------- */
+.kpi-row.outreach {
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap; /* wraps if screen is narrow */
 }
 
-.chart-column {
-  flex: 3; /* chart takes 3/4 width */
+/* Individual KPI card */
+.kpi-card.outreach {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background-color: #f0f8ff; /* light fun color */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+  cursor: default;
+  background: linear-gradient(135deg, #f0f8ff, #d0ebff);
+  border: 1px solid #cfe2ff;
 }
 
-.kpi-column {
-  flex: 1; /* KPIs take 1/4 width */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 16px;
+/* Hover / fun effects */
+.kpi-card.outreach:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  background-color: #e6f2ff;
 }
-.kpi-title {
-  font-size: 16px; /* smaller than default */
+
+/* KPI title */
+.kpi-title.outreach {
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 4px;
+  color: #1c71a6;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+/* KPI value */
+.kpi-value.outreach {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #03a696;
+  transition: transform 0.2s, color 0.2s;
+}
+
+/* Value hover effect */
+.kpi-value.outreach:hover {
+  transform: scale(1.1);
+  color: #028f7f;
+}
+
+/* KPI subtext (e.g., YTD) */
+.kpi-subtext.outreach {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 0.25rem;
 }

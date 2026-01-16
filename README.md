@@ -87,5 +87,7 @@ For example... Tables can be styled normally using Bootstrap and the custom them
 npm install react-bootstrap bootstrap
 npm install bootstrap-icons
 npm install react-icons
+npm install chartjs-plugin-datalabels
+npm install chart.js
 
 
