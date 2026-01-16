@@ -19,7 +19,7 @@ export default function VolunteerKPI({ title, monthlyReports = [], valueField, c
 
   return (
     <div className="kpi-card outreach">
-      <h4 className="kpi-title outreach">{title} — {monthLabel}</h4>
+      <h4 className="kpi-title outreach">{title}</h4>
       <p className="kpi-value outreach" style={{ color }}>
         {periodValue}
       </p>

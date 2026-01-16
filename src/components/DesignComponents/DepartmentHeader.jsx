@@ -10,4 +10,3 @@ export default function DepartmentHeader({ title, actions }) {
   );
 }
 
-// todo - make responsive 

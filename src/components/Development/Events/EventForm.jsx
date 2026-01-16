@@ -29,7 +29,6 @@ export default function EventForm({ initialData, onSubmit, onCancel }) {
   };
 
   return (
-    // todo style form
     <div className="form-container development">
       <form onSubmit={handleSubmit} className="grid-form">
         {/* Row 1: 2 columns */}
