@@ -2,7 +2,7 @@
   background: #fff;
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .hub-container {
@@ -15,28 +15,24 @@
 }
 
 /* ----- Summary Cards ----- */
-.summary-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+.dashboard-container {
+  display: flex;
+  gap: 20px;
+}
+
+.chart-column {
+  flex: 3; /* chart takes 3/4 width */
+}
+
+.kpi-column {
+  flex: 1; /* KPIs take 1/4 width */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 16px;
-  margin-bottom: 24px;
 }
-
-.summary-card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-}
-
-.summary-card h4 {
-  margin: 0 0 8px;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  color: #666;
-}
-
-.summary-value {
-  font-size: 1.8rem;
+.kpi-title {
+  font-size: 16px; /* smaller than default */
   font-weight: 600;
+  margin-bottom: 4px;
 }
