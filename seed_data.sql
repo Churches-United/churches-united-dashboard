@@ -20,7 +20,10 @@ VALUES
 ('Faith Helpers', 'group'),
 ('Community Giving Circle', 'group'),
 ('Anonymous Donor', 'person'),
-('Silver Linings Foundation', 'group');
+('Silver Linings Foundation', 'group'),
+('Greenwood Community Fund', 'group'),
+('Lighthouse Supporters', 'group'),
+('Emily Carter', 'person');
 
 -- ---------------- Housing Buildings ----------------
 INSERT INTO housing_building (name)
@@ -173,6 +176,44 @@ VALUES
 ((SELECT id FROM donors WHERE name='Faith Helpers'), '2025-12-01', 85.00, FALSE, FALSE, 'Preparing for winter'),
 ((SELECT id FROM donors WHERE name='Bob Johnson'), '2026-01-01', 88.00, FALSE, FALSE, 'Monthly maintenance completed'),
 ((SELECT id FROM donors WHERE name='Faith Helpers'), '2026-01-01', 80.00, FALSE, FALSE, 'New lease agreements starting');
+
+-- August 2025
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2025-08-03', 120.00, FALSE, FALSE, 'Monthly support donation'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2025-08-07', 450.00, TRUE, FALSE, 'Summer fundraiser contribution'),
+((SELECT id FROM donors WHERE name='Community Giving Circle'), '2025-08-15', 300.00, FALSE, TRUE, 'Restricted for food pantry'),
+((SELECT id FROM donors WHERE name='Greenwood Community Fund'), '2025-08-20', 500.00, TRUE, FALSE, 'Community grant'),
+((SELECT id FROM donors WHERE name='Emily Carter'), '2025-08-25', 75.00, FALSE, FALSE, 'Personal donation'),
+
+-- September 2025
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2025-09-05', 180.00, TRUE, FALSE, 'Special monthly donation'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2025-09-12', 550.00, TRUE, FALSE, 'Fundraiser event contribution'),
+((SELECT id FROM donors WHERE name='Silver Linings Foundation'), '2025-09-18', 1200.00, TRUE, TRUE, 'Restricted grant for housing'),
+((SELECT id FROM donors WHERE name='Lighthouse Supporters'), '2025-09-22', 400.00, FALSE, FALSE, 'Community support'),
+
+-- October 2025
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2025-10-03', 160.00, FALSE, FALSE, 'Monthly support donation'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2025-10-10', 500.00, TRUE, FALSE, 'Fall fundraiser'),
+((SELECT id FROM donors WHERE name='Emily Carter'), '2025-10-17', 90.00, FALSE, FALSE, 'Personal donation'),
+((SELECT id FROM donors WHERE name='Community Giving Circle'), '2025-10-21', 350.00, FALSE, TRUE, 'Restricted to youth programs'),
+
+-- November 2025
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2025-11-04', 170.00, TRUE, FALSE, 'Monthly support donation'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2025-11-11', 600.00, TRUE, FALSE, 'Pre-holiday fundraiser'),
+((SELECT id FROM donors WHERE name='Silver Linings Foundation'), '2025-11-15', 1100.00, TRUE, TRUE, 'Restricted grant for shelter services'),
+((SELECT id FROM donors WHERE name='Greenwood Community Fund'), '2025-11-20', 450.00, FALSE, FALSE, 'Community contribution'),
+
+-- December 2025
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2025-12-01', 200.00, TRUE, FALSE, 'End-of-year donation'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2025-12-05', 700.00, TRUE, FALSE, 'Holiday fundraiser'),
+((SELECT id FROM donors WHERE name='Emily Carter'), '2025-12-10', 120.00, FALSE, FALSE, 'Personal contribution'),
+((SELECT id FROM donors WHERE name='Lighthouse Supporters'), '2025-12-15', 500.00, TRUE, FALSE, 'Community donation'),
+
+-- January 2026
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2026-01-01', 180.00, TRUE, FALSE, 'New Year donation'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2026-01-03', 650.00, TRUE, FALSE, 'January fundraiser'),
+((SELECT id FROM donors WHERE name='Emily Carter'), '2026-01-07', 100.00, FALSE, FALSE, 'Personal contribution'),
+((SELECT id FROM donors WHERE name='Greenwood Community Fund'), '2026-01-10', 400.00, FALSE, FALSE, 'Monthly community grant'),
+((SELECT id FROM donors WHERE name='Lighthouse Supporters'), '2026-01-15', 450.00, FALSE, FALSE, 'Community donation');
 
 -- ---------------- Housing ----------------
 INSERT INTO housing (

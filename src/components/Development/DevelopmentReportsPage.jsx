@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import useStore from "../../zustand/store";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+import DevelopmentKPI from "./Charts/DevelopmentKPI";
+import "./Charts/DevelopmentCharts.css";
 
 // Reports and toolbar
 import DevelopmentReportsToolbar from "./DevelopmentReportsToolbar";
 import DonationWeeklyReport from "./Reports/DonationWeeklyReport";
 import DonationMonthlyReport from "./Reports/DonationMonthlyReport";
 import DonationByDonorReport from "./Reports/DonationByDonorReport";
-import UpcomingEventsReport from "./Reports/UpcomingEventsReport";
-import EventsByVenueReport from "./Reports/EventsByVenueReport";
+import MonthlyDonationChart from "./Charts/MonthlyDonationChart";
 
 export default function DevelopmentReportsPage() {
   // ---------------- State ----------------
   const [category, setCategory] = useState("donations");
-  const [report, setReport] = useState("weekly"); // default report
+  const [report, setReport] = useState("weekly");
   const [filters, setFilters] = useState({
     year: "",
     name: "",
@@ -22,17 +23,13 @@ export default function DevelopmentReportsPage() {
   });
 
   // ---------------- Store Data ----------------
+  const donations = useStore((state) => state.donations) || [];
   const donationWeeklyReports =
     useStore((state) => state.donationWeeklyReports) || [];
   const donationMonthlyReports =
     useStore((state) => state.donationMonthlyReports) || [];
-  const donations = useStore((state) => state.donations) || [];
-  const donors = useStore((state) => state.donors) || [];
-  const events = useStore((state) => state.events) || [];
 
   const fetchDonations = useStore((state) => state.fetchDonations);
-  const fetchDonors = useStore((state) => state.fetchDonors);
-  const fetchEvents = useStore((state) => state.fetchEvents);
   const fetchWeeklyDonationReports = useStore(
     (state) => state.fetchWeeklyDonationReports
   );
@@ -40,23 +37,47 @@ export default function DevelopmentReportsPage() {
     (state) => state.fetchMonthlyDonationReports
   );
 
-  // Fetch data on mount
+  // ---------------- Fetch Data ----------------
   useEffect(() => {
     fetchDonations();
-    fetchDonors();
-    fetchEvents();
     fetchWeeklyDonationReports();
     fetchMonthlyDonationReports();
-  }, [
-    fetchDonations,
-    fetchDonors,
-    fetchEvents,
-    fetchWeeklyDonationReports,
-    fetchMonthlyDonationReports,
-  ]);
+  }, [fetchDonations, fetchWeeklyDonationReports, fetchMonthlyDonationReports]);
 
-  // ---------------- derive dropdown options ----------------
-  // Year options
+  // ---------------- KPIs ----------------
+  // Determine latest donation month
+  const latestDonationDate = donations
+    .map((d) => new Date(d.date))
+    .sort((a, b) => b - a)[0]; // newest first
+
+  const latestYear = latestDonationDate?.getFullYear();
+  const latestMonth = latestDonationDate?.getMonth();
+
+  const donationsThisMonth = donations.filter((d) => {
+    const date = new Date(d.date);
+    return date.getFullYear() === latestYear && date.getMonth() === latestMonth;
+  });
+
+  const totalDonationsMonth = donationsThisMonth.reduce(
+    (sum, d) => sum + Number(d.amount || 0),
+    0
+  );
+
+  const donationCountMonth = donationsThisMonth.length;
+
+  const donorTotals = donationsThisMonth.reduce((acc, d) => {
+    acc[d.donor_name] = (acc[d.donor_name] || 0) + Number(d.amount || 0);
+    return acc;
+  }, {});
+
+  const topDonorEntry = Object.entries(donorTotals).sort(
+    (a, b) => b[1] - a[1]
+  )[0];
+  const topDonor = topDonorEntry
+    ? `${topDonorEntry[0]} ($${topDonorEntry[1].toLocaleString()})`
+    : "N/A";
+
+  // ---------------- Dropdown Options ----------------
   let yearOptions = [];
   if (report === "weekly") {
     yearOptions = donationWeeklyReports
@@ -68,65 +89,33 @@ export default function DevelopmentReportsPage() {
       .map((r) => new Date(r.month_start).getFullYear())
       .filter((v, i, a) => a.indexOf(v) === i)
       .sort((a, b) => b - a);
-  } else if (report === "by-donor") {
-    yearOptions = []; // skip year for donors
-  } else if (report === "upcoming" || report === "by-venue") {
-    yearOptions = events
-      .map((e) => new Date(e.datetime).getFullYear())
-      .filter((v, i, a) => a.indexOf(v) === i)
-      .sort((a, b) => b - a);
   }
 
-  // Name / Event options
-  const nameOptions =
-    category === "donations" && donors.length
-      ? Array.from(new Set(donors.map((d) => d.name))).sort()
-      : category === "events" && events.length
-      ? Array.from(new Set(events.map((e) => e.name))).sort()
-      : [];
-
   // ---------------- Report Options ----------------
-  // todo - decide if by venue is worth displaying.
-  const reportOptions =
-    category === "donations"
-      ? [
-          { value: "weekly", label: "Donations Weekly" },
-          { value: "monthly", label: "Donations Monthly" },
-          { value: "by-donor", label: "Donors" },
-        ]
-      : [
-          { value: "upcoming", label: "Upcoming Events" },
-          { value: "by-venue", label: "Events By Venue" },
-        ];
+  const reportOptions = [
+    { value: "weekly", label: "Donations Weekly" },
+    { value: "monthly", label: "Donations Monthly" },
+    { value: "by-donor", label: "Donors" },
+  ];
 
   const handleClearFilters = () =>
     setFilters({ year: "", name: "", search: "" });
 
   // ---------------- Render Report Component ----------------
   const renderReport = () => {
-    if (category === "donations") {
-      switch (report) {
-        case "weekly":
-          return <DonationWeeklyReport filters={filters} />;
-        case "monthly":
-          return <DonationMonthlyReport filters={filters} />;
-        case "by-donor":
-          return <DonationByDonorReport filters={filters} />;
-        default:
-          return <DonationWeeklyReport filters={filters} />;
-      }
-    } else if (category === "events") {
-      switch (report) {
-        case "upcoming":
-          return <UpcomingEventsReport filters={filters} />;
-        case "by-venue":
-          return <EventsByVenueReport filters={filters} />;
-        default:
-          return <UpcomingEventsReport filters={filters} />;
-      }
+    switch (report) {
+      case "weekly":
+        return <DonationWeeklyReport filters={filters} />;
+      case "monthly":
+        return <DonationMonthlyReport filters={filters} />;
+      case "by-donor":
+        return <DonationByDonorReport filters={filters} />;
+      default:
+        return <DonationWeeklyReport filters={filters} />;
     }
   };
 
+  // ---------------- Render ----------------
   return (
     <div className="hub-container development-reports">
       {/* ---------------- Department Header ---------------- */}
@@ -151,6 +140,24 @@ export default function DevelopmentReportsPage() {
         }
       />
 
+      {/* ---------------- KPIs + Chart ---------------- */}
+      <div className="dashboard-container outreach">
+        <div className="chart-column">
+          <MonthlyDonationChart reports={donationMonthlyReports} />
+        </div>
+        <div className="kpi-column">
+          <DevelopmentKPI
+            title="Total Donations (Month)"
+            value={`$${totalDonationsMonth.toLocaleString()}`}
+          />
+          <DevelopmentKPI
+            title="# Donations (Month)"
+            value={donationCountMonth}
+          />
+          <DevelopmentKPI title="Top Donor (Month)" value={topDonor} />
+        </div>
+      </div>
+
       {/* ---------------- Toolbar ---------------- */}
       <div className="toolbar-wrapper development-reports">
         <DevelopmentReportsToolbar
@@ -162,12 +169,12 @@ export default function DevelopmentReportsPage() {
           filters={filters}
           setFilters={setFilters}
           yearOptions={yearOptions}
-          nameOptions={nameOptions}
+          nameOptions={[]}
           onClear={handleClearFilters}
         />
       </div>
 
-      {/* ---------------- Report Table / Cards ---------------- */}
+      {/* ---------------- Report Table ---------------- */}
       <div className="report-container">{renderReport()}</div>
     </div>
   );
