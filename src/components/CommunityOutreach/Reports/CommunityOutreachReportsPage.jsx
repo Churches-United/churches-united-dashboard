@@ -8,6 +8,7 @@ import VolunteerMonthlyReport from "./VolunteerMonthlyReport";
 import VolunteerByLocationReport from "./VolunteerByLocationReport";
 import VolunteerMonthlyByLocationReport from "./VolunteerMonthlyByLocationReport";
 import VolunteerSummaryCards from "./VolunteerSummaryCards";
+import MonthlyVolunteerYoYChart from "../Charts/MonthlyVolunteerYoYChart";
 
 import "./OutreachReports.css";
 
@@ -29,11 +30,15 @@ export default function CommunityOutreachReportsPage() {
 
   const volunteerEngagements = useStore((state) => state.engagements);
   const fetchEngagements = useStore((state) => state.fetchEngagements);
+  const fetchVolunteerMonthlyReports = useStore(
+    (state) => state.fetchVolunteerMonthlyReports
+  );
 
   // Fetch raw engagement data on mount
   useEffect(() => {
     fetchEngagements();
-  }, [fetchEngagements]);
+    fetchVolunteerMonthlyReports();
+  }, [fetchEngagements, fetchVolunteerMonthlyReports]);
 
   // Compute period (month-to-date) & year-to-date data
   const now = new Date();
@@ -112,10 +117,30 @@ export default function CommunityOutreachReportsPage() {
           </>
         }
       />
+      <div
+        style={{
+          backgroundColor: "#fff",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.08)",
+          marginBottom: "24px",
+        }}
+      >
+        <div
+          style={{
+            fontWeight: "600",
+            fontSize: "1.25rem",
+            marginBottom: "12px",
+            color: "#333",
+          }}
+        >
+          Monthly Volunteers — Year over Year
+        </div>
 
-      {/* Summary cards show period (month-to-date) + YTD metrics */}
+        <MonthlyVolunteerYoYChart reports={monthlyReports} monthsToShow={3} />
+      </div>
+
       <VolunteerSummaryCards periodData={periodData} ytdData={ytdData} />
-
       {/* Toolbar */}
       <OutreachReportsToolbar
         year={year}
@@ -130,7 +155,6 @@ export default function CommunityOutreachReportsPage() {
         LOCATION_OPTIONS={LOCATION_OPTIONS}
         onClear={handleClearFilters}
       />
-
       {/* Report output */}
       <div className="report-container">{renderReport()}</div>
     </div>
