@@ -7,9 +7,8 @@ import VolunteerWeeklyReport from "./VolunteerWeeklyReport";
 import VolunteerMonthlyReport from "./VolunteerMonthlyReport";
 import VolunteerByLocationReport from "./VolunteerByLocationReport";
 import VolunteerMonthlyByLocationReport from "./VolunteerMonthlyByLocationReport";
-import VolunteerSummaryCards from "./VolunteerSummaryCards";
 import MonthlyVolunteerYoYChart from "../Charts/MonthlyVolunteerYoYChart";
-
+import VolunteerKPIs from "./VolunteerKPIs";
 import "./OutreachReports.css";
 
 export default function CommunityOutreachReportsPage() {
@@ -19,6 +18,7 @@ export default function CommunityOutreachReportsPage() {
   const [search, setSearch] = useState("");
   const [activeReport, setActiveReport] = useState("weekly");
 
+  // Reports and raw engagement data from store
   const weeklyReports = useStore((state) => state.volunteerWeeklyReports);
   const monthlyReports = useStore((state) => state.volunteerMonthlyReports);
   const byLocationReports = useStore(
@@ -27,44 +27,60 @@ export default function CommunityOutreachReportsPage() {
   const monthlyByLocationReports = useStore(
     (state) => state.volunteerMonthlyByLocationReports
   );
-
   const volunteerEngagements = useStore((state) => state.engagements);
+
   const fetchEngagements = useStore((state) => state.fetchEngagements);
   const fetchVolunteerMonthlyReports = useStore(
     (state) => state.fetchVolunteerMonthlyReports
   );
 
-  // Fetch raw engagement data on mount
+  // Fetch data on mount
   useEffect(() => {
     fetchEngagements();
     fetchVolunteerMonthlyReports();
   }, [fetchEngagements, fetchVolunteerMonthlyReports]);
 
-  // Compute period (month-to-date) & year-to-date data
+  // Compute period (month-to-date) & year-to-date
   const now = new Date();
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
 
-  // Filter month-to-date
   const periodData = volunteerEngagements.filter((r) => {
     if (!r.event_date) return false;
     const d = new Date(r.event_date);
     return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
   });
 
-  // Filter year-to-date
   const ytdData = volunteerEngagements.filter((r) => {
     if (!r.event_date) return false;
     return new Date(r.event_date).getFullYear() === currentYear;
   });
 
+  // Totals for KPIs
+  const periodVolunteers = periodData.reduce(
+    (sum, r) => sum + (r.number_volunteers ?? 0),
+    0
+  );
+  const ytdVolunteers = ytdData.reduce(
+    (sum, r) => sum + (r.number_volunteers ?? 0),
+    0
+  );
+  const periodSignups = periodData.reduce(
+    (sum, r) => sum + (r.software_signups ?? 0),
+    0
+  );
+  const ytdSignups = ytdData.reduce(
+    (sum, r) => sum + (r.software_signups ?? 0),
+    0
+  );
+
+  // Toolbar options
   const allReports = [
     ...weeklyReports,
     ...monthlyReports,
     ...byLocationReports,
     ...monthlyByLocationReports,
   ];
-
   const YEAR_OPTIONS = Array.from(
     new Set(
       allReports
@@ -80,9 +96,9 @@ export default function CommunityOutreachReportsPage() {
     new Set(allReports.map((r) => r.location).filter(Boolean))
   ).sort();
 
+  // Render report table
   const renderReport = () => {
     const reportProps = { year, location, search };
-
     switch (activeReport) {
       case "weekly":
         return <VolunteerWeeklyReport {...reportProps} />;
@@ -117,30 +133,35 @@ export default function CommunityOutreachReportsPage() {
           </>
         }
       />
-      <div
-        style={{
-          backgroundColor: "#fff",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.08)",
-          marginBottom: "24px",
-        }}
-      >
-        <div
-          style={{
-            fontWeight: "600",
-            fontSize: "1.25rem",
-            marginBottom: "12px",
-            color: "#333",
-          }}
-        >
-          Monthly Volunteers — Year over Year
-        </div>
 
-        <MonthlyVolunteerYoYChart reports={monthlyReports} monthsToShow={6} />
+      {/* Chart + KPI layout */}
+      <div>
+        <h3>Total Monthly Volunteers: Year-Year</h3>
+        <div className="dashboard-container outreach">
+          <div className="chart-column">
+            <MonthlyVolunteerYoYChart
+              reports={monthlyReports}
+              monthsToShow={6}
+            />
+          </div>
+
+          <div className="kpi-column">
+            <div className="kpi-column">
+              <VolunteerKPIs
+                title="Total Volunteers"
+                monthlyReports={monthlyReports}
+                color="blue"
+              />
+              <VolunteerKPIs
+                title="Software Signups"
+                monthlyReports={monthlyReports}
+                color="green"
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
-      <VolunteerSummaryCards periodData={periodData} ytdData={ytdData} />
       {/* Toolbar */}
       <OutreachReportsToolbar
         year={year}
@@ -155,7 +176,8 @@ export default function CommunityOutreachReportsPage() {
         LOCATION_OPTIONS={LOCATION_OPTIONS}
         onClear={handleClearFilters}
       />
-      {/* Report output */}
+
+      {/* Report Table */}
       <div className="report-container">{renderReport()}</div>
     </div>
   );
