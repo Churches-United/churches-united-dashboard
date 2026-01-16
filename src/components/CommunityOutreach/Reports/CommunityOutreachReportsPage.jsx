@@ -137,7 +137,7 @@ export default function CommunityOutreachReportsPage() {
           Monthly Volunteers — Year over Year
         </div>
 
-        <MonthlyVolunteerYoYChart reports={monthlyReports} monthsToShow={3} />
+        <MonthlyVolunteerYoYChart reports={monthlyReports} monthsToShow={6} />
       </div>
 
       <VolunteerSummaryCards periodData={periodData} ytdData={ytdData} />

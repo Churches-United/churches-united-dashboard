@@ -20,7 +20,7 @@ ChartJS.register(
 
 export default function MonthlyVolunteerYoYChart({
   reports = [],
-  monthsToShow = 3,
+  monthsToShow = 6,
 }) {
   if (!reports.length) return null;
 
@@ -56,7 +56,7 @@ export default function MonthlyVolunteerYoYChart({
       {
         label: `${compareYearTwo}`,
         data: getYearData(compareYearTwo),
-        borderColor: "#94b8a5",
+        borderColor: "#1c71a6",
         backgroundColor: "rgba(148,163,184,0.15)",
         tension: 0.35,
         fill: false,
@@ -65,21 +65,21 @@ export default function MonthlyVolunteerYoYChart({
       {
         label: `${compareYear}`,
         data: getYearData(compareYear),
-        borderColor: "#94a3b8",
+        borderColor: "#03a696",
         backgroundColor: "rgba(148,163,184,0.15)",
         tension: 0.35,
         fill: false,
         pointRadius: 4,
       },
-      {
-        label: `${currentYear}`,
-        data: getYearData(currentYear),
-        borderColor: "#2563eb",
-        backgroundColor: "rgba(37,99,235,0.15)",
-        tension: 0.35,
-        fill: false,
-        pointRadius: 4,
-      },
+      // {
+      //   label: `${currentYear}`,
+      //   data: getYearData(currentYear),
+      //   borderColor: "#2563eb",
+      //   backgroundColor: "rgba(37,99,235,0.15)",
+      //   tension: 0.35,
+      //   fill: false,
+      //   pointRadius: 4,
+      // },
     ],
   };
 

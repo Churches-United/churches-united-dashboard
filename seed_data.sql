@@ -29,121 +29,117 @@ VALUES
 ('Silver Linings Apartments'),
 ('Micah''s Mission');
 
--- ---------------- Volunteer Engagements ----------------
+-- ---------------- Volunteer Engagements: Last 6 Months ----------------
 INSERT INTO volunteer_engagements (volunteer_id, event_date, location, number_volunteers, software_signups)
 VALUES
--- November 2025
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-11-03', 'Micah''s Mission - Basement', 1, 0),
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-11-10', 'Micah''s Mission - Basement', 1, 1),
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-11-10', 'Micah''s Mission - Basement', 5, 0),
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-11-05', 'Micah''s Mission - Pantry', 1, 2),
-((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-11-12', 'Micah''s Mission - Pantry', 4, 1),
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-11-06', 'Kitchen', 1, 0),
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-11-13', 'Kitchen', 1, 1),
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-11-20', 'Kitchen', 1, 0),
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-11-07', 'Dorothy Day Food Pantry', 6, 2),
-((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-11-14', 'Dorothy Day Food Pantry', 3, 0),
-((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-11-08', 'Community Picnic', 8, 3),
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-11-15', 'Community Picnic', 5, 1),
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-11-09', 'Silver Linings', 1, 0),
-((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-11-16', 'Silver Linings', 4, 0),
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-11-11', 'Bright Sky', 1, 0),
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-11-18', 'Bright Sky', 1, 1),
-((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-11-19', 'Other', 2, 0),
-
--- December 2025
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-12-01', 'Micah''s Mission - Basement', 2, 1),
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-12-08', 'Micah''s Mission - Basement', 1, 0),
-((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-12-15', 'Micah''s Mission - Basement', 3, 2),
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-12-02', 'Micah''s Mission - Pantry', 2, 1),
-((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-12-09', 'Micah''s Mission - Pantry', 3, 0),
-((SELECT id FROM volunteers WHERE name='Hannah Kim'), '2025-12-16', 'Micah''s Mission - Pantry', 1, 0),
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-12-03', 'Kitchen', 1, 0),
-((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2025-12-10', 'Kitchen', 4, 1),
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-12-17', 'Kitchen', 2, 0),
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-12-04', 'Dorothy Day Food Pantry', 5, 1),
-((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-12-11', 'Dorothy Day Food Pantry', 3, 2),
-((SELECT id FROM volunteers WHERE name='Southside Helpers'), '2025-12-18', 'Dorothy Day Food Pantry', 2, 0),
-((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-12-05', 'Community Picnic', 6, 1),
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-12-12', 'Community Picnic', 4, 0),
-((SELECT id FROM volunteers WHERE name='Ian Thompson'), '2025-12-19', 'Community Picnic', 3, 0),
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-12-06', 'Silver Linings', 2, 1),
-((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-12-13', 'Silver Linings', 3, 0),
-((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-12-20', 'Silver Linings', 1, 1),
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-12-07', 'Bright Sky', 1, 0),
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-12-14', 'Bright Sky', 2, 1),
-((SELECT id FROM volunteers WHERE name='Hannah Kim'), '2025-12-21', 'Bright Sky', 1, 0),
-((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-12-08', 'Other', 3, 1),
-((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2025-12-15', 'Other', 2, 0),
-((SELECT id FROM volunteers WHERE name='Southside Helpers'), '2025-12-22', 'Other', 1, 0),
 
 -- January 2026
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2026-01-05', 'Micah''s Mission - Basement', 1, 0),
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2026-01-12', 'Micah''s Mission - Basement', 2, 1),
-((SELECT id FROM volunteers WHERE name='Grace Lee'), '2026-01-19', 'Micah''s Mission - Basement', 3, 0),
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2026-01-06', 'Kitchen', 1, 0),
-((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2026-01-13', 'Kitchen', 4, 1),
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2026-01-20', 'Kitchen', 2, 0),
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2026-01-07', 'Dorothy Day Food Pantry', 3, 0),
-((SELECT id FROM volunteers WHERE name='Southside Helpers'), '2026-01-14', 'Dorothy Day Food Pantry', 5, 2),
-((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2026-01-21', 'Dorothy Day Food Pantry', 2, 1),
-((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2026-01-08', 'Community Picnic', 4, 1),
-((SELECT id FROM volunteers WHERE name='Ian Thompson'), '2026-01-15', 'Community Picnic', 3, 0),
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2026-01-22', 'Community Picnic', 6, 2);
+-- Micah's Mission - Basement
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2026-01-05', 'Micah''s Mission - Basement', 15, 3),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2026-01-12', 'Micah''s Mission - Basement', 22, 5),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2026-01-19', 'Micah''s Mission - Basement', 18, 2),
+
+-- Kitchen
+((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2026-01-06', 'Kitchen', 12, 1),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2026-01-13', 'Kitchen', 28, 6),
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2026-01-20', 'Kitchen', 20, 3),
+
+-- Dorothy Day Food Pantry
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2026-01-07', 'Dorothy Day Food Pantry', 16, 2),
+((SELECT id FROM volunteers WHERE name='Southside Helpers'), '2026-01-14', 'Dorothy Day Food Pantry', 25, 7),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2026-01-21', 'Dorothy Day Food Pantry', 18, 4),
+
+-- Community Picnic
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2026-01-08', 'Community Picnic', 22, 5),
+((SELECT id FROM volunteers WHERE name='Ian Thompson'), '2026-01-15', 'Community Picnic', 18, 2),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2026-01-22', 'Community Picnic', 30, 8),
+
+-- Silver Linings
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2026-01-09', 'Silver Linings', 14, 1),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2026-01-16', 'Silver Linings', 20, 3),
+
+-- Bright Sky
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2026-01-11', 'Bright Sky', 16, 2),
+((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2026-01-18', 'Bright Sky', 19, 4);
+
+
+-- August 2025
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-08-05', 'Kitchen', 13, 2),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-08-12', 'Dorothy Day Food Pantry', 18, 3),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-08-19', 'Community Picnic', 22, 5),
+
+-- September 2025
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-09-02', 'Bright Sky', 15, 2),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-09-09', 'Silver Linings', 12, 1),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-09-16', 'Dorothy Day Food Pantry', 20, 4),
+
+-- October 2025
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-10-03', 'Community Picnic', 28, 6),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-10-10', 'Micah''s Mission - Basement', 18, 3),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-10-17', 'Micah''s Mission - Pantry', 22, 5),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-10-10', 'Micah''s Mission - Basement', 20, 4),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-10-17', 'Micah''s Mission - Pantry', 25, 6),
+
+-- November 2025
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-11-03', 'Micah''s Mission - Basement', 18, 3),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-11-10', 'Micah''s Mission - Basement', 16, 2),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-11-10', 'Micah''s Mission - Basement', 28, 7),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-11-06', 'Micah''s Mission - Pantry', 20, 4),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-11-12', 'Micah''s Mission - Pantry', 26, 5),
+
+-- December 2025
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-12-02', 'Micah''s Mission - Basement', 22, 5),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-12-09', 'Micah''s Mission - Basement', 19, 4),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-12-03', 'Micah''s Mission - Pantry', 23, 5),
+((SELECT id FROM volunteers WHERE name='Hannah Kim'), '2025-12-10', 'Micah''s Mission - Pantry', 15, 2);
+
 
 -- ---------------- Volunteer Engagements: 2024 ----------------
-INSERT INTO volunteer_engagements (volunteer_id, event_date, location, number_volunteers, software_signups)
-VALUES
+-- January 2024
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2024-01-06', 'Micah''s Mission - Basement', 14, 2),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2024-01-13', 'Micah''s Mission - Basement', 18, 4),
+((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2024-01-07', 'Kitchen', 20, 5),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2024-01-08', 'Dorothy Day Food Pantry', 15, 3),
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2024-01-09', 'Community Picnic', 22, 6),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2024-01-19', 'Kitchen', 18, 4),
+
+-- August 2024
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2024-08-05', 'Kitchen', 16, 3),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2024-08-12', 'Dorothy Day Food Pantry', 20, 4),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2024-08-19', 'Community Picnic', 23, 5),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2024-08-12', 'Dorothy Day Food Pantry', 19, 3),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2024-08-19', 'Community Picnic', 21, 4),
+
+-- September 2024
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2024-09-02', 'Bright Sky', 18, 4),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2024-09-09', 'Silver Linings', 15, 2),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2024-09-16', 'Dorothy Day Food Pantry', 20, 5),
+
+-- October 2024
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2024-10-03', 'Community Picnic', 25, 6),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2024-10-10', 'Micah''s Mission - Basement', 19, 3),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2024-10-17', 'Micah''s Mission - Pantry', 22, 5),
+
 -- November 2024
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2024-11-04', 'Micah''s Mission - Basement', 1, 0),
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2024-11-11', 'Micah''s Mission - Basement', 1, 1),
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2024-11-11', 'Micah''s Mission - Basement', 4, 0),
-
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2024-11-06', 'Micah''s Mission - Pantry', 2, 1),
-((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2024-11-13', 'Micah''s Mission - Pantry', 3, 0),
-
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2024-11-07', 'Kitchen', 1, 0),
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2024-11-14', 'Kitchen', 1, 1),
-
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2024-11-08', 'Dorothy Day Food Pantry', 5, 1),
-((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2024-11-15', 'Dorothy Day Food Pantry', 3, 0),
-
-((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2024-11-09', 'Community Picnic', 6, 2),
-
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2024-11-10', 'Silver Linings', 1, 0),
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2024-11-17', 'Bright Sky', 2, 1),
-
--- ---------------- Volunteer Engagements: 2024 ----------------
-INSERT INTO volunteer_engagements (volunteer_id, event_date, location, number_volunteers, software_signups)
-VALUES
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2024-11-04', 'Micah''s Mission - Basement', 17, 3),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2024-11-11', 'Micah''s Mission - Basement', 15, 2),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2024-11-11', 'Micah''s Mission - Basement', 26, 6),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2024-11-06', 'Micah''s Mission - Pantry', 21, 4),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2024-11-13', 'Micah''s Mission - Pantry', 19, 3),
 
 -- December 2024
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2024-12-02', 'Micah''s Mission - Basement', 2, 1),
-((SELECT id FROM volunteers WHERE name='Grace Lee'), '2024-12-09', 'Micah''s Mission - Basement', 3, 1),
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2024-12-02', 'Micah''s Mission - Basement', 22, 5),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2024-12-09', 'Micah''s Mission - Basement', 20, 4),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2024-12-03', 'Micah''s Mission - Pantry', 23, 5),
+((SELECT id FROM volunteers WHERE name='Hannah Kim'), '2024-12-10', 'Micah''s Mission - Pantry', 18, 3),
 
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2024-12-03', 'Micah''s Mission - Pantry', 2, 1),
-((SELECT id FROM volunteers WHERE name='Hannah Kim'), '2024-12-10', 'Micah''s Mission - Pantry', 1, 0),
+-- January 2025
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-01-06', 'Micah''s Mission - Basement', 20, 5),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-01-13', 'Micah''s Mission - Basement', 18, 4),
+((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2025-01-07', 'Kitchen', 22, 5),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-01-08', 'Dorothy Day Food Pantry', 19, 4),
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-01-09', 'Community Picnic', 23, 6);
 
-((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2024-12-04', 'Kitchen', 4, 1),
-
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2024-12-05', 'Dorothy Day Food Pantry', 4, 1),
-((SELECT id FROM volunteers WHERE name='Southside Helpers'), '2024-12-12', 'Dorothy Day Food Pantry', 2, 0),
-
-((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2024-12-06', 'Community Picnic', 5, 1),
-((SELECT id FROM volunteers WHERE name='Ian Thompson'), '2024-12-13', 'Community Picnic', 3, 0),
-
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2024-12-07', 'Silver Linings', 2, 1),
-((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2024-12-14', 'Bright Sky', 2, 1),
-
--- January 2025 (for year-boundary testing)
-((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-01-06', 'Micah''s Mission - Basement', 1, 0),
-((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-01-13', 'Micah''s Mission - Basement', 2, 1),
-
-((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2025-01-07', 'Kitchen', 3, 1),
-
-((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-01-08', 'Dorothy Day Food Pantry', 3, 0),
-
-((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-01-09', 'Community Picnic', 4, 1);
 
 
 -- ---------------- Events ----------------
