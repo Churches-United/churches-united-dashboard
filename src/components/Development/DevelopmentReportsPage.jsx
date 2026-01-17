@@ -76,16 +76,21 @@ export default function DevelopmentReportsPage() {
 
   const monthName = now.toLocaleString("default", { month: "long" });
 
-  // ---------------- Next Event ----------------
+  // ---------------- Next 2 Events ----------------
   const upcomingEvents = events
     .map((e) => ({ ...e, dateObj: new Date(e.datetime) }))
     .filter((e) => e.dateObj >= new Date()) // only future events
     .sort((a, b) => a.dateObj - b.dateObj);
 
-  const nextEvent = upcomingEvents[0];
-  const nextEventDisplay = nextEvent
-    ? `${nextEvent.name} (${nextEvent.dateObj.toLocaleDateString()})`
-    : "N/A";
+  const nextTwoEvents = upcomingEvents.slice(0, 3); // get first 2 events
+
+  // Format as string for display in one card
+  const nextEventsDisplay =
+    nextTwoEvents.length > 0
+      ? nextTwoEvents
+          .map((e) => `${e.name} (${e.dateObj.toLocaleDateString()})`)
+          .join(", ")
+      : "N/A";
 
   // ---------------- Pie Chart Data (last 6 months) ----------------
   useEffect(() => {
@@ -109,7 +114,7 @@ export default function DevelopmentReportsPage() {
   }, [donationMonthlyReports]);
 
   // ---------------- Report Component ----------------
-const renderReport = () => {
+  const renderReport = () => {
     if (category === "donations") {
       switch (report) {
         case "weekly":
@@ -132,9 +137,6 @@ const renderReport = () => {
       }
     }
   };
-
-  
-
 
   // ---------------- Dropdown Options ----------------
   const reportOptions =
@@ -199,6 +201,7 @@ const renderReport = () => {
         </div>
 
         {/* ---------------- KPIs ---------------- */}
+        {/* todo - format date */}
         <div className="kpi-row development horizontal">
           <MonthlyDonationKPI
             month={monthName}
@@ -206,8 +209,20 @@ const renderReport = () => {
             count={donationCountMonth}
             topDonor={topDonor}
           />
-          <DevelopmentKPI title="Next Event" value={nextEventDisplay} />
-          {/* todo - maybe we should feature 2-3 events */}
+
+          {/* Upcoming Events Card */}
+          <DevelopmentKPI
+            title="Next Events"
+            value={
+              nextTwoEvents.length > 0
+                ? nextTwoEvents.map((e, i) => (
+                    <div key={i}>{`${
+                      e.name
+                    } (${e.dateObj.toLocaleDateString()})`}</div>
+                  ))
+                : "N/A"
+            }
+          />
         </div>
       </div>
 

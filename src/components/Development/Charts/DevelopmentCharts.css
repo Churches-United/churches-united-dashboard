@@ -65,7 +65,7 @@
 
 /* KPI value */
 .kpi-value.development {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   color: #03a696;
   transition: transform 0.2s, color 0.2s;
