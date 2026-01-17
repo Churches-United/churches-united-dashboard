@@ -7,11 +7,10 @@ import MonthlyMediaReport from "./MonthlyMediaReport";
 import NewsletterReport from "./NewsletterReport";
 import AudienceGrowthReport from "./AudienceGrowthReport";
 import MediaLineChart from "../Charts/MediaLineChart";
-import MediaKPI from "../Charts/MediaKPI";
 import "../Charts/MediaDashboard.css";
 
 export default function MediaReports() {
-  // --- Store actions ---
+  // ---------------- Store actions ----------------
   const fetchMonthlyMediaReport = useStore(
     (state) => state.fetchMonthlyMediaReport
   );
@@ -22,7 +21,7 @@ export default function MediaReports() {
     (state) => state.fetchAudienceGrowthReport
   );
 
-  // --- Store data ---
+  // ---------------- Store data ----------------
   const monthlyReport = useStore((state) => state.monthlyReport);
   const newsletterReport = useStore((state) => state.newsletterReport);
   const audienceReport = useStore((state) => state.audienceReport);
@@ -31,13 +30,13 @@ export default function MediaReports() {
   const loadingNewsletter = useStore((state) => state.loadingNewsletterReports);
   const loadingAudience = useStore((state) => state.loadingAudienceReports);
 
-  // --- Local state ---
+  // ---------------- Local state ----------------
   const [platform, setPlatform] = useState("");
   const [year, setYear] = useState("");
   const [search, setSearch] = useState("");
   const [activeReport, setActiveReport] = useState("monthly");
 
-  // --- Fetch all reports on mount ---
+  // ---------------- Fetch data ----------------
   useEffect(() => {
     fetchMonthlyMediaReport();
     fetchNewsletterReport();
@@ -48,80 +47,76 @@ export default function MediaReports() {
     fetchAudienceGrowthReport,
   ]);
 
-  // --- Filtered monthly report ---
+  // ---------------- Year options ----------------
+  const years = Array.from(
+    new Set(monthlyReport.map((r) => r.month_date.slice(0, 4)))
+  ).sort((a, b) => b - a);
+
+  // ---------------- Chart data (last 6 months) ----------------
+  const sortedMonthly = [...monthlyReport].sort(
+    (a, b) => new Date(a.month_date) - new Date(b.month_date)
+  );
+  const last6Months = sortedMonthly.slice(-6);
+
+  const labels = last6Months.map((r) =>
+    new Date(r.month_date).toLocaleString("default", { month: "short" })
+  );
+
+  const PLATFORM_CONFIG = {
+    Website: {
+      key: "pageviews",
+      color: "#1f77b4",
+    },
+    Facebook: {
+      key: "social_views",
+      color: "#4267B2",
+    },
+    Instagram: {
+      key: "social_views",
+      color: "#C13584",
+    },
+    TikTok: {
+      key: "social_views",
+      color: "#69C9D0",
+    },
+  };
+
+  const datasets = Object.entries(PLATFORM_CONFIG).map(
+    ([platform, config]) => ({
+      label: platform,
+      data: last6Months.map((month) => {
+        const row = monthlyReport.find(
+          (r) => r.platform === platform && r.month_date === month.month_date
+        );
+        return row ? Number(row[config.key]) || 0 : 0;
+      }),
+      borderColor: config.color,
+      backgroundColor: "transparent",
+      tension: 0.3,
+      fill: false,
+    })
+  );
+
+  // Get latest newsletter month
+  const latestNewsletterMonth = newsletterReport.length
+    ? new Date(newsletterReport[0].month_date).toLocaleString("default", {
+        month: "long",
+        year: "numeric",
+      })
+    : "";
+
+  // ---------------- Newsletter KPIs ----------------
+  const latestNewsletter = [...newsletterReport].sort(
+    (a, b) => new Date(b.month_date) - new Date(a.month_date)
+  )[0];
+
+  // ---------------- Filtered monthly table ----------------
   const filteredMonthly = monthlyReport
     .filter((r) => !platform || r.platform === platform)
     .filter((r) => !year || r.month_date.startsWith(year))
     .filter(
       (r) => !search || r.platform.toLowerCase().includes(search.toLowerCase())
     );
-
-  // --- Determine available years dynamically ---
-  const years = Array.from(
-    new Set(monthlyReport.map((r) => r.month_date.slice(0, 4)))
-  ).sort((a, b) => b - a);
-
-  // --- Prepare last 6 months for chart ---
-  const sortedMonthly = [...filteredMonthly].sort(
-    (a, b) => new Date(a.month_date) - new Date(b.month_date)
-  );
-  const last6Months = sortedMonthly.slice(-6);
-
-  const platforms = ["Website", "Facebook", "Instagram", "TikTok"];
-  const labels = last6Months.map((r) =>
-    new Date(r.month_date).toLocaleString("default", { month: "short" })
-  );
-
-  const colors = {
-    Website: "#2a5754",
-    Facebook: "#4267B2",
-    Instagram: "#C13584",
-    TikTok: "#69C9D0",
-  };
-
-  const datasets = platforms.map((p) => {
-    const data = last6Months.map((month) => {
-      const entry = filteredMonthly.find(
-        (r) => r.platform === p && r.month_date === month.month_date
-      );
-      return entry
-        ? Number(entry.total_visits || 0) + Number(entry.social_views || 0)
-        : 0;
-    });
-    return {
-      label: p,
-      data,
-      borderColor: colors[p],
-      backgroundColor: colors[p],
-      tension: 0.3,
-      fill: false,
-    };
-  });
-
-  // --- Compute KPIs from latest month ---
-  const latestMonth = last6Months.length
-    ? last6Months[last6Months.length - 1].month_date
-    : null;
-  const latestData = last6Months.filter((r) => r.month_date === latestMonth);
-
-  const totalVisits = latestData.reduce(
-    (sum, r) => sum + Number(r.total_visits || 0),
-    0
-  );
-  const socialViews = latestData.reduce(
-    (sum, r) => sum + Number(r.social_views || 0),
-    0
-  );
-  const avgBounce = latestData.length
-    ? (
-        latestData.reduce((sum, r) => sum + Number(r.bounce_rate || 0), 0) /
-        latestData.length
-      ).toFixed(1)
-    : 0;
-  const topPlatformEntry = latestData.sort(
-    (a, b) => Number(b.total_visits || 0) - Number(a.total_visits || 0)
-  )[0];
-  const topPlatform = topPlatformEntry ? topPlatformEntry.platform : "N/A";
 
   return (
     <div className="hub-container">
@@ -146,17 +141,40 @@ export default function MediaReports() {
         }
       />
 
-      {/* ---------------- Chart + KPIs ---------------- */}
+      {/* ---------------- Charts + Newsletter KPIs ---------------- */}
       <div className="dashboard-container media">
         <div className="charts-row media">
           <div className="chart-column media">
             <MediaLineChart labels={labels} datasets={datasets} />
           </div>
+
           <div className="kpi-column media">
-            <MediaKPI title="Total Visits" value={totalVisits} />
-            <MediaKPI title="Social Views" value={socialViews} />
-            <MediaKPI title="Top Platform" value={topPlatform} />
-            <MediaKPI title="Avg Bounce Rate" value={`${avgBounce}%`} />
+            {latestNewsletter && (
+              <div className="newsletter-kpi">
+                <h4 className="newsletter-title">{latestNewsletterMonth}</h4>
+                <h4 className="newsletter-title">Newsletter</h4>
+
+                <div className="newsletter-box">
+                  <div className="value">{latestNewsletter.total_sent}</div>
+                  <div className="label">Total Sent</div>
+                </div>
+
+                <div className="newsletter-box">
+                  <div className="value">{latestNewsletter.open_rate}%</div>
+                  <div className="label">Open Rate</div>
+                </div>
+
+                <div className="newsletter-box">
+                  <div className="value">{latestNewsletter.click_rate}%</div>
+                  <div className="label">Click Rate</div>
+                </div>
+
+                <div className="newsletter-box">
+                  <div className="value">{latestNewsletter.total_clicks}</div>
+                  <div className="label">Total Clicks</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -185,7 +203,7 @@ export default function MediaReports() {
           }}
         />
 
-        {/* ---------------- Report Table ---------------- */}
+        {/* ---------------- Tables ---------------- */}
         <div style={{ marginTop: "1rem" }}>
           {activeReport === "monthly" &&
             (loadingMonthly ? (
