@@ -1,0 +1,123 @@
+/* ---------------- Dashboard Container ---------------- */
+.dashboard-container.housing {
+  display: flex;
+  flex-direction: column; /* charts above KPI row */
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* ---------------- Charts Row ---------------- */
+.charts-row.housing {
+  display: flex;
+  gap: 1rem;
+}
+
+.chart-column.housing {
+  flex: 1; /* 50 / 50 */
+  min-width: 0;
+}
+
+/* ---------------- KPI Row ---------------- */
+.kpi-row.housing.horizontal {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap; /* wrap if screen is narrow */
+}
+
+.kpi-row.housing.horizontal .kpi-card.housing {
+  flex: 1 1 200px; /* equal width, shrinkable */
+  min-width: 180px; /* optional to prevent too-small cards */
+}
+
+/* ---------------- KPI Card Styles ---------------- */
+.kpi-card.housing {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0f8ff, #d0ebff);
+  border: 1px solid #cfe2ff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+  cursor: default;
+}
+
+.kpi-card.housing:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  background-color: #e6f2ff;
+}
+
+.kpi-title.housing {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1c71a6;
+  /* margin-bottom: 0.25rem; */
+  text-transform: uppercase;
+  justify-self: center;
+}
+
+.kpi-value.housing {
+  font-size: 18px;
+  padding: 10px;
+  font-weight: bold;
+  color: #03a696;
+}
+
+.kpi-subtext.housing {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 0.25rem;
+}
+
+/* ---------------- Vacancy Box (for HousingVacancyKPI) ---------------- */
+.kpi-card.housing.vacancy {
+  text-align: left;
+}
+
+.vacancy-split {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.vacancy-box {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.vacancy-box.current {
+  background-color: #e6f2ff;
+  color: #1c71a6;
+}
+
+.vacancy-box.upcoming {
+  background-color: var(--brand-secondary);
+  color: #fff;
+}
+
+.vacancy-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.vacancy-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 768px) {
+  .charts-row.housing {
+    flex-direction: column;
+  }
+
+  .chart-column.housing,
+  .kpi-column.housing {
+    flex: unset;
+    width: 100%;
+  }
+}

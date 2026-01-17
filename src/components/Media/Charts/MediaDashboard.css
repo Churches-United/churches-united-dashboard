@@ -1,0 +1,108 @@
+/* ===============================
+   Media Dashboard Container
+================================ */
+.dashboard-container.media {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* ===============================
+   Charts Row
+================================ */
+.charts-row.media {
+  display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+/* Line chart column (75%) */
+.chart-column.media {
+  flex: 3;
+  min-width: 0;
+}
+
+/* Newsletter KPI column (25%) */
+.kpi-column.media {
+  flex: 1;
+  display: flex;
+}
+
+/* ===============================
+   Newsletter KPI Stack
+================================ */
+.newsletter-kpi {
+  width: 100%;
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f0f8ff, #d0ebff);
+  border: 1px solid #cfe2ff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* Title */
+.newsletter-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1c71a6;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0; 
+}
+
+/* Add spacing specifically between stacked titles */
+.newsletter-title + .newsletter-title {
+  margin-top: -10px; 
+}
+/* ===============================
+   Individual KPI Box
+================================ */
+.newsletter-box {
+  padding: 0.75rem;
+  border-radius: 12px;
+  text-align: center;
+  background-color: #e6f2ff;
+  border: 1px solid #cfe2ff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.newsletter-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* KPI value */
+.newsletter-box .value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #03a696;
+  line-height: 1.2;
+}
+
+/* KPI label */
+.newsletter-box .label {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #1c71a6;
+  opacity: 0.75;
+}
+
+/* ===============================
+   Responsive
+================================ */
+@media (max-width: 768px) {
+  .charts-row.media {
+    flex-direction: column;
+  }
+
+  .kpi-column.media {
+    width: 100%;
+  }
+}

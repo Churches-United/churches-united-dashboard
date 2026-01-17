@@ -215,35 +215,64 @@ VALUES
 ((SELECT id FROM donors WHERE name='Greenwood Community Fund'), '2026-01-10', 400.00, FALSE, FALSE, 'Monthly community grant'),
 ((SELECT id FROM donors WHERE name='Lighthouse Supporters'), '2026-01-15', 450.00, FALSE, FALSE, 'Community donation');
 
--- ---------------- Housing ----------------
+-- ---------------- Housing: Last 6 Months ----------------
 INSERT INTO housing (
     housing_building_id, month_date, occupancy_percent, operational_reserves, replacement_reserves,
     current_vacancies, upcoming_vacancies, upcoming_new_leases, notes
 )
 VALUES
-((SELECT id FROM housing_building WHERE name='Bright Sky Apartments'), '2025-09-01', 91.0, 11500, 4800, 2, 1, 1, 'September data'),
-((SELECT id FROM housing_building WHERE name='Bright Sky Apartments'), '2025-10-01', 89.5, 11800, 4900, 3, 1, 2, 'October data'),
-((SELECT id FROM housing_building WHERE name='Bright Sky Apartments'), '2025-11-01', 90.5, 12000, 5000, 3, 1, 2, 'November data'),
-((SELECT id FROM housing_building WHERE name='Bright Sky Apartments'), '2025-12-01', 85.0, 12500, 5200, 4, 2, 1, 'December data initial'),
-((SELECT id FROM housing_building WHERE name='Silver Linings Apartments'), '2025-09-01', 93.0, 14500, 5800, 1, 0, 1, 'September data'),
-((SELECT id FROM housing_building WHERE name='Silver Linings Apartments'), '2025-10-01', 91.5, 14800, 5900, 2, 1, 1, 'October data'),
-((SELECT id FROM housing_building WHERE name='Silver Linings Apartments'), '2025-11-01', 92.0, 15000, 6000, 2, 0, 1, 'November data'),
-((SELECT id FROM housing_building WHERE name='Silver Linings Apartments'), '2025-12-01', 88.0, 15500, 6200, 3, 1, 2, 'December data initial');
+-- Bright Sky Apartments
+((SELECT id FROM housing_buildings WHERE name='Bright Sky Apartments'), '2025-08-01', 92.0, 11300, 4700, 2, 1, 1, 'August data'),
+((SELECT id FROM housing_buildings WHERE name='Bright Sky Apartments'), '2025-09-01', 91.0, 11500, 4800, 2, 1, 1, 'September data'),
+((SELECT id FROM housing_buildings WHERE name='Bright Sky Apartments'), '2025-10-01', 89.5, 11800, 4900, 3, 1, 2, 'October data'),
+((SELECT id FROM housing_buildings WHERE name='Bright Sky Apartments'), '2025-11-01', 90.5, 12000, 5000, 3, 1, 2, 'November data'),
+((SELECT id FROM housing_buildings WHERE name='Bright Sky Apartments'), '2025-12-01', 85.0, 12500, 5200, 4, 2, 1, 'December data'),
+((SELECT id FROM housing_buildings WHERE name='Bright Sky Apartments'), '2026-01-01', 87.0, 12700, 5300, 3, 2, 1, 'January data'),
 
--- ---------------- Media ----------------
+-- Silver Linings Apartments
+((SELECT id FROM housing_buildings WHERE name='Silver Linings Apartments'), '2025-08-01', 94.0, 14200, 5700, 1, 0, 1, 'August data'),
+((SELECT id FROM housing_buildings WHERE name='Silver Linings Apartments'), '2025-09-01', 93.0, 14500, 5800, 1, 0, 1, 'September data'),
+((SELECT id FROM housing_buildings WHERE name='Silver Linings Apartments'), '2025-10-01', 91.5, 14800, 5900, 2, 1, 1, 'October data'),
+((SELECT id FROM housing_buildings WHERE name='Silver Linings Apartments'), '2025-11-01', 92.0, 15000, 6000, 2, 0, 1, 'November data'),
+((SELECT id FROM housing_buildings WHERE name='Silver Linings Apartments'), '2025-12-01', 88.0, 15500, 6200, 3, 1, 2, 'December data'),
+((SELECT id FROM housing_buildings WHERE name='Silver Linings Apartments'), '2026-01-01', 89.0, 15700, 6300, 2, 2, 1, 'January data');
+
+
+-- ---------------- Media Seed Data: Last 6 Months ----------------
 INSERT INTO media_stats (
-    month_date, platform, total_visits, unique_visits, pageviews, bounce_rate, social_views, audience_start, audience_end, total_sent, total_opens, open_rate, total_clicks, click_rate, notes
+    month_date, platform, total_visits, unique_visits, pageviews, bounce_rate, 
+    social_views, audience_start, audience_end, total_sent, total_opens, open_rate, total_clicks, click_rate, notes
 )
 VALUES
-('2025-01-01', 'Website', 2800, 2300, 4900, 62, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'January Website Metrics'),
-('2025-02-01', 'Website', 4200, 3600, 6200, 76, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'February Website Metrics'),
-('2025-03-01', 'Website', 4000, 3500, 5600, 79.79, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'March Website Metrics'),
-('2025-01-01', 'Facebook', NULL, NULL, NULL, NULL, 24622, 6002, 6008, NULL, NULL, NULL, NULL, NULL, 'January Facebook Metrics'),
-('2025-02-01', 'Facebook', NULL, NULL, NULL, NULL, 42648, 6005, 6031, NULL, NULL, NULL, NULL, NULL, 'February Facebook Metrics'),
-('2025-03-01', 'Facebook', NULL, NULL, NULL, NULL, 31550, 6031, 6045, NULL, NULL, NULL, NULL, NULL, 'March Facebook Metrics'),
-('2025-05-01', 'Instagram', NULL, NULL, NULL, NULL, 916, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'May Instagram Metrics'),
-('2025-06-01', 'Instagram', NULL, NULL, NULL, NULL, 212, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'June Instagram Metrics'),
-('2025-11-01', 'TikTok', NULL, NULL, NULL, NULL, 523, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'November TikTok Metrics'),
+-- Website Metrics
+('2025-08-01', 'Website', 5200, 4300, 9800, 58.5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'August Website Metrics'),
+('2025-09-01', 'Website', 4800, 4000, 9400, 60.2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'September Website Metrics'),
+('2025-10-01', 'Website', 5600, 4500, 10500, 57.8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'October Website Metrics'),
+('2025-11-01', 'Website', 6100, 5000, 11500, 55.5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'November Website Metrics'),
+('2025-12-01', 'Website', 5900, 4700, 11000, 56.7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'December Website Metrics'),
+('2026-01-01', 'Website', 6300, 5100, 11800, 54.9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'January Website Metrics'),
+
+-- Facebook Metrics
+('2025-08-01', 'Facebook', NULL, NULL, NULL, NULL, 31200, 6200, 6250, NULL, NULL, NULL, NULL, NULL, 'August Facebook Metrics'),
+('2025-09-01', 'Facebook', NULL, NULL, NULL, NULL, 29800, 6250, 6300, NULL, NULL, NULL, NULL, NULL, 'September Facebook Metrics'),
+('2025-10-01', 'Facebook', NULL, NULL, NULL, NULL, 34500, 6300, 6350, NULL, NULL, NULL, NULL, NULL, 'October Facebook Metrics'),
+('2025-11-01', 'Facebook', NULL, NULL, NULL, NULL, 36800, 6350, 6400, NULL, NULL, NULL, NULL, NULL, 'November Facebook Metrics'),
+('2025-12-01', 'Facebook', NULL, NULL, NULL, NULL, 38200, 6400, 6450, NULL, NULL, NULL, NULL, NULL, 'December Facebook Metrics'),
+('2026-01-01', 'Facebook', NULL, NULL, NULL, NULL, 40000, 6450, 6500, NULL, NULL, NULL, NULL, NULL, 'January Facebook Metrics'),
+
+-- Instagram Metrics
+('2025-08-01', 'Instagram', NULL, NULL, NULL, NULL, 1250, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'August Instagram Metrics'),
+('2025-09-01', 'Instagram', NULL, NULL, NULL, NULL, 980, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'September Instagram Metrics'),
+('2025-10-01', 'Instagram', NULL, NULL, NULL, NULL, 1430, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'October Instagram Metrics'),
+('2025-11-01', 'Instagram', NULL, NULL, NULL, NULL, 1680, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'November Instagram Metrics'),
+('2025-12-01', 'Instagram', NULL, NULL, NULL, NULL, 2120, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'December Instagram Metrics'),
+('2026-01-01', 'Instagram', NULL, NULL, NULL, NULL, 2500, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'January Instagram Metrics'),
+
+-- TikTok Metrics
+('2025-08-01', 'TikTok', NULL, NULL, NULL, NULL, 480, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'August TikTok Metrics'),
+('2025-09-01', 'TikTok', NULL, NULL, NULL, NULL, 560, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'September TikTok Metrics'),
+('2025-10-01', 'TikTok', NULL, NULL, NULL, NULL, 620, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'October TikTok Metrics'),
+('2025-11-01', 'TikTok', NULL, NULL, NULL, NULL, 700, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'November TikTok Metrics'),
 ('2025-12-01', 'TikTok', NULL, NULL, NULL, NULL, 838, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'December TikTok Metrics'),
 ('2025-10-24', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2998, 786, 13.10, 118, 4, 'Oct 24 Newsletter'),
 ('2025-10-31', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2995, 537, 18.10, 79, 2.70, 'Oct 31 Newsletter'),
@@ -277,3 +306,13 @@ VALUES
 ('2023-10-30', 580, 'Halloween week, busy'),
 ('2023-11-20', 640, 'Pre-Thanksgiving rush'),
 ('2023-12-11', 475, 'Holiday preparations');
+('2026-01-01', 'TikTok', NULL, NULL, NULL, NULL, 910, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'January TikTok Metrics'),
+
+-- Newsletter Metrics
+('2025-08-15', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2950, 450, 15.3, 75, 2.5, 'Aug 15 Newsletter'),
+('2025-09-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3000, 480, 16.0, 80, 2.7, 'September Newsletter'),
+('2025-10-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3100, 510, 16.5, 95, 3.0, 'October Newsletter'),
+('2025-11-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3200, 530, 16.6, 100, 3.1, 'November Newsletter'),
+('2025-12-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3300, 560, 17.0, 110, 3.3, 'December Newsletter'),
+('2026-01-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3400, 580, 17.1, 115, 3.4, 'January Newsletter');
+

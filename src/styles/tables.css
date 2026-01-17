@@ -63,7 +63,7 @@ table {
 
 /* Number columns with aligned numbers */
 .col-number {
-  text-align: right;
+  text-align: center;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

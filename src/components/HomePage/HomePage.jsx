@@ -23,13 +23,13 @@ function HomePage() {
     {
       path: "/shelter",
       label: "Shelter",
-      description: "Weekly shelter operations and guest tracking",
+      description: "Shelter operations and guest tracking",
       image: "/img/departments/shelter.jpg",
     },
     {
       path: "/finance",
       label: "Finance",
-      description: "Weekly financial reporting and metrics",
+      description: "Financial reporting and metrics",
       image: "/img/departments/finance.jpg",
     },
     {
@@ -59,7 +59,7 @@ function HomePage() {
     {
       path: "/kitchen",
       label: "Kitchen",
-      description: "Weekly kitchen reporting",
+      description: "Kitchen reporting",
       image: "/img/departments/kitchen.jpg",
     },
     {
@@ -71,7 +71,7 @@ function HomePage() {
     {
       path: "/pantry",
       label: "Pantry",
-      description: "Weekly pantry reporting",
+      description: "Pantry reporting",
       image: "/img/departments/pantry.jpg",
     },
   ];

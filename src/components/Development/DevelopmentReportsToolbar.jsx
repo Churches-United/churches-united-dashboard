@@ -95,13 +95,9 @@ export default function DevelopmentReportsToolbar({
             }
           />
         </div>
-
-        {/* Clear */}
-        <div className="filter-group">
           <button className="clear-button" onClick={onClear}>
             Clear
           </button>
-        </div>
       </div>
     </div>
   );

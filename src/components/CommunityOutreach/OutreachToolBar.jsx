@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useStore from "../../zustand/store";
 import "../../styles/toolbar.css";
+import "./CommunityOutreach.css";
 
 export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
   // --- Zustand store ---
@@ -45,7 +46,7 @@ export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
   }, [selectedVolunteer, selectedLocation, selectedYear, search]);
 
   return (
-    // <div className="hub-container outreach">
+    <div className="hub-container outreach">
       <div className="toolbar-container outreach">
         <div className="toolbar-left">
           {/* Year Filter */}
@@ -106,15 +107,13 @@ export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-        </div>
 
-        {/* Clear Button */}
-        <div className="toolbar-right">
+          {/* Clear Button */}
           <button className="clear-button" onClick={onClear}>
             Clear
           </button>
         </div>
       </div>
-    // </div>
+    </div>
   );
 }
