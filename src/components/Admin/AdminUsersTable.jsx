@@ -1,3 +1,5 @@
+import "./Admin.css";
+
 export default function AdminUsersTable({ users, onEdit, onToggleActive }) {
   return (
     <div className="table-container admin-users-table">
