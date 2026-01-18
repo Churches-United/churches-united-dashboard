@@ -28,7 +28,6 @@ export default function HousingReportsToolbar({
 
   const reportOptions = [
     { value: "table", label: "Monthly Table" },
-    { value: "summary", label: "Summary" },
   ];
 
   return (
@@ -95,14 +94,11 @@ export default function HousingReportsToolbar({
               disabled={activeReport === "summary"} // optional
             />
           </div>
-        </div>
-
-        {/* Right side: Clear button */}
-        <div className="toolbar-right">
           <button className="clear-button" onClick={onClear}>
             Clear
           </button>
         </div>
+
       </div>
   );
 }

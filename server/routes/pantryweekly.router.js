@@ -3,7 +3,7 @@ const pool = require("../modules/pool");
 const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
-const router = require("express").Router();
+const router = express.Router();
 
 // ========== SPECIFIC ROUTES FIRST ==========
 
@@ -66,7 +66,25 @@ router.get("/reports/monthly", rejectUnauthenticated, (req, res) => {
 
 // Get all pantry records
 router.get("/", rejectUnauthenticated, (req, res) => {
-  const sqlText = `SELECT * FROM pantry ORDER BY week_date DESC;`;
+  const sqlText = `
+    SELECT 
+      id,
+      week_date::date as week_date,
+      TO_CHAR(week_date, 'YYYY-MM-DD') || ' - ' || 
+      TO_CHAR(week_date + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
+      first_time_households,
+      returning_households,
+      total_adults,
+      total_children,
+      total_seniors,
+      total_pounds_distributed,
+      notes,
+      created_by,
+      created_at,
+      updated_at
+    FROM pantry 
+    ORDER BY week_date DESC;
+  `;
 
   pool
     .query(sqlText)
@@ -77,7 +95,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
-// Post pantry record
+// Post pantry record (force Monday)
 router.post("/", rejectUnauthenticated, (req, res) => {
   const {
     week_date,
@@ -110,9 +128,30 @@ router.post("/", rejectUnauthenticated, (req, res) => {
   }
 
   const sqlText = `
-    INSERT INTO pantry (week_date, first_time_households, returning_households, total_adults, total_children, total_seniors, total_pounds_distributed, notes, created_by)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-    RETURNING *;
+    WITH inserted AS (
+      INSERT INTO pantry (week_date, first_time_households, returning_households, total_adults, total_children, total_seniors, total_pounds_distributed, notes, created_by)
+      VALUES (
+        (DATE_TRUNC('week', $1::date + INTERVAL '1 day') - INTERVAL '1 day')::date,
+        $2, $3, $4, $5, $6, $7, $8, $9
+      )
+      RETURNING id, week_date, first_time_households, returning_households, total_adults, total_children, total_seniors, total_pounds_distributed, notes, created_by, created_at, updated_at
+    )
+    SELECT 
+      id,
+      week_date::date as week_date,
+      TO_CHAR(week_date, 'YYYY-MM-DD') || ' - ' || 
+      TO_CHAR(week_date + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
+      first_time_households,
+      returning_households,
+      total_adults,
+      total_children,
+      total_seniors,
+      total_pounds_distributed,
+      notes,
+      created_by,
+      created_at,
+      updated_at
+    FROM inserted;
   `;
 
   pool
@@ -133,7 +172,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
 
       if (error.code === "23505") {
         res.status(409).json({
-          message: `A record for ${week_date} already exists`,
+          message: `A record for the week of ${week_date} already exists`,
         });
       } else {
         res.sendStatus(500);
@@ -141,11 +180,28 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
-//routes with id comes lastt
 // Get single pantry record
 router.get("/:id", rejectUnauthenticated, (req, res) => {
   const pantryId = req.params.id;
-  const sqlText = `SELECT * FROM pantry WHERE id = $1;`;
+  const sqlText = `
+    SELECT 
+      id,
+      week_date::date as week_date,
+      TO_CHAR(week_date, 'YYYY-MM-DD') || ' - ' || 
+      TO_CHAR(week_date + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
+      first_time_households,
+      returning_households,
+      total_adults,
+      total_children,
+      total_seniors,
+      total_pounds_distributed,
+      notes,
+      created_by,
+      created_at,
+      updated_at
+    FROM pantry 
+    WHERE id = $1;
+  `;
 
   pool
     .query(sqlText, [pantryId])
@@ -201,18 +257,36 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
   }
 
   const sqlText = `
-    UPDATE pantry
-    SET 
-      first_time_households = $1,
-      returning_households = $2,
-      total_adults = $3,
-      total_children = $4,
-      total_seniors = $5,
-      total_pounds_distributed = $6,
-      notes = $7,
-      updated_at = CURRENT_TIMESTAMP
-    WHERE id = $8
-    RETURNING *;
+    WITH updated AS (
+      UPDATE pantry
+      SET 
+        first_time_households = $1,
+        returning_households = $2,
+        total_adults = $3,
+        total_children = $4,
+        total_seniors = $5,
+        total_pounds_distributed = $6,
+        notes = $7,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $8
+      RETURNING id, week_date, first_time_households, returning_households, total_adults, total_children, total_seniors, total_pounds_distributed, notes, created_by, created_at, updated_at
+    )
+    SELECT 
+      id,
+      week_date::date as week_date,
+      TO_CHAR(week_date, 'YYYY-MM-DD') || ' - ' || 
+      TO_CHAR(week_date + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
+      first_time_households,
+      returning_households,
+      total_adults,
+      total_children,
+      total_seniors,
+      total_pounds_distributed,
+      notes,
+      created_by,
+      created_at,
+      updated_at
+    FROM updated;
   `;
 
   pool

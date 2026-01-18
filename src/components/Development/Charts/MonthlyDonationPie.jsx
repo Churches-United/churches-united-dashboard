@@ -1,6 +1,6 @@
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
-//import ChartDataLabels from "chartjs-plugin-datalabels";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 // Only register core elements, NOT ChartDataLabels globally
 ChartJS.register(ArcElement, Tooltip, Legend, Title);

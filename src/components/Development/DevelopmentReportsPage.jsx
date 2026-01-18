@@ -10,6 +10,9 @@ import DevelopmentReportsToolbar from "./DevelopmentReportsToolbar";
 import DonationWeeklyReport from "./Reports/DonationWeeklyReport";
 import DonationMonthlyReport from "./Reports/DonationMonthlyReport";
 import DonationByDonorReport from "./Reports/DonationByDonorReport";
+import UpcomingEventsReport from "./Reports/UpcomingEventsReport";
+import EventsByVenueReport from "./Reports/EventsByVenueReport";
+import MonthlyDonationKPI from "./Charts/MonthlyDonationKPI";
 import MonthlyDonationChart from "./Charts/MonthlyDonationChart";
 import MonthlyDonationPie from "./Charts/MonthlyDonationPie";
 
@@ -39,6 +42,7 @@ export default function DevelopmentReportsPage() {
   }, [fetchDonations, fetchMonthlyDonationReports, fetchEvents]);
 
   // ---------------- Compute KPIs ----------------
+  // todo should we combine total$ and total donations to one card to make more room?
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth();
@@ -72,16 +76,21 @@ export default function DevelopmentReportsPage() {
 
   const monthName = now.toLocaleString("default", { month: "long" });
 
-  // ---------------- Next Event ----------------
+  // ---------------- Next 2 Events ----------------
   const upcomingEvents = events
     .map((e) => ({ ...e, dateObj: new Date(e.datetime) }))
     .filter((e) => e.dateObj >= new Date()) // only future events
     .sort((a, b) => a.dateObj - b.dateObj);
 
-  const nextEvent = upcomingEvents[0];
-  const nextEventDisplay = nextEvent
-    ? `${nextEvent.name} (${nextEvent.dateObj.toLocaleDateString()})`
-    : "N/A";
+  const nextTwoEvents = upcomingEvents.slice(0, 3); // get first 2 events
+
+  // Format as string for display in one card
+  const nextEventsDisplay =
+    nextTwoEvents.length > 0
+      ? nextTwoEvents
+          .map((e) => `${e.name} (${e.dateObj.toLocaleDateString()})`)
+          .join(", ")
+      : "N/A";
 
   // ---------------- Pie Chart Data (last 6 months) ----------------
   useEffect(() => {
@@ -106,24 +115,41 @@ export default function DevelopmentReportsPage() {
 
   // ---------------- Report Component ----------------
   const renderReport = () => {
-    switch (report) {
-      case "weekly":
-        return <DonationWeeklyReport filters={filters} />;
-      case "monthly":
-        return <DonationMonthlyReport filters={filters} />;
-      case "by-donor":
-        return <DonationByDonorReport filters={filters} />;
-      default:
-        return <DonationMonthlyReport filters={filters} />;
+    if (category === "donations") {
+      switch (report) {
+        case "weekly":
+          return <DonationWeeklyReport filters={filters} />;
+        case "monthly":
+          return <DonationMonthlyReport filters={filters} />;
+        case "by-donor":
+          return <DonationByDonorReport filters={filters} />;
+        default:
+          return <DonationWeeklyReport filters={filters} />;
+      }
+    } else if (category === "events") {
+      switch (report) {
+        case "upcoming":
+          return <UpcomingEventsReport filters={filters} />;
+        case "by-venue":
+          return <EventsByVenueReport filters={filters} />;
+        default:
+          return <UpcomingEventsReport filters={filters} />;
+      }
     }
   };
 
   // ---------------- Dropdown Options ----------------
-  const reportOptions = [
-    { value: "weekly", label: "Donations Weekly" },
-    { value: "monthly", label: "Donations Monthly" },
-    { value: "by-donor", label: "Donors" },
-  ];
+  const reportOptions =
+    category === "donations"
+      ? [
+          { value: "weekly", label: "Donations Weekly" },
+          { value: "monthly", label: "Donations Monthly" },
+          { value: "by-donor", label: "Donors" },
+        ]
+      : [
+          { value: "upcoming", label: "Upcoming Events" },
+          { value: "by-venue", label: "Events By Venue" },
+        ];
 
   const yearOptions = donationMonthlyReports
     .map((r) => new Date(r.month_start).getFullYear())
@@ -175,17 +201,28 @@ export default function DevelopmentReportsPage() {
         </div>
 
         {/* ---------------- KPIs ---------------- */}
-        <div className="kpi-row development">
-          <DevelopmentKPI
-            title={`Total ${monthName} Donations`}
-            value={`$${totalDonationsMonth.toLocaleString()}`}
+        {/* todo - format date */}
+        <div className="kpi-row development horizontal">
+          <MonthlyDonationKPI
+            month={monthName}
+            total={totalDonationsMonth}
+            count={donationCountMonth}
+            topDonor={topDonor}
           />
+
+          {/* Upcoming Events Card */}
           <DevelopmentKPI
-            title={`Number of ${monthName} Donations`}
-            value={donationCountMonth}
+            title="Next Events"
+            value={
+              nextTwoEvents.length > 0
+                ? nextTwoEvents.map((e, i) => (
+                    <div key={i}>{`${
+                      e.name
+                    } (${e.dateObj.toLocaleDateString()})`}</div>
+                  ))
+                : "N/A"
+            }
           />
-          <DevelopmentKPI title={`Top ${monthName} Donor`} value={topDonor} />
-          <DevelopmentKPI title="Next Event" value={nextEventDisplay} />
         </div>
       </div>
 

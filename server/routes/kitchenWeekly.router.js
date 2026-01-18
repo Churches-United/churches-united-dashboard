@@ -12,6 +12,8 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     SELECT 
       id,
       week_date::date as week_date,
+      TO_CHAR(week_date, 'YYYY-MM-DD') || ' - ' || 
+      TO_CHAR(week_date + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
       total_meals_served,
       notes,
       created_by,
@@ -47,17 +49,27 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     });
   }
 
+  // Convert any date to the Monday of that week
   const sqlText = `
-    INSERT INTO kitchen (week_date, total_meals_served, notes, created_by)
-    VALUES ($1, $2, $3, $4)
-    RETURNING 
+    WITH inserted AS (
+      INSERT INTO kitchen (week_date, total_meals_served, notes, created_by)
+      VALUES (
+        (DATE_TRUNC('week', $1::date + INTERVAL '1 day') - INTERVAL '1 day')::date,
+        $2, $3, $4
+      )
+      RETURNING id, week_date, total_meals_served, notes, created_by, created_at, updated_at
+    )
+    SELECT 
       id,
       week_date::date as week_date,
+      TO_CHAR(week_date, 'YYYY-MM-DD') || ' - ' || 
+      TO_CHAR(week_date + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
       total_meals_served,
       notes,
       created_by,
       created_at,
-      updated_at;
+      updated_at
+    FROM inserted;
   `;
 
   pool
@@ -69,7 +81,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
       // PostgreSQL will check if duplicate exists
       if (error.code === "23505") {
         res.status(409).json({
-          message: `A record for ${week_date} already exists`,
+          message: `A record for the week of ${week_date} already exists`,
         });
       } else {
         res.sendStatus(500);
@@ -134,6 +146,8 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
     SELECT 
       id,
       week_date::date as week_date,
+      TO_CHAR(week_date, 'YYYY-MM-DD') || ' - ' || 
+      TO_CHAR(week_date + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
       total_meals_served,
       notes,
       created_by,
@@ -176,20 +190,26 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
   }
 
   const sqlText = `
-    UPDATE kitchen
-    SET 
-      total_meals_served = $1, 
-      notes = $2, 
-      updated_at = CURRENT_TIMESTAMP
-    WHERE id = $3
-    RETURNING 
+    WITH updated AS (
+      UPDATE kitchen
+      SET 
+        total_meals_served = $1, 
+        notes = $2, 
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $3
+      RETURNING id, week_date, total_meals_served, notes, created_by, created_at, updated_at
+    )
+    SELECT 
       id,
       week_date::date as week_date,
+      TO_CHAR(week_date, 'YYYY-MM-DD') || ' - ' || 
+      TO_CHAR(week_date + INTERVAL '6 days', 'YYYY-MM-DD') AS week_range,
       total_meals_served,
       notes,
       created_by,
       created_at,
-      updated_at;
+      updated_at
+    FROM updated;
   `;
 
   pool

@@ -75,11 +75,9 @@ export default function ReportsToolbar({
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="filter-group">
           <button className="clear-button" onClick={onClear}>
             Clear
           </button>
-        </div>
       </div>
     </div>
   );

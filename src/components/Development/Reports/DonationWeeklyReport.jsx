@@ -36,10 +36,10 @@ export default function DonationWeeklyReport({ filters }) {
         <thead>
           <tr>
             <th>Week</th>
-            <th>Total Donations</th>
-            <th>Donation Count</th>
-            <th>Restricted Amount</th>
-            <th>Notable Amount</th>
+            <th className="col-number">Total Donations</th>
+            <th className="col-number">Donation Count</th>
+            <th className="col-number">Restricted Amount</th>
+            <th className="col-number">Notable Amount</th>
           </tr>
         </thead>
         <tbody>
