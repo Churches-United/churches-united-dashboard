@@ -66,10 +66,9 @@ export default function AdminRegistration({ record, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Build payload for backend (snake_case for DB)
     const payload = {
       username: formData.username,
-      password: formData.password || undefined, // only required for new users
+      password: formData.password || undefined,
       email: formData.email,
       first_name: formData.firstName,
       last_name: formData.lastName,
@@ -79,11 +78,9 @@ export default function AdminRegistration({ record, onClose }) {
 
     try {
       if (record) {
-        // Editing existing user
         await updateUser(record.id, payload);
         if (onClose) onClose();
       } else {
-        // Adding new user
         if (!payload.password) {
           alert("Password is required for new users");
           return;
@@ -110,6 +107,7 @@ export default function AdminRegistration({ record, onClose }) {
 
   return (
     <div className="hub-container admin">
+      {/* Department Header outside form */}
       <DepartmentHeader
         title={record ? "Admin - Edit User" : "Admin - Add User"}
         actions={
@@ -123,91 +121,111 @@ export default function AdminRegistration({ record, onClose }) {
         }
       />
 
-      <div className="form">
+      {/* Form Container */}
+      <div className="admin-registration">
         <form onSubmit={handleSubmit}>
-          <label>Username:</label>
-          <input
-            type="text"
-            name="username"
-            required
-            value={formData.username}
-            onChange={handleChange}
-          />
-
-          {!record && (
-            <>
-              <label>Password:</label>
+          {/* Username & Password */}
+          <div className="form-row">
+            <div className="form-field">
+              <label>Username:</label>
               <input
-                type="password"
-                name="password"
+                type="text"
+                name="username"
                 required
-                value={formData.password}
+                value={formData.username}
                 onChange={handleChange}
               />
-            </>
-          )}
+            </div>
+            {!record && (
+              <div className="form-field">
+                <label>Password:</label>
+                <input
+                  type="password"
+                  name="password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
+          </div>
 
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-          />
+          {/* First Name & Last Name */}
+          <div className="form-row">
+            <div className="form-field">
+              <label>First Name:</label>
+              <input
+                type="text"
+                name="firstName"
+                required
+                value={formData.firstName}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-field">
+              <label>Last Name:</label>
+              <input
+                type="text"
+                name="lastName"
+                required
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
 
-          <label>First Name:</label>
-          <input
-            type="text"
-            name="firstName"
-            required
-            value={formData.firstName}
-            onChange={handleChange}
-          />
+          {/* Email */}
+          <div className="form-field">
+            <label>Email:</label>
+            <input
+              type="email"
+              name="email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
 
-          <label>Last Name:</label>
-          <input
-            type="text"
-            name="lastName"
-            required
-            value={formData.lastName}
-            onChange={handleChange}
-          />
+          {/* Role & Department */}
+          <div className="form-row">
+            <div className="form-field">
+              <label>Role:</label>
+              <select
+                name="role"
+                required
+                value={formData.role}
+                onChange={handleChange}
+              >
+                <option value="">Select role...</option>
+                {roleOptions.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-field">
+              <label>Department:</label>
+              <select
+                name="department"
+                value={formData.department}
+                onChange={handleChange}
+              >
+                <option value="">Select department...</option>
+                {departmentOptions.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-          <label>Role:</label>
-          <select
-            name="role"
-            required
-            value={formData.role}
-            onChange={handleChange}
-          >
-            <option value="">Select role...</option>
-            {roleOptions.map((r) => (
-              <option key={r} value={r}>
-                {r}
-              </option>
-            ))}
-          </select>
-
-          <label>Department:</label>
-          <select
-            name="department"
-            value={formData.department}
-            onChange={handleChange}
-          >
-            <option value="">Select department...</option>
-            {departmentOptions.map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </select>
-
+          {/* Buttons */}
           <div className="form-buttons">
             <button type="submit" className="primary">
               {record ? "Save Changes" : "Add User"}
             </button>
-
             {record && (
               <button type="button" className="secondary" onClick={onClose}>
                 Cancel
@@ -215,7 +233,8 @@ export default function AdminRegistration({ record, onClose }) {
             )}
           </div>
 
-          {errorMessage && <h3>{errorMessage}</h3>}
+          {/* Error Message */}
+          {errorMessage && <h3 className="error-message">{errorMessage}</h3>}
         </form>
       </div>
     </div>
