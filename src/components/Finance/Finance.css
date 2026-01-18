@@ -263,8 +263,14 @@
 }
 
 /* Finance Year Selector */
-.finance-year-selector {
+/* .finance-year-selector {
   margin-bottom: 20px;
+} */
+ .finance-year-selector {
+  margin-bottom: 20px;
+  margin-left: auto; /* pushes it to the right */
+  display: flex;
+  align-items: center;
 }
 
 .finance-year-selector label {
@@ -273,6 +279,8 @@
 }
 
 .finance-year-selector select {
+  margin-right: 8px;
+  font-weight: 500;
   padding: 6px 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
