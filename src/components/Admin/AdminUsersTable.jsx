@@ -32,7 +32,7 @@ export default function AdminUsersTable({ users, onEdit, onToggleActive }) {
                     Edit
                   </button>
                   <button
-                    className="btn-table-active"
+                    className="btn-table-delete"
                     onClick={() => onToggleActive(user.id, !user.active)}
                   >
                     {user.active ? "Deactivate" : "Activate"}

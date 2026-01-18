@@ -89,10 +89,6 @@ router.post("/users", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-router.get("/test", (req, res) => {
-  res.send("Admin router is working!");
-});
-
 // UPDATE user (ADMIN only)
 router.put("/users/:id", rejectUnauthenticated, async (req, res) => {
   if (req.user.role !== "admin") return res.sendStatus(403);
