@@ -33,30 +33,35 @@ const createUserSlice = (set, get) => ({
   //   }
   // },
 
-register: async (formData) => {
-  get().setAuthErrorMessage("");
-  try {
-    // Map frontend camelCase to backend snake_case
-    const payload = {
-      username: formData.username,
-      password: formData.password,
-      email: formData.email,
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      role: formData.role,
-      department: formData.department,
-    };
+  // todo - if this works I dont think we should login the new user...
+register: async (newUserCredentials) => {
+    get().setAuthErrorMessage("");
+    try {
+      // Convert frontend camelCase to backend snake_case
+      const payload = {
+        username: newUserCredentials.username,
+        password: newUserCredentials.password,
+        email: newUserCredentials.email,
+        first_name: newUserCredentials.firstName,
+        last_name: newUserCredentials.lastName,
+        role: newUserCredentials.role,
+        department: newUserCredentials.department || null,
+      };
 
-    await axios.post("/api/user/register", payload);
-    // Log in after successful registration
-    get().logIn({ username: formData.username, password: formData.password });
-  } catch (err) {
-    console.log("register error:", err);
-    get().setAuthErrorMessage(
-      "Oops! Registration failed. That username might already be taken. Try again!"
-    );
-  }
-},
+      await axios.post("/api/user/register", payload);
+
+      // Log in the new user automatically
+      get().logIn({
+        username: newUserCredentials.username,
+        password: newUserCredentials.password,
+      });
+    } catch (err) {
+      console.log("register error:", err);
+      get().setAuthErrorMessage(
+        "Oops! Registration failed. That username might already be taken or a required field is missing."
+      );
+    }
+  },
 
   logIn: async (userCredentials) => {
     // Logs in an existing user by sending a POST request

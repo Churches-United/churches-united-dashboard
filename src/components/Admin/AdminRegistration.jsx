@@ -1,28 +1,19 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import useStore from "../../zustand/store";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
-import { NavLink } from "react-router-dom";
 import "./Admin.css";
 
 export default function AdminRegistration({ record, onClose }) {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    email: "",
-    firstName: "",
-    lastName: "",
-    role: "",
-    department: "",
-  });
-
-  const register = useStore((state) => state.register);
+  // Admin slice actions
+  const addUser = useStore((state) => state.addUser);
   const updateUser = useStore((state) => state.updateUser);
-  const errorMessage = useStore((state) => state.authErrorMessage);
-  const setAuthErrorMessage = useStore((state) => state.setAuthErrorMessage);
+  const errorMessage = useStore((state) => state.adminError);
+  const clearAdminError = useStore((state) => state.clearAdminError);
 
+  // Options for select fields
   const roleOptions = ["Admin", "Department Manager", "Broad Member"];
   const departmentOptions = [
     "Outreach",
@@ -34,13 +25,24 @@ export default function AdminRegistration({ record, onClose }) {
     "Media",
   ];
 
+  // Form state
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    role: "",
+    department: "",
+  });
+
   // Populate form if editing
   useEffect(() => {
     if (record) {
       setFormData({
-        username: record.username,
+        username: record.username || "",
         password: "", // never prefill password
-        email: record.email,
+        email: record.email || "",
         firstName: record.first_name || "",
         lastName: record.last_name || "",
         role: record.role || "",
@@ -49,22 +51,25 @@ export default function AdminRegistration({ record, onClose }) {
     }
   }, [record]);
 
-  // Clear auth error on unmount
+  // Clear error on unmount
   useEffect(() => {
-    return () => setAuthErrorMessage("");
+    return () => clearAdminError();
   }, []);
 
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting:", formData);
 
+    // Build payload for backend (snake_case for DB)
     const payload = {
       username: formData.username,
+      password: formData.password || undefined, // only required for new users
       email: formData.email,
       first_name: formData.firstName,
       last_name: formData.lastName,
@@ -72,23 +77,34 @@ export default function AdminRegistration({ record, onClose }) {
       department: formData.department || null,
     };
 
-    if (!record) {
-      // Include password when adding new user
-      payload.password = formData.password;
-      await register(payload);
-      setFormData({
-        username: "",
-        password: "",
-        email: "",
-        firstName: "",
-        lastName: "",
-        role: "",
-        department: "",
-      });
-      navigate("/admin");
-    } else {
-      await updateUser(record.id, payload);
-      if (onClose) onClose();
+    try {
+      if (record) {
+        // Editing existing user
+        await updateUser(record.id, payload);
+        if (onClose) onClose();
+      } else {
+        // Adding new user
+        if (!payload.password) {
+          alert("Password is required for new users");
+          return;
+        }
+        await addUser(payload);
+
+        // Clear form after success
+        setFormData({
+          username: "",
+          password: "",
+          email: "",
+          firstName: "",
+          lastName: "",
+          role: "",
+          department: "",
+        });
+
+        navigate("/admin");
+      }
+    } catch (err) {
+      console.error("Submit error:", err);
     }
   };
 

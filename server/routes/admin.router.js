@@ -1,8 +1,7 @@
 const express = require("express");
 const pool = require("../modules/pool");
-const {
-  rejectUnauthenticated,
-} = require("../modules/authentication-middleware");
+const encryptLib = require("../modules/encryption"); 
+const { rejectUnauthenticated } = require("../modules/authentication-middleware");
 
 const router = express.Router();
 
@@ -54,6 +53,44 @@ router.put("/users/:id/active", rejectUnauthenticated, async (req, res) => {
     console.error("PUT /api/admin/users/:id/active error:", err);
     res.sendStatus(500);
   }
+});
+
+router.post("/users", rejectUnauthenticated, async (req, res) => {
+  if (req.user.role !== "admin") return res.sendStatus(403);
+
+  const { username, password, email, first_name, last_name, role, department } =
+    req.body;
+
+  const hashedPassword = encryptLib.encryptPassword(password);
+
+  const sqlText = `
+    INSERT INTO "user" 
+      (username, password, email, first_name, last_name, role, department)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
+    RETURNING id;
+  `;
+
+  const sqlValues = [
+    username,
+    hashedPassword,
+    email,
+    first_name,
+    last_name,
+    role,
+    department,
+  ];
+
+  try {
+    const result = await pool.query(sqlText, sqlValues);
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("POST /api/admin/users error:", err);
+    res.sendStatus(500);
+  }
+});
+
+router.get("/test", (req, res) => {
+  res.send("Admin router is working!");
 });
 
 module.exports = router;

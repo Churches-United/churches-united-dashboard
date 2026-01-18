@@ -17,11 +17,21 @@ const createAdminUserSlice = (set, get) => ({
     }
   },
 
+  // Add new user (admin-only)
+  addUser: async (userData) => {
+    try {
+      const { data } = await axios.post("/api/admin/users", userData);
+      set((state) => ({ users: [...state.users, data] }));
+    } catch (err) {
+      console.error("addUser error:", err);
+      set({ adminError: "Failed to add user" });
+    }
+  },
+
   // Toggle active status for a user
   toggleUserActive: async (userId, active) => {
     try {
       const { data } = await axios.put(`/api/admin/users/${userId}/active`, { active });
-      // update local state
       set((state) => ({
         users: state.users.map((u) => (u.id === data.id ? { ...u, active: data.active } : u)),
       }));
@@ -31,7 +41,7 @@ const createAdminUserSlice = (set, get) => ({
     }
   },
 
-  // Optionally: delete user (admin-only)
+  // Delete user (admin-only)
   deleteUser: async (userId) => {
     try {
       await axios.delete(`/api/admin/users/${userId}`);
