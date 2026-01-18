@@ -1,89 +1,78 @@
-// import { useEffect, useState } from "react";
-// import DepartmentHeader from "../DesignComponents/DepartmentHeader";
-// import AdminUsersToolbar from "./AdminUsersToolbar";
-// import AdminUsersTable from "./AdminUsersTable";
-// import useStore from "../../zustand/store";
-
-// export default function AdminUserManagement() {
-//   const fetchUsers = useStore((store) => store.fetchUsers);
-//   const users = useStore((store) => store.users);
-
-//   const [search, setSearch] = useState("");
-//   const [roleFilter, setRoleFilter] = useState("all");
-
-//   useEffect(() => {
-//     fetchUsers();
-//   }, []);
-
-//   const filteredUsers = users.filter((user) => {
-//     const matchesSearch =
-//       user.name.toLowerCase().includes(search.toLowerCase()) ||
-//       user.email.toLowerCase().includes(search.toLowerCase());
-
-//     const matchesRole = roleFilter === "all" || user.role === roleFilter;
-
-//     return matchesSearch && matchesRole;
-//   });
-
-//   return (
-//     <div className="hub-container admin">
-//       <DepartmentHeader title="Admin — User Management" />
-
-//       <AdminUsersToolbar
-//         search={search}
-//         setSearch={setSearch}
-//         roleFilter={roleFilter}
-//         setRoleFilter={setRoleFilter}
-//       />
-
-//       <AdminUsersTable users={filteredUsers} />
-//     </div>
-//   );
-// }
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import useStore from "../../zustand/store";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+import AdminUsersTable from "./AdminUsersTable";
+import AdminRegistration from "../Admin/AdminRegistration";
+import "./Admin.css";
 
 export default function AdminUserManagement() {
-  const fetchUsers = useStore((s) => s.fetchUsers);
-  const users = useStore((s) => s.users);
-  const loading = useStore((s) => s.usersLoading);
+  const fetchUsers = useStore((state) => state.fetchUsers);
+  const users = useStore((state) => state.users);
+  const loading = useStore((state) => state.usersLoading);
+  const toggleUserActive = useStore((state) => state.toggleUserActive);
+
+  const [editingUser, setEditingUser] = useState(null);
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
+  const handleEditClick = (user) => {
+    setEditingUser(user);
+  };
+
+  const handleCloseForm = () => {
+    setEditingUser(null);
+    fetchUsers(); // refresh list after editing
+  };
+
   return (
     <div className="hub-container admin">
-      <DepartmentHeader title="Admin — Users" />
+      <DepartmentHeader
+        title="Admin - Manage Users"
+        actions={
+          <>
+            <NavLink
+              to="/admin"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Admin Home
+            </NavLink>
+            <NavLink
+              to="/admin/registration"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Add User
+            </NavLink>
+            <NavLink
+              to="/admin/users"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Manage Users
+            </NavLink>
+          </>
+        }
+      />
 
-      {loading && <p>Loading users...</p>}
-
-      {!loading && (
-        <table className="dashboard-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Department</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>{user.department}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <AdminUsersTable
+        users={users}
+        onEdit={handleEditClick}
+        onToggleActive={toggleUserActive}
+      />
+      {/* Render form modal if editing */}
+      <div className="admin-edit">
+        {editingUser && (
+          <AdminRegistration
+            record={editingUser}
+            onClose={() => {
+              setEditingUser(null);
+              fetchUsers(); // refresh table after editing
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

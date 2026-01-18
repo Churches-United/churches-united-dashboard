@@ -1,12 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
 import "../../styles/departmentCards.css";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+import "./Admin.css";
 
 export default function AdminHome() {
   return (
     <div className="hub-container admin">
       <DepartmentHeader
-        title="Admin"
+        title="Admin - Home"
         actions={
           <>
             <NavLink
@@ -20,13 +21,13 @@ export default function AdminHome() {
               to="/admin/registration"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Registration
+              Add User
             </NavLink>
             <NavLink
               to="/admin/users"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Users
+              Manage Users
             </NavLink>
           </>
         }
