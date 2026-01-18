@@ -7,6 +7,7 @@ import "./Admin.css";
 
 export default function AdminRegistration({ record, onClose }) {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -22,21 +23,33 @@ export default function AdminRegistration({ record, onClose }) {
   const errorMessage = useStore((state) => state.authErrorMessage);
   const setAuthErrorMessage = useStore((state) => state.setAuthErrorMessage);
 
-  // populate form if editing
+  const roleOptions = ["Admin", "Department Manager", "Broad Member"];
+  const departmentOptions = [
+    "Outreach",
+    "Development",
+    "Housing",
+    "Human Resource",
+    "Shelter",
+    "Pantry",
+    "Media",
+  ];
+
+  // Populate form if editing
   useEffect(() => {
     if (record) {
       setFormData({
         username: record.username,
-        password: "", 
+        password: "", // never prefill password
         email: record.email,
-        firstName: record.first_name,
-        lastName: record.last_name,
-        role: record.role,
-        department: record.department,
+        firstName: record.first_name || "",
+        lastName: record.last_name || "",
+        role: record.role || "",
+        department: record.department || "",
       });
     }
   }, [record]);
 
+  // Clear auth error on unmount
   useEffect(() => {
     return () => setAuthErrorMessage("");
   }, []);
@@ -48,15 +61,21 @@ export default function AdminRegistration({ record, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting:", formData);
 
-    if (record) {
-      // Editing existing user
-      await updateUser(record.id, formData);
-      if (onClose) onClose(); 
-    } else {
-      // Adding new user
-      await register(formData);
-      // clear form
+    const payload = {
+      username: formData.username,
+      email: formData.email,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      role: formData.role,
+      department: formData.department || null,
+    };
+
+    if (!record) {
+      // Include password when adding new user
+      payload.password = formData.password;
+      await register(payload);
       setFormData({
         username: "",
         password: "",
@@ -66,42 +85,29 @@ export default function AdminRegistration({ record, onClose }) {
         role: "",
         department: "",
       });
-      // navigate back to admin home
       navigate("/admin");
+    } else {
+      await updateUser(record.id, payload);
+      if (onClose) onClose();
     }
   };
 
   return (
     <div className="hub-container admin">
       <DepartmentHeader
-        title="Admin - Add User"
+        title={record ? "Admin - Edit User" : "Admin - Add User"}
         actions={
           <>
-            <NavLink
-              to="/admin"
-              end
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/admin" end>
               Admin Home
             </NavLink>
-            <NavLink
-              to="/admin/registration"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Add User
-            </NavLink>
-            <NavLink
-              to="/admin/users"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Manage Users
-            </NavLink>
+            <NavLink to="/admin/registration">Add User</NavLink>
+            <NavLink to="/admin/users">Manage Users</NavLink>
           </>
         }
       />
 
       <div className="form">
-        <h2>{record ? "Edit User" : "Add User"}</h2>
         <form onSubmit={handleSubmit}>
           <label>Username:</label>
           <input
@@ -153,29 +159,39 @@ export default function AdminRegistration({ record, onClose }) {
           />
 
           <label>Role:</label>
-          <input
-            type="text"
+          <select
             name="role"
             required
             value={formData.role}
             onChange={handleChange}
-          />
+          >
+            <option value="">Select role...</option>
+            {roleOptions.map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
 
           <label>Department:</label>
-          <input
-            type="text"
+          <select
             name="department"
-            required
             value={formData.department}
             onChange={handleChange}
-          />
+          >
+            <option value="">Select department...</option>
+            {departmentOptions.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
 
           <div className="form-buttons">
             <button type="submit" className="primary">
               {record ? "Save Changes" : "Add User"}
             </button>
 
-            {/* Only show Cancel if editing */}
             {record && (
               <button type="button" className="secondary" onClick={onClose}>
                 Cancel
