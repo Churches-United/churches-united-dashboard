@@ -58,6 +58,10 @@ import PantryWeeklyList from "../pantry/PantryWeeklyList";
 import PantryWeeklyForm from "../pantry/PantryWeeklyForm";
 import PantryReports from "../pantry/PantryReports";
 
+import AdminHome from "../Admin/AdminHome";
+import AdminRegistration from "../Admin/AdminRegistration";
+import AdminUserManagement from "../Admin/AdminUserManagement";
+
 import ReportsDashboard from "../ReportingHub/ReportsDashboard";
 import Footer from "../Nav/Footer";
 
@@ -91,7 +95,11 @@ function App() {
             path="/registration"
             element={user.id ? <Navigate to="/" replace /> : <RegisterPage />}
           />
-          {/* <Route exact path="/about" element={<AboutPage />} /> */}
+          {/* Admin */}
+          <Route exact path="/admin" element={<AdminHome />} />
+          <Route exact path="/admin/registration" element={<AdminRegistration />} />
+          <Route exact path="/admin/users" element={<AdminUserManagement />} />
+
 
           {/* Housing */}
           <Route path="/housing" element={<HousingHome />} />

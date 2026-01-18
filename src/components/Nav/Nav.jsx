@@ -69,6 +69,16 @@ function Nav() {
                     Home
                   </NavLink>
                 </li>
+
+                {/* Only show Admin link if user.role === "admin" */}
+                {user.role === "admin" && (
+                  <li>
+                    <NavLink to="/admin" onClick={closeMenu}>
+                      Admin
+                    </NavLink>
+                  </li>
+                )}
+
                 <li>
                   <button onClick={handleLogout} className="logout-btn">
                     Logout

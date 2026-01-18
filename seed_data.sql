@@ -80,7 +80,7 @@ VALUES
 ((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-10-03', 'Community Picnic', 28, 6),
 ((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-10-10', 'Micah''s Mission - Basement', 18, 3),
 ((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-10-17', 'Micah''s Mission - Pantry', 22, 5),
-`((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-10-10', 'Micah''s Mission - Basement', 20, 4),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-10-10', 'Micah''s Mission - Basement', 20, 4),
 ((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-10-17', 'Micah''s Mission - Pantry', 25, 6),
 
 -- November 2025
@@ -274,9 +274,16 @@ VALUES
 ('2025-10-01', 'TikTok', NULL, NULL, NULL, NULL, 620, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'October TikTok Metrics'),
 ('2025-11-01', 'TikTok', NULL, NULL, NULL, NULL, 700, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'November TikTok Metrics'),
 ('2025-12-01', 'TikTok', NULL, NULL, NULL, NULL, 838, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'December TikTok Metrics'),
-('2025-10-24', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2998, 786, 13.10, 118, 4, 'Oct 24 Newsletter'),
-('2025-10-31', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2995, 537, 18.10, 79, 2.70, 'Oct 31 Newsletter'),
-('2025-11-07', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2996, 544, 18.30, 82, 2.80, 'Nov 7 Newsletter');
+('2026-01-01', 'TikTok', NULL, NULL, NULL, NULL, 910, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'January TikTok Metrics'),
+
+-- Newsletter Metrics
+('2025-08-15', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2950, 450, 15.3, 75, 2.5, 'Aug 15 Newsletter'),
+('2025-09-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3000, 480, 16.0, 80, 2.7, 'September Newsletter'),
+('2025-10-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3100, 510, 16.5, 95, 3.0, 'October Newsletter'),
+('2025-11-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3200, 530, 16.6, 100, 3.1, 'November Newsletter'),
+('2025-12-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3300, 560, 17.0, 110, 3.3, 'December Newsletter'),
+('2026-01-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3400, 580, 17.1, 115, 3.4, 'January Newsletter');
+
 
 -- ---------------- kitchen ----------------
 -- Add 2022-2023 historical data to supplement existing records
@@ -306,13 +313,3 @@ VALUES
 ('2023-10-30', 580, 'Halloween week, busy'),
 ('2023-11-20', 640, 'Pre-Thanksgiving rush'),
 ('2023-12-11', 475, 'Holiday preparations');
-('2026-01-01', 'TikTok', NULL, NULL, NULL, NULL, 910, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'January TikTok Metrics'),
-
--- Newsletter Metrics
-('2025-08-15', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2950, 450, 15.3, 75, 2.5, 'Aug 15 Newsletter'),
-('2025-09-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3000, 480, 16.0, 80, 2.7, 'September Newsletter'),
-('2025-10-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3100, 510, 16.5, 95, 3.0, 'October Newsletter'),
-('2025-11-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3200, 530, 16.6, 100, 3.1, 'November Newsletter'),
-('2025-12-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3300, 560, 17.0, 110, 3.3, 'December Newsletter'),
-('2026-01-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3400, 580, 17.1, 115, 3.4, 'January Newsletter');
-

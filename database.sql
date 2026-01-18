@@ -31,6 +31,9 @@ CREATE TABLE "user" (
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+ALTER TABLE "user" ADD COLUMN active BOOLEAN DEFAULT true;
+
+
 ---------pantry
 CREATE TABLE "pantry" (
   "id" SERIAL PRIMARY KEY,

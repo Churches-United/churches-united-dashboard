@@ -22,6 +22,7 @@ import volunteerEngagementsSlice from "./slices/volunteerEngagement.slice.js";
 import volunteerReportsSlice from "./slices/volunteerReports.slice.js";
 import mediaSlice from "./slices/media.slice.js";
 import mediaReportSlice from "./slices/mediaReporting.js";
+import adminUsersSlice from "./slices/adminUser.slice.js";
 
 // Combine all slices in the store:
 // update.. added devtools
@@ -48,6 +49,8 @@ const useStore = create(
     ...mediaSlice(...args),
     ...mediaReportSlice(...args),
     ...hrSlice(...args),
+    ...adminUsersSlice(...args),
+
   }))
 );
 

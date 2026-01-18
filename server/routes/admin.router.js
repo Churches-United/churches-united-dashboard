@@ -1,0 +1,59 @@
+const express = require("express");
+const pool = require("../modules/pool");
+const {
+  rejectUnauthenticated,
+} = require("../modules/authentication-middleware");
+
+const router = express.Router();
+
+// ---------------- ADMIN USER ROUTES ----------------
+
+// GET all users (ADMIN only)
+router.get("/users", rejectUnauthenticated, async (req, res) => {
+  if (req.user.role !== "admin") return res.sendStatus(403);
+
+  const sqlText = `
+    SELECT id, username, email, first_name, last_name, role, department, active, created_at
+    FROM "user"
+    ORDER BY last_name, first_name;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/admin/users error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// PUT activate/deactivate user (ADMIN only)
+router.put("/users/:id/active", rejectUnauthenticated, async (req, res) => {
+  if (req.user.role !== "admin") return res.sendStatus(403);
+
+  const { id } = req.params;
+  const { active } = req.body;
+
+  if (typeof active !== "boolean")
+    return res.status(400).json({ error: "Active must be boolean" });
+
+  const sqlText = `
+    UPDATE "user"
+    SET active = $1,
+        updated_at = NOW()
+    WHERE id = $2
+    RETURNING id, active;
+  `;
+
+  try {
+    const result = await pool.query(sqlText, [active, id]);
+    if (result.rowCount === 0) return res.sendStatus(404);
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("PUT /api/admin/users/:id/active error:", err);
+    res.sendStatus(500);
+  }
+});
+
+module.exports = router;

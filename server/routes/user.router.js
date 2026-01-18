@@ -8,84 +8,60 @@ const {
 
 const router = express.Router();
 
-// If the request came from an authenticated user, this route
-// sends back an object containing that user's information.
-// Otherwise, it sends back an empty object to indicate there
-// is not an active session.
+// GET current session user
 router.get("/", (req, res) => {
   if (req.isAuthenticated()) {
-    res.send(req.user);
+    res.json(req.user);
   } else {
-    res.send({});
+    res.json({});
   }
 });
 
-// Handles the logic for creating a new user. The one extra wrinkle here is
-// that we hash the password before inserting it into the database.
-router.post("/register", (req, res, next) => {
-  const { username, email, firstName, lastName, role, department } = req.body;
-  const hashedPassword = encryptLib.encryptPassword(req.body.password);
+// REGISTER (normal user self-registration)
+router.post("/register", (req, res) => {
+  const { username, email, firstName, lastName, password } = req.body;
+
+  // Do not allow users to set role or department on self-register
+  const hashedPassword = encryptLib.encryptPassword(password);
 
   const sqlText = `
-    INSERT INTO "user"
-      ("username", "password", "email", "first_name", "last_name", "role", "department")
-      VALUES
-      ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING id;
+    INSERT INTO "user" ("username", "password", "email", "first_name", "last_name")
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING id;
   `;
-  const sqlValues = [
-    username,
-    hashedPassword,
-    email,
-    firstName,
-    lastName,
-    role,
-    department,
-  ];
+  const sqlValues = [username, hashedPassword, email, firstName, lastName];
 
   pool
     .query(sqlText, sqlValues)
-    .then(() => {
-      res.sendStatus(201);
-    })
+    .then(() => res.sendStatus(201))
     .catch((dbErr) => {
-      console.log("POST /api/user/register error: ", dbErr);
+      console.error("POST /api/user/register error:", dbErr);
       res.sendStatus(500);
     });
 });
 
-// Handles the logic for logging in a user. When this route receives
-// a request, it runs a middleware function that leverages the Passport
-// library to instantiate a session if the request body's username and
-// password are correct.
-// You can find this middleware function in /server/strategies/user.strategy.js.
+// LOGIN
 router.post("/login", userStrategy.authenticate("local"), (req, res) => {
   res.sendStatus(200);
 });
 
-// Clear all server session information about this user:
+// LOGOUT
 router.delete("/logout", (req, res, next) => {
-  // Use passport's built-in method to log out the user.
   req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
     res.sendStatus(200);
   });
 });
 
-// GET user by id
+// GET user by ID
 router.get("/:id", rejectUnauthenticated, async (req, res) => {
-  const userId = req.params.id;
-  const sqlText = `
-  SELECT * FROM "user" WHERE id = $1;
-  `;
+  const userId = Number(req.params.id);
   try {
-    const result = await pool.query(sqlText, [userId]);
+    const result = await pool.query(`SELECT * FROM "user" WHERE id = $1;`, [
+      userId,
+    ]);
 
-    if (result.rowCount === 0) {
-      return res.sendStatus(404);
-    }
+    if (result.rowCount === 0) return res.sendStatus(404);
 
     res.json(result.rows[0]);
   } catch (err) {
@@ -93,40 +69,37 @@ router.get("/:id", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(500);
   }
 });
-// PUT user by id
+
+// PUT user by ID (self-edit or admin)
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
-  const userId = req.params.id;
+  const userId = Number(req.params.id);
+
+  // Only admin OR the user themselves can update
+  if (req.user.role !== "admin" && req.user.id !== userId) {
+    return res.sendStatus(403);
+  }
+
   const { username, email, first_name, last_name, role, department } = req.body;
+
   const sqlText = `
-  UPDATE "user" 
-  SET 
-  "username" = $1, 
-  "email" = $2, 
-  "first_name" = $3, 
-  "last_name" = $4, 
-  "role" = $5, 
-  "department" = $6,
-  updated_at = NOW()
-  WHERE id = $7
-  RETURNING *;
+    UPDATE "user"
+    SET username=$1, email=$2, first_name=$3, last_name=$4, role=$5, department=$6, updated_at=NOW()
+    WHERE id=$7
+    RETURNING *;
   `;
 
-  const sqlValues = [
-    username,
-    email,
-    first_name,
-    last_name,
-    role,
-    department,
-    userId,
-  ];
-
   try {
-    const result = await pool.query(sqlText, sqlValues);
+    const result = await pool.query(sqlText, [
+      username,
+      email,
+      first_name,
+      last_name,
+      role,
+      department,
+      userId,
+    ]);
 
-    if (result.rowCount === 0) {
-      return res.sendStatus(404);
-    }
+    if (result.rowCount === 0) return res.sendStatus(404);
 
     res.json(result.rows[0]);
   } catch (err) {
@@ -135,38 +108,23 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// DELETE user by id
-router.delete(
-  "/:id",
-  rejectUnauthenticated,
-  async (req, res) => {
-    const userId = Number(req.params.id);
+// DELETE user by ID (admin only)
+router.delete("/:id", rejectUnauthenticated, async (req, res) => {
+  if (req.user.role !== "admin") return res.sendStatus(403);
 
-    // Only admins can delete users
-    if (req.user.role !== "admin") {
-      return res.sendStatus(403);
-    }
+  try {
+    const result = await pool.query(
+      `DELETE FROM "user" WHERE id = $1 RETURNING id;`,
+      [req.params.id]
+    );
 
-    const sqlText = `
-      DELETE FROM "user"
-      WHERE id = $1
-      RETURNING id;
-    `;
+    if (result.rowCount === 0) return res.sendStatus(404);
 
-    try {
-      const result = await pool.query(sqlText, [userId]);
-
-      if (result.rowCount === 0) {
-        return res.sendStatus(404);
-      }
-
-      res.sendStatus(204); 
-    } catch (err) {
-      console.error("DELETE /api/user/:id error:", err);
-      res.sendStatus(500);
-    }
+    res.sendStatus(204);
+  } catch (err) {
+    console.error("DELETE /api/user/:id error:", err);
+    res.sendStatus(500);
   }
-);
-
+});
 
 module.exports = router;
