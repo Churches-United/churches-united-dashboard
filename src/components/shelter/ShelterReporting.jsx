@@ -2,7 +2,18 @@ import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import useStore from "../../zustand/store";
 import '../../styles/tables.css';
-import './Shelter.css';
+
+// Import chart components
+import BarChart from "../Charts/BarChart";
+import PieChart from "../Charts/PieChart";
+
+// Import chart data functions
+import { 
+  getGuestCategoriesPieData, 
+  getGuestCategoriesBarData,
+  getIncidentsBreakdownData,
+  getWeeklySummaryBarData 
+} from './ShelterCharts';
 
 function ShelterReporting() {
   const [activeTab, setActiveTab] = useState("guests");
@@ -29,8 +40,21 @@ function ShelterReporting() {
     return new Date(dateString).toLocaleDateString('en-US');
   };
 
-  if (loading) return <div className="table-loading">Loading...</div>;
-  if (error) return <div className="table-error">Error: {error}</div>;
+  if (loading) {
+    return (
+      <div className="hub-container">
+        <div className="table-loading">Loading reports...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="hub-container">
+        <div className="table-error">Error: {error}</div>
+      </div>
+    );
+  }
 
   // ========== GUESTS TAB RENDER ==========
   
@@ -44,10 +68,73 @@ function ShelterReporting() {
       );
     }
 
+    const pieData = getGuestCategoriesPieData(guests);
+    const barData = getGuestCategoriesBarData(guests);
+
     return (
       <div style={{ padding: '20px 0' }}>
         
-        <h3 className="shelter-section-header">Guest Demographics Summary</h3>
+        <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '24px', color: '#333' }}>
+          Guest Demographics Overview
+        </h3>
+
+        {/* Charts - Side by Side */}
+        {(pieData || barData) && (
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', 
+            gap: '24px',
+            marginBottom: '48px'
+          }}>
+            {pieData && (
+              <div style={{ 
+                maxHeight: '280px',
+                backgroundColor: '#fff',
+                padding: '20px',
+                borderRadius: '8px',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+              }}>
+                <PieChart data={pieData} title="Guest Categories Distribution" />
+              </div>
+            )}
+            
+            {barData && (
+              <div style={{ 
+                maxHeight: '280px',
+                backgroundColor: '#fff',
+                padding: '20px',
+                borderRadius: '8px',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+              }}>
+                <BarChart 
+                  data={barData} 
+                  title="Guest Categories Breakdown"
+                  options={{
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: { callback: (value) => value.toLocaleString() }
+                      }
+                    },
+                    plugins: {
+                      tooltip: {
+                        callbacks: {
+                          label: (context) => `${context.dataset.label}: ${context.parsed.y.toLocaleString()}`
+                        }
+                      }
+                    }
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        <div style={{ borderTop: '2px solid #e0e0e0', marginBottom: '32px' }}></div>
+
+        <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '24px', color: '#333' }}>
+          Guest Demographics Summary
+        </h3>
 
         {/* Tables in 2 columns */}
         <div style={{ 
@@ -59,7 +146,9 @@ function ShelterReporting() {
           
           {/* Annual Totals */}
           <div>
-            <h4 className="shelter-table-header">Annual Totals</h4>
+            <h4 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '12px', color: 'var(--brand-primary)' }}>
+              Annual Totals
+            </h4>
             <div className="table-container">
               <table className="table-app" style={{ fontSize: '0.875rem' }}>
                 <tbody>
@@ -84,7 +173,9 @@ function ShelterReporting() {
 
           {/* Quick Stats */}
           <div>
-            <h4 className="shelter-table-header">Top Categories</h4>
+            <h4 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '12px', color: 'var(--brand-primary)' }}>
+              Top Categories
+            </h4>
             <div className="table-container">
               <table className="table-app" style={{ fontSize: '0.875rem' }}>
                 <tbody>
@@ -107,9 +198,11 @@ function ShelterReporting() {
         </div>
 
         {/* Guest Categories - Full Width Table */}
-        <h4 className="shelter-table-header">Guest Categories Breakdown</h4>
+        <h4 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '12px', color: 'var(--brand-primary)' }}>
+          Guest Categories Breakdown
+        </h4>
         <div className="table-container" style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <table className="table-app table-hover table-striped">
+          <table className="table-app">
             <thead>
               <tr>
                 <th>Category</th>
@@ -168,19 +261,60 @@ function ShelterReporting() {
       );
     }
 
+    const incidentsData = getIncidentsBreakdownData(incidents);
+
     return (
       <div style={{ padding: '20px 0' }}>
         
-        <h3 className="shelter-section-header">Incidents & Outreach Summary</h3>
+        <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '24px', color: '#333' }}>
+          Incidents & Outreach Overview
+        </h3>
+
+        {/* Bar Chart */}
+        {incidentsData && (
+          <div style={{ 
+            maxHeight: '300px',
+            marginBottom: '48px',
+            backgroundColor: '#fff',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+          }}>
+            <BarChart 
+              data={incidentsData} 
+              title="Incidents & Outreach Breakdown"
+              options={{
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: { callback: (value) => value.toLocaleString() }
+                  }
+                },
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: (context) => `${context.dataset.label}: ${context.parsed.y.toLocaleString()}`
+                    }
+                  }
+                }
+              }}
+            />
+          </div>
+        )}
+
+        <div style={{ borderTop: '2px solid #e0e0e0', marginBottom: '32px' }}></div>
+
+        <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '24px', color: '#333' }}>
+          Incidents & Outreach Summary
+        </h3>
 
         {/* Single centered table */}
-        <div style={{ 
-          maxWidth: '800px',
-          margin: '0 auto'
-        }}>
-          <h4 className="shelter-table-header">Annual Summary</h4>
+        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <h4 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '12px', color: 'var(--brand-primary)' }}>
+            Annual Summary
+          </h4>
           <div className="table-container">
-            <table className="table-app table-hover" style={{ fontSize: '0.95rem' }}>
+            <table className="table-app" style={{ fontSize: '0.95rem' }}>
               <tbody>
                 <tr>
                   <td style={{ width: '60%' }}><strong>Total Incident Reports:</strong></td>
@@ -238,13 +372,55 @@ function ShelterReporting() {
       );
     }
 
+    const summaryBarData = getWeeklySummaryBarData(summary);
+
     return (
       <div style={{ padding: '20px 0' }}>
         
-        <h3 className="shelter-section-header">Weekly Shelter Data</h3>
+        <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '24px', color: '#333' }}>
+          Weekly Trends
+        </h3>
+
+        {/* Bar Chart */}
+        {summaryBarData && (
+          <div style={{ 
+            maxHeight: '300px',
+            marginBottom: '48px',
+            backgroundColor: '#fff',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+          }}>
+            <BarChart 
+              data={summaryBarData} 
+              title="Weekly Shelter Activity"
+              options={{
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: { callback: (value) => value.toLocaleString() }
+                  }
+                },
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: (context) => `${context.dataset.label}: ${context.parsed.y.toLocaleString()}`
+                    }
+                  }
+                }
+              }}
+            />
+          </div>
+        )}
+
+        <div style={{ borderTop: '2px solid #e0e0e0', marginBottom: '32px' }}></div>
+
+        <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '24px', color: '#333' }}>
+          Weekly Shelter Data
+        </h3>
 
         <div className="table-container" style={{ maxWidth: "1400px", margin: "0 auto" }}>
-          <table className="table-app table-hover table-striped">
+          <table className="table-app">
             <thead>
               <tr>
                 <th>Week Of</th>
@@ -284,50 +460,73 @@ function ShelterReporting() {
   // ========== MAIN RENDER ==========
   
   return (
-    <div className="shelter-hub-container">
-      <div className="shelter-department-header">
-        <h2>Shelter Reports - {year}</h2>
-        <div className="shelter-department-actions">
+    <div className="hub-container">
+      <div className="department-header">
+        <h2>Shelter Reports</h2>
+        <div className="department-actions">
           <Link to="/shelter">Data Entry</Link>
           <Link to="/shelter/reports" className="active">Reports</Link>
         </div>
       </div>
 
-      <div className="shelter-year-selector">
-        <label>Year:</label>
-        <select 
-          value={year} 
-          onChange={(e) => setYear(parseInt(e.target.value))}
-        >
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-          <option value="2026">2026</option>
-          <option value="2027">2027</option>
-        </select>
+      {/* Year Selector and Tabs Row */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: '16px',
+        flexWrap: 'wrap',
+        gap: '16px'
+      }}>
+        
+        {/* Tabs on Left */}
+        <div style={{ 
+          display: 'flex',
+          gap: '8px',
+          flex: '1 1 auto'
+        }}>
+          <button 
+            className={`btn ${activeTab === "guests" ? "btn-primary" : ""}`}
+            onClick={() => setActiveTab("guests")}
+            style={{ padding: '8px 16px' }}
+          >
+            Guest Breakdown
+          </button>
+          <button 
+            className={`btn ${activeTab === "incidents" ? "btn-primary" : ""}`}
+            onClick={() => setActiveTab("incidents")}
+            style={{ padding: '8px 16px' }}
+          >
+            Incidents & Outreach
+          </button>
+          <button 
+            className={`btn ${activeTab === "summary" ? "btn-primary" : ""}`}
+            onClick={() => setActiveTab("summary")}
+            style={{ padding: '8px 16px' }}
+          >
+            Weekly Summary
+          </button>
+        </div>
+
+        {/* Year Selector on Right */}
+        <div style={{ flexShrink: 0 }}>
+          <label style={{ marginRight: '8px', fontWeight: '500' }}>Year:</label>
+          <select 
+            value={year} 
+            onChange={(e) => setYear(parseInt(e.target.value))}
+            className="form-select"
+            style={{ display: 'inline-block', width: 'auto', padding: '6px 10px' }}
+          >
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+          </select>
+        </div>
       </div>
 
-      <div className="shelter-tabs-container">
-        <button 
-          className={`shelter-tab-button ${activeTab === "guests" ? "active" : ""}`}
-          onClick={() => setActiveTab("guests")}
-        >
-          Guest Breakdown
-        </button>
-        <button 
-          className={`shelter-tab-button ${activeTab === "incidents" ? "active" : ""}`}
-          onClick={() => setActiveTab("incidents")}
-        >
-          Incidents & Outreach
-        </button>
-        <button 
-          className={`shelter-tab-button ${activeTab === "summary" ? "active" : ""}`}
-          onClick={() => setActiveTab("summary")}
-        >
-          Weekly Summary
-        </button>
-      </div>
-
+      {/* Tab Content */}
       <div>
         {activeTab === "guests" && renderGuests()}
         {activeTab === "incidents" && renderIncidents()}
@@ -338,4 +537,3 @@ function ShelterReporting() {
 }
 
 export default ShelterReporting;
-
