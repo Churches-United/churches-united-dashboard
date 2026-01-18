@@ -36,16 +36,25 @@ export default function UserSettings() {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
+
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    await updatePassword(passwordData);
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+
+    const success = await updatePassword({
+      currentPassword: passwordData.currentPassword,
+      newPassword: passwordData.newPassword,
     });
+
+    if (success) {
+      alert("Password updated successfully!");
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    }
   };
 
   return (
@@ -130,7 +139,10 @@ export default function UserSettings() {
               type="password"
               value={passwordData.newPassword}
               onChange={(e) =>
-                setPasswordData({ ...passwordData, newPassword: e.target.value })
+                setPasswordData({
+                  ...passwordData,
+                  newPassword: e.target.value,
+                })
               }
             />
           </div>

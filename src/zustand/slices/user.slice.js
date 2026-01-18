@@ -34,7 +34,7 @@ const createUserSlice = (set, get) => ({
   // },
 
   // todo - if this works I dont think we should login the new user...
-register: async (newUserCredentials) => {
+  register: async (newUserCredentials) => {
     get().setAuthErrorMessage("");
     try {
       // Convert frontend camelCase to backend snake_case
@@ -110,21 +110,25 @@ register: async (newUserCredentials) => {
     }
   },
 
-  
-updatePassword: async ({ currentPassword, newPassword }) => {
-  try {
-    const userId = get().user.id;
-    if (!userId) throw new Error("No user logged in");
+  updatePassword: async ({ currentPassword, newPassword }) => {
+    try {
+      const userId = get().user.id;
+      if (!userId) throw new Error("No user logged in");
 
-    await axios.put(`/api/user/${userId}/password`, { currentPassword, newPassword });
-    console.log("Password updated successfully!");
-  } catch (err) {
-    console.error("updatePassword error:", err);
-    get().setAuthErrorMessage(
-      "Failed to update password. Please check your current password and try again."
-    );
-  }
-},
+      await axios.put(`/api/user/${userId}/password`, {
+        currentPassword,
+        newPassword,
+      });
+
+      return true;
+    } catch (err) {
+      console.error("updatePassword error:", err);
+      get().setAuthErrorMessage(
+        "Failed to update password. Please check your current password and try again."
+      );
+      return false;
+    }
+  },
 });
 
 export default createUserSlice;
