@@ -75,9 +75,9 @@ export default function HousingOperationalReservesBar({ records = [] }) {
 
   return (
     <div className="chart-card housing">
-      <h3 className="chart-title housing">
+      <h5 className="chart-title housing">
         Operational Reserves — {monthLabel}
-      </h3>
+      </h5>
       <div style={{ height: 300 }}>
         <Bar data={data} options={options} />
       </div>

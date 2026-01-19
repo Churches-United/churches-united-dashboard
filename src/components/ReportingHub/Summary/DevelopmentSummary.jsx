@@ -4,7 +4,11 @@ import MonthlyDonationPie from "../../Development/Charts/MonthlyDonationPie";
 import DevelopmentKPI from "../../Development/Charts/DevelopmentKPI";
 import "./ReportsSummary.css";
 
-export default function DevelopmentSummary({ monthlyReports, donations, events }) {
+export default function DevelopmentSummary({
+  monthlyReports,
+  donations,
+  events,
+}) {
   const now = new Date();
   const monthName = now.toLocaleString("default", { month: "long" });
 
@@ -15,12 +19,28 @@ export default function DevelopmentSummary({ monthlyReports, donations, events }
   const donationCountMonth = Number(latestMonth.donation_count || 0);
 
   // Compute top donor for latest month
-  let topDonor = "N/A";
-  if (latestMonth.donors && latestMonth.donors.length) {
-    const sortedDonors = [...latestMonth.donors].sort((a, b) => b.amount - a.amount);
-    const top = sortedDonors[0];
-    topDonor = `${top.name} ($${top.amount.toLocaleString()})`;
-  }
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+
+  const donationsThisMonth = donations.filter((d) => {
+    const date = new Date(d.date);
+    return (
+      date.getFullYear() === currentYear && date.getMonth() === currentMonth
+    );
+  });
+
+  const donorTotals = donationsThisMonth.reduce((acc, d) => {
+    acc[d.donor_name] = (acc[d.donor_name] || 0) + Number(d.amount || 0);
+    return acc;
+  }, {});
+
+  const topDonorEntry = Object.entries(donorTotals).sort(
+    (a, b) => b[1] - a[1]
+  )[0];
+
+  const topDonor = topDonorEntry
+    ? `${topDonorEntry[0]} ($${topDonorEntry[1].toLocaleString()})`
+    : "N/A";
 
   // ---------- Upcoming events ----------
   const upcomingEvents = events
@@ -56,8 +76,7 @@ export default function DevelopmentSummary({ monthlyReports, donations, events }
             height={260}
             compact
             className="monthly-donation-chart"
-              style={{ width: "100%" }}
-
+            style={{ width: "100%" }}
           />
         </div>
 
@@ -70,7 +89,7 @@ export default function DevelopmentSummary({ monthlyReports, donations, events }
           />
         </div> */}
       </div>
-            {/* ---------- KPIs ---------- */}
+      {/* ---------- KPIs ---------- */}
       <div className="summary-kpis summary-kpis-development">
         <MonthlyDonationKPI
           month={monthName}
