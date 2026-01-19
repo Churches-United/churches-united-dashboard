@@ -22,15 +22,15 @@ export default function AdminRegistration({ record, onClose }) {
 
   const DEPARTMENT_OPTIONS = [
     { label: "Admin", value: "admin" },
+    { label: "Board Member", value: "board_member" },
     { label: "Outreach", value: "outreach" },
     { label: "Development", value: "development" },
     { label: "Housing", value: "housing" },
     { label: "Human Resource", value: "human_resource" },
     { label: "Shelter", value: "shelter" },
     { label: "Pantry", value: "pantry" },
-    { label: "Media", value: "media" },   
-     { label: "Kitchen", value: "kitchen" },
-
+    { label: "Media", value: "media" },
+    { label: "Kitchen", value: "kitchen" },
   ];
 
   // Form state
