@@ -33,6 +33,11 @@
   margin-bottom: 1rem;
 }
 
+.summary-next-event-development .next-event-item {
+  font-size: 1rem;     
+  line-height: 1.5;  
+}
+
 /* KPI row */
 .summary-card-development .summary-kpis-development {
   display: flex;
@@ -139,9 +144,9 @@
   box-sizing: border-box;
 }
 .housing-summary .kpi-card .kpi-title {
-  font-size: 0.65rem; /* smaller than default */
-  font-weight: 600;   /* optional: keep bold */
-  margin-bottom: 1px; /* optional: reduce spacing */
+  font-size: 0.65rem; 
+  font-weight: 600;   
+  margin-bottom: 1px; 
 }
 
 .housing-summary .summary-charts-row {

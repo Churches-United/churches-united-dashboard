@@ -2,6 +2,7 @@ import MonthlyDonationKPI from "../../Development/Charts/MonthlyDonationKPI";
 import MonthlyDonationChart from "../../Development/Charts/MonthlyDonationChart";
 import MonthlyDonationPie from "../../Development/Charts/MonthlyDonationPie";
 import DevelopmentKPI from "../../Development/Charts/DevelopmentKPI";
+import "./ReportsSummary.css";
 
 export default function DevelopmentSummary({ monthlyReports, donations, events }) {
   const now = new Date();
@@ -26,7 +27,7 @@ export default function DevelopmentSummary({ monthlyReports, donations, events }
     .map((e) => ({ ...e, dateObj: new Date(e.datetime) }))
     .filter((e) => e.dateObj >= now)
     .sort((a, b) => a.dateObj - b.dateObj)
-    .slice(0, 1);
+    .slice(0, 3);
 
   // ---------- Pie chart data (last 6 months) ----------
   let restricted = 0;
@@ -83,7 +84,7 @@ export default function DevelopmentSummary({ monthlyReports, donations, events }
       {/* ---------- Next Event ---------- */}
       <div className="summary-next-event summary-next-event-development">
         <DevelopmentKPI
-          title="Next Event"
+          title="Upcoming Events"
           value={
             upcomingEvents.length > 0
               ? upcomingEvents.map((e, i) => (

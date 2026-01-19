@@ -85,16 +85,16 @@ export default function ReportsDashboard() {
 
         <ReportsSummary />
       </div>
-<h3>Department Reports</h3>
+      <h3>Department Reports</h3>
       <p className="mb-4">Select a department to view reports.</p>
-      <div className="department-cards-container">
+      <div className="department-cards-report-container">
         {reportSections.map((section) => (
           <Link
             key={section.path}
             to={section.path}
             className="card-link-wrapper"
           >
-            <div className="department-card">
+            <div className="department-card report">
               <h4>{section.title}</h4>
               <p>{section.description}</p>
               <span className="btn btn-primary">View Reports</span>
