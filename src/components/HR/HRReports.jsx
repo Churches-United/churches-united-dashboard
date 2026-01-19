@@ -71,19 +71,7 @@ export default function HRReports() {
           </select>
         </div>
 
-        {activeTab === 'weekly' && (
-          <div className="filter-group">
-            <label htmlFor="search">Search Notes:</label>
-            <input
-              id="search"
-              name="search"
-              type="text"
-              placeholder="Search in notes..."
-              value={filters.search}
-              onChange={handleFilterChange}
-            />
-          </div>
-        )}
+      
       </div>
 
       {/* Report Content */}
