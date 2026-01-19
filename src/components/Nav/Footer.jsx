@@ -9,7 +9,10 @@ function Footer() {
       <nav className="footer-nav">
         {/* Desktop-only department links */}
         <NavLink to="/" className="desktop-only">
-          Home 
+          Home
+        </NavLink>
+        <NavLink to="/reporting" className="desktop-only">
+          Reporting
         </NavLink>
         <NavLink to="/compliance" className="desktop-only">
           Compliance
