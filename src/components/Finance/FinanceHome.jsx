@@ -16,11 +16,11 @@ export default function FinanceHome() {
         <div className="col-md-6">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h5 className="card-title">💰 Weekly Finance Management</h5>
+              <h5 className="card-title">Weekly Finance Management</h5>
               <p className="card-text">
                 Track revenue, expenses, payroll, assets, and financial positions on a weekly basis.
               </p>
-              <Link to="/finance/weekly" className="btn btn-primary">
+              <Link to="/finance/weekly" className="btn btn-secondary">
                 View Weekly Records
               </Link>
             </div>
@@ -30,11 +30,11 @@ export default function FinanceHome() {
         <div className="col-md-6">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h5 className="card-title">📈 Finance Reports & Analytics</h5>
+              <h5 className="card-title">Finance Reports & Analytics</h5>
               <p className="card-text">
                 View comprehensive reports on cash flow analysis and financial metrics
               </p>
-              <Link to="/finance/reports" className="btn btn-primary">
+              <Link to="/finance/reports" className="btn btn-secondary">
                 View Reports
               </Link>
             </div>

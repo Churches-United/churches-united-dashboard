@@ -22,7 +22,7 @@ export default function KitchenHome() {
               <p className="card-text">
                 Track meals served, inventory usage, volunteer hours, and food waste on a weekly basis.
               </p>
-              <Link to="/kitchen/weekly" className="btn btn-primary">
+              <Link to="/kitchen/weekly" className="btn btn-secondary">
                 View Weekly Records
               </Link>
             </div>
@@ -36,7 +36,7 @@ export default function KitchenHome() {
               <p className="card-text">
                 View comprehensive reports on meal service trends and resource utilization
               </p>
-              <Link to="/kitchen/reports" className="btn btn-primary">
+              <Link to="/kitchen/reports" className="btn btn-secondary">
                 View Reports
               </Link>
             </div>

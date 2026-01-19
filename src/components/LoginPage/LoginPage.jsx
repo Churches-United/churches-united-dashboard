@@ -9,27 +9,19 @@ function LoginPage() {
   const setAuthErrorMessage = useStore((state) => state.setAuthErrorMessage);
 
   useEffect(() => {
-    // Clear the auth error message when the component unmounts:
-    return () => {
-      setAuthErrorMessage("");
-    };
+    // Clear auth error message on unmount
+    return () => setAuthErrorMessage("");
   }, []);
 
   const handleLogIn = (event) => {
     event.preventDefault();
-
-    logIn({
-      username: username,
-      password: password,
-    });
+    logIn({ username, password });
   };
 
   return (
     <div
       className="min-vh-100 d-flex align-items-center justify-content-center"
-      style={{
-        background: "linear-gradient(135deg, #d4f1f4 0%, #b8e6f0 100%)",
-      }}
+      style={{ background: "linear-gradient(135deg, #d4f1f4 0%, #b8e6f0 100%)" }}
     >
       <div
         className="card shadow-lg"
@@ -56,7 +48,7 @@ function LoginPage() {
             </div>
           </div>
           <h2 className="mb-2">Churches United</h2>
-          <p className="small mb-0 fst-italic" style={{ opacity: "0.95" }}>
+          <p className="small mb-0 text-white" style={{ opacity: 0.85 }}>
             Safe Shelter, Stable Housing, Nutritious Food,
             <br />
             and a Path Toward Healing
@@ -73,7 +65,7 @@ function LoginPage() {
               </label>
               <div className="input-group input-group-lg">
                 <span className="input-group-text bg-light">
-                  <span style={{ fontSize: "20px" }}>👤</span>
+                  <i className="bi bi-person-fill"></i>
                 </span>
                 <input
                   type="text"
@@ -94,7 +86,7 @@ function LoginPage() {
               </label>
               <div className="input-group input-group-lg">
                 <span className="input-group-text bg-light">
-                  <span style={{ fontSize: "20px" }}>🔒</span>
+                  <i className="bi bi-lock-fill"></i>
                 </span>
                 <input
                   type="password"
@@ -117,24 +109,29 @@ function LoginPage() {
                 border: "none",
               }}
             >
-              🔑 Log In
+              Log In
             </button>
           </form>
 
           {/* Error Message */}
           {errorMessage && (
             <div
-              className="alert alert-danger mt-3 mb-0 d-flex align-items-center"
+              className="alert alert-danger mt-3 mb-0"
               role="alert"
             >
-              <span className="me-2" style={{ fontSize: "20px" }}>
-                ⚠️
-              </span>
-              <span>{errorMessage}</span>
+              {errorMessage}
             </div>
           )}
         </div>
       </div>
+
+      {/* Input focus style */}
+      <style jsx>{`
+        .form-control:focus {
+          border-color: #20c997;
+          box-shadow: 0 0 0 0.2rem rgba(32, 201, 151, 0.25);
+        }
+      `}</style>
     </div>
   );
 }

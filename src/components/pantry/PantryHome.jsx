@@ -20,7 +20,7 @@ export default function PantryHome() {
               <p className="card-text">
                 Track weekly food distribution and total pounds distributed.
               </p>
-              <Link to="/pantry/weekly" className="btn btn-primary">
+              <Link to="/pantry/weekly" className="btn btn-secondary">
                 View Weekly Records
               </Link>
             </div>
@@ -34,7 +34,7 @@ export default function PantryHome() {
               <p className="card-text">
                 View comprehensive pantry reports.
               </p>
-              <Link to="/pantry/reports" className="btn btn-primary">
+              <Link to="/pantry/reports" className="btn btn-secondary">
                 View Reports
               </Link>
             </div>

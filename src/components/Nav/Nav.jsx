@@ -65,6 +65,19 @@ function Nav() {
                   </NavLink>
                 </li>
 
+
+                {/* User settings visible to all logged-in users */}
+                <li>
+                  <NavLink to="/reporting" onClick={closeMenu}>
+                    Reporting
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/user/settings" onClick={closeMenu}>
+                    Settings
+                  </NavLink>
+                </li>
+
                 {/* Admin-only links */}
                 {user.role === "admin" && (
                   <>
@@ -73,26 +86,8 @@ function Nav() {
                         Admin
                       </NavLink>
                     </li>
-                    {/* <li>
-                      <NavLink to="/admin/registration" onClick={closeMenu}>
-                        Register
-                      </NavLink>
-                    </li> */}
                   </>
                 )}
-
-                {/* User settings visible to all logged-in users */}
-                <li>
-                  <NavLink to="/user/settings" onClick={closeMenu}>
-                    Settings
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink to="/reporting" onClick={closeMenu}>
-                    Reporting
-                  </NavLink>
-                </li>
 
                 {/* Logout */}
                 <li>

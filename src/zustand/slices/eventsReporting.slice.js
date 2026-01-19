@@ -29,7 +29,6 @@ fetchUpcomingEvents: async () => {
     }
   },
 
-//  todo past events? 
 })
 
 export default eventsReporting;

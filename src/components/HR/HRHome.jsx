@@ -16,11 +16,11 @@ export default function HRHome() {
         <div className="col-md-6">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h5 className="card-title">📊 Weekly HR Management</h5>
+              <h5 className="card-title">Weekly HR Management</h5>
               <p className="card-text">
                 Track staffing levels, new hires, employee turnover, and performance evaluations on a weekly basis.
               </p>
-              <Link to="/hr/weekly" className="btn btn-primary">
+              <Link to="/hr/weekly" className="btn btn-secondary">
                 View Weekly Records
               </Link>
             </div>
@@ -30,11 +30,11 @@ export default function HRHome() {
         <div className="col-md-6">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h5 className="card-title">📈 HR Reports & Analytics</h5>
+              <h5 className="card-title">HR Reports & Analytics</h5>
               <p className="card-text">
                 View comprehensive reports on hiring trends and staff stats
               </p>
-              <Link to="/hr/reports" className="btn btn-primary">
+              <Link to="/hr/reports" className="btn btn-secondary">
                 View Reports
               </Link>
             </div>

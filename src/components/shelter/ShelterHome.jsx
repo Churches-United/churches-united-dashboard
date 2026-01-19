@@ -16,11 +16,11 @@ export default function ShelterHome() {
         <div className="col-md-6">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h5 className="card-title">🏠 Weekly Shelter Management</h5>
+              <h5 className="card-title">Weekly Shelter Management</h5>
               <p className="card-text">
                 Track guest counts, occupancy levels, incident reports, and operational metrics on a weekly basis.
               </p>
-              <Link to="/shelter/weekly" className="btn btn-primary">
+              <Link to="/shelter/weekly" className="btn btn-secondary">
                 View Weekly Records
               </Link>
             </div>
@@ -30,11 +30,11 @@ export default function ShelterHome() {
         <div className="col-md-6">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h5 className="card-title">📈 Shelter Reports & Analytics</h5>
+              <h5 className="card-title">Shelter Reports & Analytics</h5>
               <p className="card-text">
                 View comprehensive reports on occupancy trends and shelter operations
               </p>
-              <Link to="/shelter/reports" className="btn btn-primary">
+              <Link to="/shelter/reports" className="btn btn-secondary">
                 View Reports
               </Link>
             </div>
