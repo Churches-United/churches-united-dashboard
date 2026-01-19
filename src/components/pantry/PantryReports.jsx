@@ -8,7 +8,7 @@ export default function PantryReports() {
   const [activeTab, setActiveTab] = useState("weekly");
   const [filters, setFilters] = useState({
     year: "",
-    search: "",
+   
   });
 
   const tabs = {
@@ -42,16 +42,7 @@ export default function PantryReports() {
                 <option value="2026">2026</option>
               </select>
             </div>
-            <div className="col-md-4">
-              <label className="form-label">Search</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search notes..."
-                value={filters.search}
-                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-              />
-            </div>
+           
           </div>
         </div>
       </div>
