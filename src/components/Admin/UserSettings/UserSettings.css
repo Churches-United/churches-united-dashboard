@@ -1,3 +1,12 @@
+/* ---------------- Hub Container ---------------- */
+.hub-container.user-settings {
+  max-width: 1000px;
+  font-family: "Inter", sans-serif;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+
 .user-settings-form-container {
   max-width: 700px;
   margin: 40px auto;

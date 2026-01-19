@@ -9,10 +9,10 @@ const {
 const router = express.Router();
 
 // Logging middleware (optional but helpful)
-router.use((req, res, next) => {
-  console.log("user.router hit:", req.method, req.originalUrl);
-  next();
-});
+// router.use((req, res, next) => {
+//   console.log("user.router hit:", req.method, req.originalUrl);
+//   next();
+// });
 
 // -------------------- SESSION ROUTES --------------------
 router.get("/", (req, res) => {

@@ -14,15 +14,23 @@ export default function AdminRegistration({ record, onClose }) {
   const clearAdminError = useStore((state) => state.clearAdminError);
 
   // Options for select fields
-  const roleOptions = ["Admin", "Department Manager", "Broad Member"];
-  const departmentOptions = [
-    "Outreach",
-    "Development",
-    "Housing",
-    "Human Resource",
-    "Shelter",
-    "Pantry",
-    "Media",
+  const ROLE_OPTIONS = [
+    { label: "Admin", value: "admin" },
+    { label: "Department Manager", value: "department_manager" },
+    { label: "Board Member", value: "board_member" },
+  ];
+
+  const DEPARTMENT_OPTIONS = [
+    { label: "Admin", value: "admin" },
+    { label: "Outreach", value: "outreach" },
+    { label: "Development", value: "development" },
+    { label: "Housing", value: "housing" },
+    { label: "Human Resource", value: "human_resource" },
+    { label: "Shelter", value: "shelter" },
+    { label: "Pantry", value: "pantry" },
+    { label: "Media", value: "media" },   
+     { label: "Kitchen", value: "kitchen" },
+
   ];
 
   // Form state
@@ -197,9 +205,9 @@ export default function AdminRegistration({ record, onClose }) {
                 onChange={handleChange}
               >
                 <option value="">Select role...</option>
-                {roleOptions.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
+                {ROLE_OPTIONS.map((r) => (
+                  <option key={r.value} value={r.value}>
+                    {r.label}
                   </option>
                 ))}
               </select>
@@ -212,9 +220,9 @@ export default function AdminRegistration({ record, onClose }) {
                 onChange={handleChange}
               >
                 <option value="">Select department...</option>
-                {departmentOptions.map((d) => (
-                  <option key={d} value={d}>
-                    {d}
+                {DEPARTMENT_OPTIONS.map((d) => (
+                  <option key={d.value} value={d.value}>
+                    {d.label}
                   </option>
                 ))}
               </select>

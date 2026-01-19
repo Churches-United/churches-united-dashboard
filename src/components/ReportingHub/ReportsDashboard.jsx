@@ -2,18 +2,19 @@ import React from "react";
 import Accordion from "react-bootstrap/Accordion";
 import "./ReportsDashboard.css";
 
-// Original Components
 import CommunityOutreachReportsPage from "../CommunityOutreach/Reports/CommunityOutreachReportsPage";
 import DevelopmentReportsPage from "../Development/DevelopmentReportsPage";
 import HousingReports from "../Housing/HousingReports";
 import MediaReports from "../Media/Reports/MediaReports";
-
-// Your New Components
 import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
 import ShelterReporting from "../Shelter/ShelterReporting";
 import FinanceReporting from "../Finance/FinanceReporting";
 
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+import PantryReports from "../pantry/PantryReports";
+import KitchenReports from "../kitchen/KitchenReports";
+import HRReports from "../hr/HRReports";
+import MonthlyDonationPie from "../Development/Charts/MonthlyDonationPie";
 
 export default function ReportsHub() {
   // Dynamic array of report sections
@@ -40,18 +41,33 @@ export default function ReportsHub() {
     },
     {
       id: "compliance",
-      title: "Compliance Weekly Reports",
+      title: "Compliance Reports",
       Component: ComplianceReporting,
     },
     {
       id: "shelter",
-      title: "Shelter Weekly Reports",
+      title: "Shelter Reports",
       Component: ShelterReporting,
     },
     {
       id: "finance",
-      title: "Finance Weekly Reports",
+      title: "Finance Reports",
       Component: FinanceReporting,
+    },
+        {
+      id: "pantry",
+      title: "Pantry Reports",
+      Component: PantryReports,
+    },
+        {
+      id: "kitchen",
+      title: "Kitchen Reports",
+      Component: KitchenReports,
+    },
+        {
+      id: "hr",
+      title: "Human Resources Reports",
+      Component: HRReports,
     },
   ];
 
@@ -74,18 +90,3 @@ export default function ReportsHub() {
   );
 }
 
-// import CommunityOutreachReportsPage from "../CommunityOutreach/Reports/CommunityOutreachReportsPage";
-// import DevelopmentReports from "../Development/DevelopmentReports";
-// import HousingReports from "../Housing/HousingReports";
-
-// export default function ReportsDashboard() {
-//   return (
-//     <>
-//       <h1>Reporting Hub</h1>
-//       <p>work in progress...</p>
-//       <CommunityOutreachReportsPage />
-//       <DevelopmentReports />
-//       <HousingReports />
-//     </>
-//   );
-// }
