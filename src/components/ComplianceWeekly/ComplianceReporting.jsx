@@ -10,7 +10,7 @@ import PieChart from "../Charts/PieChart";
 
 function ComplianceReporting() {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [year, setYear] = useState(2025);
+  const [year, setYear] = useState(2026);
 
   // Get all reports data from store
   const dashboard = useStore((state) => state.complianceReports?.dashboard);
