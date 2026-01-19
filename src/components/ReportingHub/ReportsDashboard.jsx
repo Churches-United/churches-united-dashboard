@@ -6,6 +6,7 @@ import useStore from "../../zustand/store";
 import { useEffect } from "react";
 import { useState } from "react";
 import "./Summary/ReportsSummary.css";
+import "./ReportsDashboard.css";
 
 export default function ReportsDashboard() {
   const summaryData = {
@@ -63,7 +64,7 @@ export default function ReportsDashboard() {
     {
       path: "/hr/reports",
       title: "Human Resources",
-      description: "HR metrics and weekly updates.",
+      description: "HR weekly updates.",
     },
     {
       path: "/compliance/reports",
@@ -84,7 +85,7 @@ export default function ReportsDashboard() {
 
         <ReportsSummary />
       </div>
-
+<h3>Department Reports</h3>
       <p className="mb-4">Select a department to view reports.</p>
       <div className="department-cards-container">
         {reportSections.map((section) => (

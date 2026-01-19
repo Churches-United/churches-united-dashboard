@@ -2,3 +2,50 @@
 .hub-container.report-hub {
   max-width: 1400px;
 }
+
+
+.department-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* spacing between cards */
+  justify-content: flex-start;
+}
+
+.card-link-wrapper {
+  text-decoration: none; /* remove link underline */
+}
+
+.department-card {
+  width: 260px;       /* fixed width */
+  height: 150px;      /* fixed height */
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* title/description at top, button at bottom */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.department-card h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.department-card p {
+  font-size: 0.9rem;
+  color: #555;
+  flex-grow: 1; /* push button to bottom */
+}
+
+.department-card .btn {
+  align-self: flex-start;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.department-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
