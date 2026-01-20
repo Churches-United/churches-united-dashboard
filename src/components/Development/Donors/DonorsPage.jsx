@@ -49,15 +49,25 @@ export default function DonorsPage() {
     await fetchDonors(); // refresh after deletion
   };
 
-  const handleSubmit = async (data) => {
-    if (editingDonor) {
-      await editDonor(editingDonor.id, data);
-    } else {
-      await addDonor(data);
-    }
-    setShowModal(false);
-    await fetchDonors(); // refresh table after add/edit
-  };
+  // const handleSubmit = async (data) => {
+  //   if (editingDonor) {
+  //     await editDonor(editingDonor.id, data);
+  //   } else {
+  //     await addDonor(data);
+  //   }
+  //   setShowModal(false);
+  //   await fetchDonors(); // refresh table after add/edit
+  // };
+  const handleSubmit = async ({ name, type }) => {
+  if (editingDonor) {
+    await editDonor(editingDonor.id, name, type);
+  } else {
+    await addDonor(name, type);
+  }
+  setShowModal(false);
+  await fetchDonors();
+};
+
 
   // --- Filter donors based on toolbar selections ---
   const filteredDonors = donors.filter((d) => {
