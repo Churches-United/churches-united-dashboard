@@ -67,7 +67,7 @@ export default function MediaPage() {
         actions={
           <>
             <NavLink to="/media" end>
-              Data Entry
+              Department Home
             </NavLink>
             <NavLink to="/media/reports">Reports</NavLink>
           </>

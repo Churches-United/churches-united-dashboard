@@ -15,7 +15,7 @@ export default function MediaHome() {
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Home
+              Department Home
             </NavLink>
             <NavLink
               to="/media/reports"

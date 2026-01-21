@@ -108,7 +108,7 @@ export default function HousingReports() {
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Data Entry
+              Department Home
             </NavLink>
             <NavLink
               to="/housing/reports"

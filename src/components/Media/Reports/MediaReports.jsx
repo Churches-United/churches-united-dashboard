@@ -129,7 +129,7 @@ export default function MediaReports() {
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Data Entry
+              Department Home
             </NavLink>
             <NavLink
               to="/media/reports"

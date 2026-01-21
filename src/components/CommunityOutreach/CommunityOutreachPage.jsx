@@ -85,7 +85,7 @@ export default function CommunityOutreachPage() {
               to="/outreach"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Data Entry
+              Department Home
             </NavLink>
             <NavLink
               to="/outreach/reports"

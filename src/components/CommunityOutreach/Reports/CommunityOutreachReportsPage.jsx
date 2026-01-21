@@ -131,7 +131,7 @@ export default function CommunityOutreachReportsPage() {
         actions={
           <>
             <NavLink to="/outreach" end>
-              Data Entry
+              Department Home
             </NavLink>
             <NavLink to="/outreach/reports">Reports</NavLink>
           </>

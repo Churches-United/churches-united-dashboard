@@ -15,7 +15,7 @@ export default function CommunityOutreachHome() {
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Home
+              Department Home
             </NavLink>
             <NavLink
               to="/outreach/reports"

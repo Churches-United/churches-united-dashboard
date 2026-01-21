@@ -45,7 +45,7 @@ export default function VolunteerEngagementsPage() {
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Home
+              Department Home
             </NavLink>
             <NavLink
               to="/outreach/reports"
