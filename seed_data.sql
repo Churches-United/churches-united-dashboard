@@ -652,3 +652,45 @@ INSERT INTO compliance_weekly (
 -- Gender: 82 + 105 + 3 = 190
 -- Race: 60 + 68 + 14 + 26 + 22 = 190
 -- Conditions: 70 + 40 + 26 = 136
+
+
+
+
+-----shelter weekly data-----
+INSERT INTO shelter_weekly (
+    date,
+    single_men,
+    housing_men,
+    single_women,
+    housing_women,
+    families,
+    hybrid_va_holdover,
+    incident_reports,
+    community_members_served,
+    nights_found_sleeping_outside,
+    notes
+) VALUES
+(
+    '2026-01-05',
+    42, 18, 27, 14, 11, 6,
+    3, 95, 12,
+    'Cold weather surge; increased family intake after New Year.'
+),
+(
+    '2026-01-12',
+    45, 20, 29, 15, 13, 7,
+    4, 102, 15,
+    'Extreme cold week; additional outreach and warming resources used.'
+),
+(
+    '2026-01-19',
+    40, 22, 26, 17, 12, 5,
+    2, 88, 10,
+    'Slight decrease in incidents; more guests transitioned to housing.'
+),
+(
+    '2026-01-26',
+    38, 24, 25, 18, 14, 4,
+    1, 91, 9,
+    'End-of-month stabilization; improved housing placements.'
+);
