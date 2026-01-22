@@ -694,3 +694,222 @@ INSERT INTO shelter_weekly (
     1, 91, 9,
     'End-of-month stabilization; improved housing placements.'
 );
+
+
+------shelter weekly data for 2025-----
+INSERT INTO shelter_weekly (
+    date,
+    single_men,
+    housing_men,
+    single_women,
+    housing_women,
+    families,
+    hybrid_va_holdover,
+    incident_reports,
+    community_members_served,
+    nights_found_sleeping_outside,
+    notes
+) VALUES
+-- January 2025 (Winter peak)
+('2025-01-06', 46, 18, 30, 14, 15, 7, 4, 110, 18, 'Severe cold weather; increased shelter demand.'),
+('2025-01-13', 48, 19, 31, 15, 16, 6, 5, 118, 20, 'Extreme cold advisory; overflow beds utilized.'),
+('2025-01-20', 45, 21, 29, 16, 14, 6, 3, 105, 15, 'Cold continues; some housing transitions.'),
+('2025-01-27', 43, 22, 28, 17, 14, 5, 3, 100, 14, 'Stabilization toward month end.'),
+
+-- February 2025
+('2025-02-03', 44, 23, 29, 18, 15, 5, 2, 102, 13, 'Consistent winter occupancy.'),
+('2025-02-10', 42, 24, 27, 18, 14, 5, 2, 98, 12, 'Gradual housing movement.'),
+('2025-02-17', 41, 25, 26, 19, 13, 4, 1, 96, 11, 'Lower incidents reported.'),
+('2025-02-24', 40, 26, 25, 20, 13, 4, 1, 94, 10, 'End-of-month improvement.'),
+
+-- March 2025 (Transition season)
+('2025-03-03', 39, 27, 25, 21, 12, 4, 2, 92, 9, 'Weather improving; reduced shelter reliance.'),
+('2025-03-10', 38, 28, 24, 21, 12, 4, 2, 90, 9, 'Stable guest numbers.'),
+('2025-03-17', 37, 29, 24, 22, 11, 3, 1, 88, 8, 'Increased housing placements.'),
+('2025-03-24', 36, 30, 23, 22, 11, 3, 1, 86, 7, 'Outreach focused on prevention.'),
+('2025-03-31', 35, 31, 22, 23, 10, 3, 1, 84, 7, 'End of winter season.'),
+
+-- April 2025
+('2025-04-07', 34, 32, 22, 24, 10, 3, 1, 82, 6, 'Spring transition ongoing.'),
+('2025-04-14', 33, 33, 21, 24, 10, 2, 1, 80, 6, 'Lower shelter usage.'),
+('2025-04-21', 32, 34, 21, 25, 9, 2, 0, 78, 5, 'Reduced incident activity.'),
+('2025-04-28', 31, 35, 20, 25, 9, 2, 0, 76, 5, 'Stable operations.'),
+
+-- May 2025
+('2025-05-05', 30, 36, 20, 26, 8, 2, 0, 74, 4, 'Warmer weather; fewer outdoor cases.'),
+('2025-05-12', 29, 37, 19, 26, 8, 2, 0, 72, 4, 'Continued housing progress.'),
+('2025-05-19', 28, 38, 19, 27, 8, 1, 0, 70, 3, 'Community outreach focus.'),
+('2025-05-26', 27, 39, 18, 27, 7, 1, 0, 68, 3, 'Holiday week; reduced incidents.'),
+
+-- June 2025 (Lowest shelter utilization)
+('2025-06-02', 26, 40, 18, 28, 7, 1, 0, 66, 3, 'Early summer trends.'),
+('2025-06-09', 25, 41, 17, 28, 7, 1, 0, 64, 2, 'Lower demand overall.'),
+('2025-06-16', 24, 42, 17, 29, 6, 1, 0, 62, 2, 'Stable housing placements.'),
+('2025-06-23', 23, 43, 16, 29, 6, 1, 0, 60, 2, 'Seasonal low utilization.'),
+('2025-06-30', 22, 44, 16, 30, 6, 1, 0, 58, 2, 'End-of-quarter reporting complete.');
+
+
+----2024 shelter weekly data-----
+INSERT INTO shelter_weekly (
+    date,
+    single_men,
+    housing_men,
+    single_women,
+    housing_women,
+    families,
+    hybrid_va_holdover,
+    incident_reports,
+    community_members_served,
+    nights_found_sleeping_outside,
+    notes
+) VALUES
+-- January 2024 (Winter peak)
+('2024-01-01', 47, 17, 31, 13, 16, 8, 5, 115, 20, 'New Year intake surge during extreme cold.'),
+('2024-01-08', 49, 18, 32, 14, 17, 7, 6, 120, 22, 'Severe weather conditions; overflow capacity used.'),
+('2024-01-15', 46, 20, 30, 15, 15, 7, 4, 110, 18, 'Cold snap continues; increased outreach.'),
+('2024-01-22', 44, 21, 29, 16, 15, 6, 4, 105, 16, 'Some stabilization mid-winter.'),
+('2024-01-29', 43, 22, 28, 17, 14, 6, 3, 102, 15, 'End-of-month winter shelter demand.'),
+
+-- February 2024
+('2024-02-05', 42, 23, 28, 18, 14, 6, 3, 100, 14, 'Consistent winter occupancy.'),
+('2024-02-12', 41, 24, 27, 18, 13, 5, 2, 98, 13, 'Gradual housing transitions.'),
+('2024-02-19', 40, 25, 26, 19, 13, 5, 2, 96, 12, 'Lower incident frequency.'),
+('2024-02-26', 39, 26, 25, 20, 12, 5, 1, 94, 11, 'End-of-month improvement.'),
+
+-- March 2024 (Seasonal transition)
+('2024-03-04', 38, 27, 25, 21, 12, 4, 2, 92, 10, 'Weather improving; reduced outdoor exposure.'),
+('2024-03-11', 37, 28, 24, 21, 12, 4, 2, 90, 9, 'Stable shelter utilization.'),
+('2024-03-18', 36, 29, 24, 22, 11, 4, 1, 88, 9, 'Increased housing placements.'),
+('2024-03-25', 35, 30, 23, 22, 11, 3, 1, 86, 8, 'Outreach emphasis increased.'),
+
+-- April 2024
+('2024-04-01', 34, 31, 23, 23, 10, 3, 1, 84, 7, 'Spring transition continues.'),
+('2024-04-08', 33, 32, 22, 24, 10, 3, 1, 82, 7, 'Lower shelter usage overall.'),
+('2024-04-15', 32, 33, 22, 24, 9, 2, 0, 80, 6, 'Reduced incidents.'),
+('2024-04-22', 31, 34, 21, 25, 9, 2, 0, 78, 6, 'Stabilized occupancy.'),
+('2024-04-29', 30, 35, 21, 25, 9, 2, 0, 76, 5, 'End-of-month reporting.'),
+
+-- May 2024
+('2024-05-06', 29, 36, 20, 26, 8, 2, 0, 74, 4, 'Warmer weather; outdoor cases reduced.'),
+('2024-05-13', 28, 37, 20, 26, 8, 2, 0, 72, 4, 'Steady housing transitions.'),
+('2024-05-20', 27, 38, 19, 27, 8, 1, 0, 70, 4, 'Community outreach prioritized.'),
+('2024-05-27', 26, 39, 18, 27, 7, 1, 0, 68, 3, 'Holiday week; fewer incidents.'),
+
+-- June 2024 (Early summer low)
+('2024-06-03', 25, 40, 18, 28, 7, 1, 0, 66, 3, 'Early summer trends observed.'),
+('2024-06-10', 24, 41, 17, 28, 7, 1, 0, 64, 3, 'Lower overall shelter demand.'),
+('2024-06-17', 23, 42, 17, 29, 6, 1, 0, 62, 2, 'Stable housing placements.'),
+('2024-06-24', 22, 43, 16, 29, 6, 1, 0, 60, 2, 'End-of-quarter reporting completed.');
+
+
+----compliance weekly data for 2024-----
+INSERT INTO compliance_weekly (
+    date,
+    hh_without_children,
+    hh_with_children,
+    adults,
+    children,
+    seniors_55_plus,
+    female,
+    male,
+    other_gender,
+    white,
+    black_african_american,
+    native_american,
+    other_race,
+    multi_racial,
+    one_condition,
+    two_conditions,
+    three_plus_conditions,
+    total_exits
+) VALUES
+-- January 2024
+('2024-01-01', 58, 42, 112, 48, 22, 92, 86, 4, 78, 82, 6, 18, 10, 54, 36, 18, 12),
+('2024-01-08', 60, 44, 115, 50, 23, 95, 89, 4, 80, 85, 6, 20, 11, 56, 38, 19, 14),
+('2024-01-15', 59, 43, 113, 49, 22, 93, 87, 4, 79, 83, 6, 19, 11, 55, 37, 18, 13),
+('2024-01-22', 57, 41, 110, 47, 21, 91, 85, 3, 77, 81, 6, 18, 10, 53, 35, 17, 11),
+('2024-01-29', 56, 40, 108, 46, 20, 90, 84, 2, 76, 80, 6, 17, 9, 52, 34, 16, 10),
+
+-- February 2024
+('2024-02-05', 55, 39, 106, 45, 20, 89, 82, 2, 75, 78, 6, 16, 8, 50, 33, 15, 11),
+('2024-02-12', 54, 38, 104, 44, 19, 87, 80, 2, 74, 76, 6, 16, 7, 49, 32, 14, 12),
+('2024-02-19', 53, 37, 102, 43, 18, 86, 78, 2, 73, 75, 6, 15, 7, 48, 31, 13, 13),
+('2024-02-26', 52, 36, 100, 42, 18, 84, 76, 2, 72, 74, 6, 14, 6, 47, 30, 12, 14),
+
+-- March 2024
+('2024-03-04', 51, 35, 98, 41, 17, 83, 75, 1, 71, 72, 6, 14, 6, 46, 29, 12, 15),
+('2024-03-11', 50, 34, 96, 40, 17, 82, 73, 1, 70, 71, 6, 13, 6, 45, 28, 11, 16),
+('2024-03-18', 49, 33, 94, 39, 16, 81, 72, 1, 69, 70, 6, 13, 5, 44, 27, 11, 17),
+('2024-03-25', 48, 32, 92, 38, 16, 80, 70, 1, 68, 69, 6, 12, 5, 43, 26, 10, 18),
+
+-- April 2024
+('2024-04-01', 47, 31, 90, 37, 15, 79, 68, 1, 67, 68, 6, 12, 4, 42, 25, 10, 19),
+('2024-04-08', 46, 30, 88, 36, 14, 78, 67, 1, 66, 67, 6, 11, 4, 41, 24, 9, 20),
+('2024-04-15', 45, 29, 86, 35, 14, 77, 65, 1, 65, 66, 6, 11, 3, 40, 23, 9, 21),
+('2024-04-22', 44, 28, 84, 34, 14, 76, 64, 0, 64, 65, 6, 10, 3, 39, 22, 8, 22),
+('2024-04-29', 43, 27, 82, 33, 13, 75, 62, 0, 63, 64, 6, 10, 2, 38, 21, 8, 23),
+
+-- May 2024
+('2024-05-06', 42, 26, 80, 32, 13, 74, 60, 0, 62, 63, 6, 9, 2, 37, 20, 7, 24),
+('2024-05-13', 41, 25, 78, 31, 12, 73, 58, 0, 61, 62, 6, 9, 0, 36, 19, 7, 25),
+('2024-05-20', 40, 24, 76, 30, 12, 72, 56, 0, 60, 61, 6, 8, 1, 35, 18, 6, 26),
+('2024-05-27', 39, 23, 74, 29, 11, 71, 54, 0, 59, 60, 6, 8, 0, 34, 17, 6, 27),
+
+-- June 2024
+('2024-06-03', 38, 22, 72, 28, 11, 70, 52, 0, 58, 59, 6, 7, 0, 33, 16, 5, 28),
+('2024-06-10', 37, 21, 70, 27, 10, 69, 50, 0, 57, 58, 6, 7, 0, 32, 15, 5, 29),
+('2024-06-17', 36, 20, 68, 26, 10, 68, 48, 0, 56, 57, 6, 6, 0, 31, 14, 4, 30),
+('2024-06-24', 35, 19, 66, 25, 10, 67, 46, 0, 55, 56, 6, 6, 0, 30, 13, 4, 31);
+
+
+
+
+----finance weekly data for 2024-----
+
+INSERT INTO finance_weekly (
+    date,
+    total_assets,
+    operating_account_balance,
+    bills_paid,
+    payroll_paid,
+    revenue_received,
+    major_expenses,
+    notes
+) VALUES
+-- January 2024 (High winter costs)
+('2024-01-01', 485000.00, 128000.00, 24500.00, 52000.00, 61000.00, 'Utilities, emergency supplies, winter contracts', 'New Year expenses and winter surge costs.'),
+('2024-01-08', 482500.00, 125500.00, 26000.00, 52500.00, 62000.00, 'Heating, snow removal, food supplies', 'Extreme cold increased utility spending.'),
+('2024-01-15', 480800.00, 123800.00, 25500.00, 53000.00, 63500.00, 'Staff overtime, food services', 'Overtime payroll due to staffing needs.'),
+('2024-01-22', 479200.00, 122200.00, 25000.00, 52000.00, 64000.00, 'Maintenance, utilities', 'Stabilizing expenses mid-month.'),
+('2024-01-29', 478000.00, 121000.00, 24500.00, 51500.00, 63000.00, 'Food, transportation', 'End-of-month reconciliation.'),
+
+-- February 2024
+('2024-02-05', 477500.00, 120500.00, 24000.00, 51000.00, 62000.00, 'Utilities, food services', 'Consistent winter operations.'),
+('2024-02-12', 478200.00, 121200.00, 23500.00, 50500.00, 62500.00, 'Facility upkeep', 'Slightly improved revenue flow.'),
+('2024-02-19', 479000.00, 122000.00, 23000.00, 50000.00, 63000.00, 'Program supplies', 'Lower incidents reduced variable costs.'),
+('2024-02-26', 480500.00, 123500.00, 22500.00, 49500.00, 64000.00, 'Food contracts', 'End-of-month improvement.'),
+
+-- March 2024 (Transition period)
+('2024-03-04', 482000.00, 125000.00, 22000.00, 49000.00, 64500.00, 'Maintenance, outreach supplies', 'Weather improvement reduced costs.'),
+('2024-03-11', 483800.00, 126800.00, 21500.00, 48500.00, 65000.00, 'Facility repairs', 'Stable operations.'),
+('2024-03-18', 485500.00, 128500.00, 21000.00, 48000.00, 65500.00, 'Program materials', 'Increased housing transitions.'),
+('2024-03-25', 487000.00, 130000.00, 20500.00, 47500.00, 66000.00, 'Transportation', 'End-of-quarter strength.'),
+
+-- April 2024
+('2024-04-01', 489500.00, 132500.00, 20000.00, 47000.00, 66500.00, 'Spring maintenance', 'Seasonal cost reductions.'),
+('2024-04-08', 492000.00, 135000.00, 19500.00, 46500.00, 67000.00, 'Supplies restock', 'Lower operating costs.'),
+('2024-04-15', 494800.00, 137800.00, 19000.00, 46000.00, 67500.00, 'Program support', 'Improved net position.'),
+('2024-04-22', 497500.00, 140500.00, 18500.00, 45500.00, 68000.00, 'Minimal repairs', 'Stable positive net change.'),
+('2024-04-29', 500000.00, 143000.00, 18000.00, 45000.00, 68500.00, 'Food services', 'End-of-month reporting.'),
+
+-- May 2024
+('2024-05-06', 503000.00, 146000.00, 17500.00, 44500.00, 69000.00, 'Outreach events', 'Warmer weather reduced costs.'),
+('2024-05-13', 506500.00, 149500.00, 17000.00, 44000.00, 69500.00, 'Community programs', 'Consistent donor revenue.'),
+('2024-05-20', 510000.00, 153000.00, 16500.00, 43500.00, 70000.00, 'Transportation, supplies', 'Increased outreach efficiency.'),
+('2024-05-27', 513500.00, 156500.00, 16000.00, 43000.00, 70500.00, 'Facility upkeep', 'Holiday week stability.'),
+
+-- June 2024 (Strongest financial position)
+('2024-06-03', 517500.00, 160500.00, 15500.00, 42500.00, 71000.00, 'Minimal expenses', 'Early summer financial strength.'),
+('2024-06-10', 521500.00, 164500.00, 15000.00, 42000.00, 71500.00, 'Program supplies', 'Low operational overhead.'),
+('2024-06-17', 525500.00, 168500.00, 14500.00, 41500.00, 72000.00, 'Transportation', 'Stable payroll and revenues.'),
+('2024-06-24', 530000.00, 173000.00, 14000.00, 41000.00, 72500.00, 'Administrative costs', 'End-of-quarter financial reporting.');
