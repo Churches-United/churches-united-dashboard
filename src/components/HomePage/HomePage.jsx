@@ -6,7 +6,6 @@ function HomePage() {
   const user = useStore((state) => state.user);
   const logOut = useStore((state) => state.logOut);
 
-  // todo - polish descriptions 
   const sections = [
     {
       path: "/reporting",

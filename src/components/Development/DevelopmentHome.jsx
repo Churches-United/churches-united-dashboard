@@ -26,7 +26,6 @@ export default function DevelopmentHome() {
           </>
         }
       />
-{/* todo - grid should probably be 2 x 2 ? */}
       {/* Department Cards */}
       <div className="department-cards-container">
         {/* Donors */}

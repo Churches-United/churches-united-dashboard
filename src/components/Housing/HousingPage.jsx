@@ -68,7 +68,6 @@ export default function HousingPage() {
           </>
         }
       />
-      {/* todo - toolbar scale to make sense on page */}
       <div className="toolbar-wrapper volunteer">
         {/* Toolbar */}
         <HousingToolBar

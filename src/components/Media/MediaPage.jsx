@@ -73,9 +73,6 @@ export default function MediaPage() {
           </>
         }
       />
-
-      {/* todo - toolbar scale to make sense on page */}
-      {/* todo - check toolbar color */}
       <div className="toolbar-wrapper volunteer">
         {/* Toolbar */}
         <div className="media-toolbar">

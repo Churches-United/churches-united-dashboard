@@ -79,4 +79,3 @@ export default function DonationToolBar({
   );
 }
 
-// todo - on donor report probably should not have year

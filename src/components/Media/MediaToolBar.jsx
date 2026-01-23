@@ -3,7 +3,6 @@ import "./Media.css";
 
 export default function MediaToolBar({ filters = {}, search = {}, onClear }) {
   return (
-    // todo - style toolbar
     <div className="toolbar-container media">
       {/* Left side filters */}
       <div className="toolbar-left">

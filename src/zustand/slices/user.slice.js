@@ -18,22 +18,6 @@ const createUserSlice = (set, get) => ({
       set({ user: {} });
     }
   },
-  // register: async (newUserCredentials) => {
-  //   // Registers a new user by sending a POST request to
-  //   // /api/user/register, and then attempts to log them in.
-  //   get().setAuthErrorMessage("");
-  //   try {
-  //     await axios.post("/api/user/register", newUserCredentials);
-  //     get().logIn(newUserCredentials);
-  //   } catch (err) {
-  //     console.log("register error:", err);
-  //     get().setAuthErrorMessage(
-  //       "Oops! Registration failed. That username might already be taken. Try again!"
-  //     );
-  //   }
-  // },
-
-  // todo - if this works I dont think we should login the new user...
   register: async (newUserCredentials) => {
     get().setAuthErrorMessage("");
     try {
