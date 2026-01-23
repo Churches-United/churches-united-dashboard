@@ -1,93 +1,95 @@
-# EDA Group Project - Starting Repo
+# Churches United Dashboard
 
-This version uses React, Zustand, Express, Passport, and PostgreSQL. (A full list of dependencies can be found in `package.json`.)
+**Duration:** 2 Week Sprint  
 
-## Prerequisites
-
-Before you get started, make sure you have the following software installed on your computer:
-
-- [Node.js](https://nodejs.org/en)
-- [PostgreSQL](https://www.postgresql.org)
-- [Nodemon](https://nodemon.io)
-
-## Create Database and User Table
-
-Create a new database, then create a `user` table using the query found in `database.sql`.
-
-* Note: `pool.js` is initially configured to connect to a database named `eda_solo_project`. If you choose your own name, you'll need to modify `pool.js` so it knows how to connect to your database.
-
-## Initial Setup Instructions
-
-- In this repo's **root directory**, run `npm install`.
- - Create an `.env` file in the **root directory**, then paste this line into the file:
-    ```plaintext
-      SERVER_SESSION_SECRET=superDuperSecret
-    ```
-- While you're in your new `.env` file, take the time to replace `superDuperSecret` with some a random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. 
-    - Here's a site that can help you: [Password Generator Plus](https://passwordsgenerator.net).
-    - If you skip this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you'll get a big warning message each time you start your server.
-- Run `npm run server` to start the server.
-- Run `npm run client` to start the client.
-- Navigate to `localhost:5173`.
-    - Verify that you are able to:
-        - Register as a new user.
-        - Log out.
-        - Log back in.
-        - Log out.
-- Congrats! You now have a starting line for the cool thing you're about to build. 🙂
-
-## Lay of the Land
-
-This repository is intentionally quite minimal. It features the same directory structure that you know and love:
-
-- `src/`: The React application and Zustand store.
-- `public/`: Static assets for the client-side. (In this case, just a `favicon.ico` file.)
-- `server/`: The Express server.
-
-Much of the code code is descriptively commented. We recommend reading through the comments, getting a lay of the land, and becoming more comfortable with how it works before you start building on top of it.
-
-For example, you're going to need to create new React Routes and Nav links as you build out your application. To do so, you'll first need a clear understanding of:
-
-- How the `<Route>`s in `App.jsx` function.
-- How the `<NavLink>`s in `Nav.jsx` function.
-
-
-## Don't Forget to Update the Documentation
-
-Don't forget to refactor this README file, as well as *the code comments in this project*, to read less like a starter repo and more like a finished project.
-
-## Have Fun
-
-Remember. This is only a two-week sprint! The goal is to:
-
-- **Take the most clear and straightforward path to MVP!**
-- Ensure your MVP functions as expected.
-    - If you're going to build more stuff on top of it, you need to be able to trust it!
-
-Once you've attained that, you'll have the opportunity to:
-
-- Take stock of how much time is left, as well as how much bandwidth you have.
-- Reason about which stretch goal(s) to attempt.
-------
-
-
-# Shared UI Components
-
-This project contains optional, shared UI styles and components used to keep the application visually consistent.
-- DataTable.jsx
-
-These abstractions are **opt-in** and are not required to use existing or MVP-level implementations. 
-For example... Tables can be styled normally using Bootstrap and the custom theme will pick this up. 
+This project is a centralized dashboard for Churches United, a nonprofit serving the Fargo–Moorhead community. The dashboard helps consolidate data from multiple programs — shelter, food pantry, housing, development, and community outreach — into one easy-to-use system. Leadership and board members can access real-time summaries, while department users can enter weekly data quickly and accurately.  
 
 ---
 
-## Global Styles
+## Deployed Version
 
-## Styles
+To see the fully functional dashboard, visit: [DEPLOYED VERSION LINK]
+
+---
+
+## Introduction / User Story
+
+Churches United operates multiple programs and collects a wide variety of data. Each department previously tracked its data in separate tools, making organization-wide reporting time-consuming and error-prone.  
+
+The dashboard solves this problem by:  
+
+- Allowing department users to enter data directly in the system  
+- Providing leadership and board members with consolidated summaries and visualizations  
+- Reducing time spent managing spreadsheets so staff can focus on the people they serve  
+
+During the demo, you’ll see the dashboard from several perspectives: department managers entering data, the CEO reviewing reports, and board members exploring metrics.  
+
+---
+
+## Prerequisites
+
+Make sure the following are installed on your machine:
+
+- Node.js  
+- PostgreSQL  
+- Optional: Postico (or another Postgres client)  
+
+---
+
+## Installation / Setup
+
+1. Clone the repository  
+2. Run `npm install` in the root directory to install dependencies  
+3. Install additional UI and charting libraries:
+
+```
 npm install react-bootstrap bootstrap
 npm install bootstrap-icons
 npm install react-icons
-npm install chartjs-plugin-datalabels
-npm install chart.js
+npm install chart.js chartjs-plugin-datalabels
+```
+4. Create a PostgreSQL database named cu_dashboard
+5. Run the queries in tables.sql to create all tables and seed any necessary data
+6. Run the server and client :
+```
+npm run server
+npm run client
+```
 
+## Project Structure
+- src/ – React frontend with Zustand state management
+- server/ – Express backend
+- public/ – Static assets such as favicon and images
 
+Shared UI components and global styles are included to maintain a consistent design across the dashboard.
+
+## Usage
+
+Example User Stories:
+- Department Manager: Enters weekly data for meals, volunteers, donations, or events.
+- CEO: Reviews high-level summaries in the Reporting Hub and clicks into department cards for detailed reports.
+- Board Member: Explores visualizations and trends for specific departments.
+
+The home page serves as a hub with 9 department cards, each linking to the respective department’s page.
+
+## Built With
+
+- Frontend: React, Zustand, React Bootstrap
+- Backend: Node.js, Express
+- Database: PostgreSQL
+- Charts & Visualization: Chart.js, chartjs-plugin-datalabels
+- Icons: Bootstrap Icons, React Icons
+
+## Future Improvements
+- Enable exporting reports as PDFs or CSVs for easy sharing
+- Enable importing CSV files to reduce manual data entry and allow historical data integration
+- Expand the Reporting Hub to display metrics from all departments in a single view
+- Enhance charts and trend visualizations for deeper insights
+
+## Acknowledgements
+
+Thanks to Emerging Digital Academy and our client, Devlyn Brooks, for guiding and supporting this project.
+
+Support
+
+For questions or suggestions, please reach out via email: blaineb@emergingprairie.com
