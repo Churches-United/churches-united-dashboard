@@ -21,6 +21,7 @@ else {
     database: 'cu_dashboard',
   });
 }
-
+pool.on('connect', () => console.log(`Connected to database`));
+pool.on('error', (err) => console.error(`Error connecting to database:`, err));
 
 module.exports = pool;
