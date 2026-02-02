@@ -927,3 +927,120 @@ INSERT INTO finance_weekly (
 ('2024-06-10', 521500.00, 164500.00, 15000.00, 42000.00, 71500.00, 'Program supplies', 'Low operational overhead.'),
 ('2024-06-17', 525500.00, 168500.00, 14500.00, 41500.00, 72000.00, 'Transportation', 'Stable payroll and revenues.'),
 ('2024-06-24', 530000.00, 173000.00, 14000.00, 41000.00, 72500.00, 'Administrative costs', 'End-of-quarter financial reporting.');
+
+
+
+-- NEW Feb 2026 and beyond 
+-- February 2026
+INSERT INTO volunteer_engagements (volunteer_id, event_date, location, number_volunteers, software_signups)
+VALUES
+
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2026-02-03', 'Micah''s Mission - Basement', 21, 4),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2026-02-10', 'Micah''s Mission - Basement', 19, 3),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2026-02-17', 'Micah''s Mission - Pantry', 24, 5),
+
+((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2026-02-05', 'Kitchen', 18, 3),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2026-02-12', 'Kitchen', 26, 6),
+
+((SELECT id FROM volunteers WHERE name='Southside Helpers'), '2026-02-06', 'Dorothy Day Food Pantry', 22, 5),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2026-02-20', 'Dorothy Day Food Pantry', 20, 4),
+
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2026-02-14', 'Community Picnic', 24, 6),
+
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2026-02-09', 'Silver Linings', 16, 2),
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2026-02-16', 'Bright Sky', 18, 3);
+
+
+-- February 2026
+INSERT INTO housing (
+  housing_building_id, month_date, occupancy_percent,
+  operational_reserves, replacement_reserves,
+  current_vacancies, upcoming_vacancies, upcoming_new_leases, notes
+)
+VALUES
+((SELECT id FROM housing_buildings WHERE name='Bright Sky Apartments'),
+ '2026-02-01', 88.5, 12900, 5400, 2, 1, 1, 'February data'),
+
+((SELECT id FROM housing_buildings WHERE name='Silver Linings Apartments'),
+ '2026-02-01', 90.0, 15900, 6400, 2, 1, 1, 'February data');
+
+
+INSERT INTO media_stats (
+    month_date, platform, total_visits, unique_visits, pageviews, bounce_rate, 
+    social_views, audience_start, audience_end, total_sent, total_opens, open_rate, total_clicks, click_rate, notes
+)
+VALUES-- Website
+
+('2026-02-01', 'Website', 6100, 4950, 11200, 55.6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'February Website Metrics'),
+
+-- Facebook
+('2026-02-01', 'Facebook', NULL, NULL, NULL, NULL, 39500, 6500, 6550, NULL, NULL, NULL, NULL, NULL, 'February Facebook Metrics'),
+
+-- Instagram
+('2026-02-01', 'Instagram', NULL, NULL, NULL, NULL, 2650, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'February Instagram Metrics'),
+
+-- TikTok
+('2026-02-01', 'TikTok', NULL, NULL, NULL, NULL, 980, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'February TikTok Metrics'),
+
+-- Newsletter
+('2026-02-01', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3500, 610, 17.4, 125, 3.6, 'February Newsletter');
+
+-- February 2026
+INSERT INTO donations (donor_id, date, amount, notable, restricted, notes)
+VALUES
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2026-02-02', 175.00, TRUE, FALSE, 'Monthly support donation'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2026-02-05', 600.00, TRUE, FALSE, 'Winter outreach fundraiser'),
+((SELECT id FROM donors WHERE name='Emily Carter'), '2026-02-11', 95.00, FALSE, FALSE, 'Personal donation'),
+((SELECT id FROM donors WHERE name='Greenwood Community Fund'), '2026-02-18', 450.00, FALSE, FALSE, 'Community grant'),
+((SELECT id FROM donors WHERE name='Lighthouse Supporters'), '2026-02-22', 500.00, TRUE, FALSE, 'Emergency winter support');
+
+
+-- February 2026
+INSERT INTO shelter_weekly (
+  date, single_men, housing_men, single_women, housing_women,
+  families, hybrid_va_holdover, incident_reports,
+  community_members_served, nights_found_sleeping_outside,
+  created_by, notes
+)
+VALUES
+('2026-02-03', 66, 33, 45, 24, 19, 16, 7, 70, 26, 1, 'Cold weather impact'),
+('2026-02-10', 67, 34, 46, 24, 20, 16, 6, 72, 27, 1, 'Continued winter demand'),
+('2026-02-17', 68, 34, 47, 25, 20, 17, 8, 74, 28, 1, 'High overnight shelter use'),
+('2026-02-24', 69, 35, 48, 25, 21, 17, 6, 76, 29, 1, 'Slight increase before March');
+
+
+-- February 2026
+INSERT INTO finance_weekly (
+  date, total_assets, operating_account_balance,
+  bills_paid, payroll_paid, revenue_received,
+  major_expenses, notes, created_by
+)
+VALUES
+('2026-02-03', 187800.00, 96200.00, 14200.00, 17000.00, 42000.00,
+ 'Payroll, Heating, Snow removal', 'Sustained winter costs', 1),
+
+('2026-02-10', 190600.00, 98000.00, 13800.00, 17000.00, 44000.00,
+ 'Payroll, Emergency supplies', 'Cold weather response', 1),
+
+('2026-02-17', 193400.00, 99800.00, 14500.00, 17000.00, 46000.00,
+ 'Payroll, Maintenance', 'Mid-winter stability', 1),
+
+('2026-02-24', 196200.00, 101500.00, 14000.00, 17000.00, 47000.00,
+ 'Payroll, Utilities', 'Preparing for spring transition', 1);
+
+
+-- February 2026
+INSERT INTO compliance_weekly (
+  date,
+  hh_without_children, hh_with_children,
+  adults, children, seniors_55_plus,
+  female, male, other_gender,
+  white, black_african_american, native_american, other_race, multi_racial,
+  one_condition, two_conditions, three_plus_conditions,
+  total_exits, created_by
+)
+VALUES
+('2026-02-03', 44, 21, 88, 39, 19, 67, 78, 2, 45, 53, 10, 19, 21, 55, 33, 19, 8, 1),
+('2026-02-10', 45, 21, 89, 40, 19, 68, 79, 2, 46, 54, 10, 19, 22, 56, 33, 20, 7, 1),
+('2026-02-17', 46, 22, 91, 41, 20, 69, 82, 2, 47, 55, 10, 20, 23, 57, 34, 20, 9, 1),
+('2026-02-24', 47, 22, 92, 42, 20, 70, 83, 2, 48, 56, 11, 20, 24, 58, 35, 21, 8, 1);
