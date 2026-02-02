@@ -57,10 +57,7 @@ app.use('/api/admin', adminRouter);
 
 
 
-
-
-
 // Start the server:
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Listening on port: ${PORT}`);
 });

@@ -147,4 +147,7 @@ Thanks to Emerging Digital Academy for the instruction, mentorship, and support 
 ## Support
 For questions related to ongoing maintenance or feature requests, please contact:
 
-youremail@domain.com. --TODO
+abdilleahmed779@gmail.com
+abdiwahabnunow@gmail.com
+nicholas.weisser@gmail.com
+
